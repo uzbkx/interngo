@@ -51,12 +51,21 @@ export async function apiFetch(
   return res;
 }
 
-// Server-side fetch (no auth token needed for public endpoints)
+// Server-side fetch with timeout (for SSR on Vercel)
 export async function serverFetch(path: string): Promise<Response> {
   const internalUrl =
     process.env.API_INTERNAL_URL || API_BASE;
-  return fetch(`${internalUrl}${path}`, {
-    cache: "no-store",
-    headers: { "Content-Type": "application/json" },
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000); // 8s timeout
+
+  try {
+    const res = await fetch(`${internalUrl}${path}`, {
+      cache: "no-store",
+      signal: controller.signal,
+      headers: { "Content-Type": "application/json" },
+    });
+    return res;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
