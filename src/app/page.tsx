@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { serverFetch } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { ListingCard } from "@/components/listing-card";
+import { LatestListings } from "@/components/latest-listings";
 import {
   Search,
   Briefcase,
@@ -36,27 +35,9 @@ const partnerLogos = [
 export default async function HomePage() {
   const t = await getTranslations("home");
   const tc = await getTranslations("categories");
-  const tcom = await getTranslations("common");
-
-  // Fetch listings from backend API
-  let latestListings: any[] = [];
-  let totalListings = 0;
-  let totalCountries = 0;
-  const totalCategories = 5; // fallback
-
-  try {
-    const res = await serverFetch("/listings?limit=6");
-    if (res.ok) {
-      const data = await res.json();
-      latestListings = data.listings || [];
-      totalListings = data.total || 0;
-      // Estimate countries from listings
-      const countries = new Set(latestListings.map((l: any) => l.country).filter(Boolean));
-      totalCountries = Math.max(countries.size, 10);
-    }
-  } catch {
-    // API not available, use empty defaults
-  }
+  // Static stats — updated periodically, no API call on page load
+  const totalListings = 16;
+  const totalCountries = 10;
 
   const categories = [
     {
@@ -92,7 +73,7 @@ export default async function HomePage() {
   const stats = [
     { label: t("opportunities"), value: totalListings, icon: Sparkles },
     { label: t("countries"), value: `${totalCountries}+`, icon: MapPin },
-    { label: t("students"), value: `${totalCategories * 100}+`, icon: Users },
+    { label: t("students"), value: "500+", icon: Users },
   ];
 
   return (
@@ -218,46 +199,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Latest Opportunities */}
-      {latestListings.length > 0 && (
-        <section className="bg-muted/30 py-16">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-1">
-                  {t("latestTitle")}
-                </h2>
-                <p className="text-muted-foreground">
-                  {t("latestDesc")}
-                </p>
-              </div>
-              <Button variant="outline" render={<Link href="/listings" />}>
-                {tcom("viewAll")}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {latestListings.map((listing: any) => (
-                <ListingCard
-                  key={listing._id}
-                  id={listing._id}
-                  title={listing.title}
-                  slug={listing.slug}
-                  type={listing.type}
-                  organization={listing.organizationId?.name}
-                  location={listing.location ?? undefined}
-                  country={listing.country ?? undefined}
-                  isRemote={listing.isRemote}
-                  isPaid={listing.isPaid}
-                  deadline={listing.deadline ? new Date(listing.deadline) : null}
-                  description={listing.description}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Latest Opportunities — loaded on client side for fast page load */}
+      <LatestListings />
 
       {/* AI-Powered — replaces "How it works" */}
       <section className="py-16">
