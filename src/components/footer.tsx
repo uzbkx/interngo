@@ -45,6 +45,11 @@ export function Footer() {
                   {tc("volunteering")}
                 </Link>
               </li>
+              <li>
+                <Link href="/archive" className="hover:text-foreground transition-colors">
+                  Archive
+                </Link>
+              </li>
             </ul>
           </div>
 
