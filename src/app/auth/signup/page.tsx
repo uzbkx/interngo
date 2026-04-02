@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { GraduationCap } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { getApiBase } from "@/lib/api";
+import { Captcha, type CaptchaRef } from "@/components/captcha";
 
 export default function SignUpPage() {
   const t = useTranslations("auth");
@@ -19,10 +20,18 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const captchaRef = useRef<CaptchaRef>(null);
 
   async function handleSignUp(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+
+    const captchaToken = captchaRef.current?.getToken();
+    if (!captchaToken) {
+      setError("Please complete the CAPTCHA");
+      return;
+    }
+
     setLoading(true);
 
     const result = await signup(email, password, name);
@@ -79,6 +88,7 @@ export default function SignUpPage() {
               <Label htmlFor="password">{t("password")}</Label>
               <Input id="password" type="password" placeholder={t("passwordSignupPlaceholder")} value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
             </div>
+            <Captcha ref={captchaRef} />
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? t("creatingAccount") : t("createAccountBtn")}

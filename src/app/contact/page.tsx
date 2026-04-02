@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { apiFetch } from "@/lib/api";
+import { Captcha, type CaptchaRef } from "@/components/captcha";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,10 +14,18 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const captchaRef = useRef<CaptchaRef>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
+
+    const captchaToken = captchaRef.current?.getToken();
+    if (!captchaToken) {
+      setError("Please complete the CAPTCHA");
+      return;
+    }
+
     setLoading(true);
 
     const form = new FormData(e.currentTarget);
@@ -155,6 +164,7 @@ export default function ContactPage() {
                       required
                     />
                   </div>
+                  <Captcha ref={captchaRef} />
                   {error && (
                     <p className="text-sm text-destructive">{error}</p>
                   )}

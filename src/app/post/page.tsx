@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { apiFetch } from "@/lib/api";
+import { Captcha, type CaptchaRef } from "@/components/captcha";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,6 +55,7 @@ export default function PostListingPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const captchaRef = useRef<CaptchaRef>(null);
   const [type, setType] = useState("");
   const [isRemote, setIsRemote] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
@@ -119,6 +121,13 @@ export default function PostListingPage() {
   async function handleSubmitListing(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
+
+    const captchaToken = captchaRef.current?.getToken();
+    if (!captchaToken) {
+      setError("Please complete the CAPTCHA");
+      return;
+    }
+
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
@@ -386,6 +395,8 @@ export default function PostListingPage() {
                 {t("paidOpportunity")}
               </label>
             </div>
+
+            <Captcha ref={captchaRef} />
 
             {error && <p className="text-sm text-destructive">{error}</p>}
 
