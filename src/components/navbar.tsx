@@ -14,6 +14,7 @@ import {
   Briefcase,
   LayoutDashboard,
   LogOut,
+  User,
 } from "lucide-react";
 
 export function Navbar() {
@@ -54,7 +55,10 @@ export function Navbar() {
           <LanguageSwitcher currentLocale={locale} />
           {!loading && user ? (
             <>
-              <span className="text-sm text-muted-foreground">{user.name || user.email}</span>
+              <Button variant="ghost" size="sm" render={<Link href="/profile" />}>
+                <User className="h-4 w-4 mr-1" />
+                {user.name || user.email}
+              </Button>
               <Button variant="ghost" size="sm" onClick={logout}>
                 <LogOut className="h-4 w-4 mr-1" />
                 {tc("logout")}
