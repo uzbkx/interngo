@@ -4,7 +4,7 @@ import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useRef, forwardRef, useImperativeHandle, useState } from "react";
 
 // hCaptcha free sitekey — sign up at dashboard.hcaptcha.com for your own
-const SITE_KEY = "10000000-ffff-ffff-ffff-000000000001";
+const SITE_KEY = "4f30e818-54fa-4694-9b80-ead0963e09b2";
 
 export interface CaptchaRef {
   getToken: () => string | null;
