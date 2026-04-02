@@ -1,9 +1,10 @@
 "use client";
 
-import ReCAPTCHA from "react-google-recaptcha";
-import { useRef, forwardRef, useImperativeHandle } from "react";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { useRef, forwardRef, useImperativeHandle, useState } from "react";
 
-const SITE_KEY = "6LfeFaMsAAAAAOCqks3qIGbI0-xZclq4fFF4yRQG";
+// hCaptcha free sitekey — sign up at dashboard.hcaptcha.com for your own
+const SITE_KEY = "10000000-ffff-ffff-ffff-000000000001";
 
 export interface CaptchaRef {
   getToken: () => string | null;
@@ -11,18 +12,23 @@ export interface CaptchaRef {
 }
 
 export const Captcha = forwardRef<CaptchaRef>(function Captcha(_, ref) {
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const hcaptchaRef = useRef<HCaptcha>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   useImperativeHandle(ref, () => ({
-    getToken: () => recaptchaRef.current?.getValue() || null,
-    reset: () => recaptchaRef.current?.reset(),
+    getToken: () => token,
+    reset: () => {
+      setToken(null);
+      hcaptchaRef.current?.resetCaptcha();
+    },
   }));
 
   return (
-    <ReCAPTCHA
-      ref={recaptchaRef}
+    <HCaptcha
+      ref={hcaptchaRef}
       sitekey={SITE_KEY}
-      theme="light"
+      onVerify={(t) => setToken(t)}
+      onExpire={() => setToken(null)}
     />
   );
 });
