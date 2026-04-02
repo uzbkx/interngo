@@ -3,7 +3,7 @@
 import ReCAPTCHA from "react-google-recaptcha";
 import { useRef, forwardRef, useImperativeHandle } from "react";
 
-const SITE_KEY = "6LedyaIsAAAAAJIK_96VTT4rEvCfUCUtOKqyJrgG";
+const SITE_KEY = "6LfeFaMsAAAAAOCqks3qIGbI0-xZclq4fFF4yRQG";
 
 export interface CaptchaRef {
   getToken: () => string | null;
