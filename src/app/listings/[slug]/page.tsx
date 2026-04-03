@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { SaveButton } from "@/components/save-button";
 import { ApplicationTracker } from "@/components/application-tracker";
+import { ShareButtons } from "@/components/share-buttons";
+import { DeadlineBadge } from "@/components/deadline-badge";
 
 interface ListingDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -150,6 +152,14 @@ export default async function ListingDetailPage({
 
               <SaveButton listingId={listingId} className="w-full" />
               <ApplicationTracker listingId={listingId} />
+
+              <ShareButtons title={listing.title} url={`/listings/${listing.slug}`} />
+
+              {deadline && deadline.getTime() > Date.now() && (
+                <div className="flex justify-center">
+                  <DeadlineBadge deadline={deadline} />
+                </div>
+              )}
 
               <Separator />
 

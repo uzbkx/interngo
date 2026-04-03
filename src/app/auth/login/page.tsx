@@ -80,7 +80,12 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground mt-6">
+          <p className="text-center text-sm text-muted-foreground mt-4">
+            <Link href="/auth/forgot-password" className="text-primary hover:underline">
+              Forgot password?
+            </Link>
+          </p>
+          <p className="text-center text-sm text-muted-foreground mt-2">
             {t("noAccount")}{" "}
             <Link href="/auth/signup" className="text-primary font-medium hover:underline">
               {t("createAccountBtn")}

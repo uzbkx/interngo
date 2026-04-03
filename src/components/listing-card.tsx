@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, DollarSign, Globe } from "lucide-react";
+import { MapPin, Calendar, DollarSign, Globe, Sparkles } from "lucide-react";
+import { DeadlineBadge } from "@/components/deadline-badge";
 
 interface ListingCardProps {
   id: string;
@@ -18,6 +19,7 @@ interface ListingCardProps {
   isPaid?: boolean;
   deadline?: Date | string | null;
   description: string;
+  createdAt?: string;
 }
 
 const typeColors: Record<string, string> = {
@@ -40,15 +42,13 @@ export function ListingCard({
   isPaid,
   deadline,
   description,
+  createdAt,
 }: ListingCardProps) {
   const tt = useTranslations("types");
   const tc = useTranslations("common");
 
   const deadlineDate = deadline ? new Date(deadline) : null;
-  const isExpiring =
-    deadlineDate &&
-    deadlineDate.getTime() - Date.now() < 7 * 24 * 60 * 60 * 1000 &&
-    deadlineDate.getTime() > Date.now();
+  const isNew = createdAt && (Date.now() - new Date(createdAt).getTime()) < 48 * 60 * 60 * 1000;
 
   return (
     <Link href={`/listings/${slug}`}>
@@ -56,11 +56,19 @@ export function ListingCard({
         <CardContent className="p-5">
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold group-hover:text-primary transition-colors line-clamp-2">
-                {title}
-              </h3>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="font-semibold group-hover:text-primary transition-colors line-clamp-2">
+                  {title}
+                </h3>
+                {isNew && (
+                  <Badge className="text-[10px] px-1.5 py-0 bg-emerald-100 text-emerald-800 shrink-0">
+                    <Sparkles className="h-2.5 w-2.5 mr-0.5" />
+                    New
+                  </Badge>
+                )}
+              </div>
               {organization && (
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-sm text-muted-foreground">
                   {organization}
                 </p>
               )}
@@ -70,9 +78,15 @@ export function ListingCard({
             </Badge>
           </div>
 
-          <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+          <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
             {description}
           </p>
+
+          {deadlineDate && deadlineDate.getTime() > Date.now() && (
+            <div className="mb-3">
+              <DeadlineBadge deadline={deadlineDate} />
+            </div>
+          )}
 
           <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
             {(location || country) && (
@@ -94,9 +108,7 @@ export function ListingCard({
               </span>
             )}
             {deadlineDate && (
-              <span
-                className={`flex items-center gap-1 ${isExpiring ? "text-destructive font-medium" : ""}`}
-              >
+              <span className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
                 {deadlineDate.toLocaleDateString("en-US", {
                   month: "short",
