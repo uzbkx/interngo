@@ -6,6 +6,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/lib/auth-context";
 import {
   GraduationCap,
@@ -52,6 +53,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle />
           <LanguageSwitcher currentLocale={locale} />
           {!loading && user ? (
             <>
@@ -98,7 +100,10 @@ export function Navbar() {
                 </Link>
               ))}
               <div className="border-t pt-4 flex flex-col gap-2">
-                <LanguageSwitcher currentLocale={locale} />
+                <div className="flex items-center gap-2">
+                  <ThemeToggle />
+                  <LanguageSwitcher currentLocale={locale} />
+                </div>
                 {!loading && user ? (
                   <>
                     <span className="text-sm text-muted-foreground px-2">{user.name || user.email}</span>
