@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { LiveStats } from "@/components/live-stats";
 import { Input } from "@/components/ui/input";
 import { LatestListings } from "@/components/latest-listings";
 import {
@@ -13,8 +14,6 @@ import {
   Heart,
   ArrowRight,
   Sparkles,
-  Users,
-  MapPin,
   Radar,
   Zap,
   Shield,
@@ -35,10 +34,6 @@ const partnerLogos = [
 export default async function HomePage() {
   const t = await getTranslations("home");
   const tc = await getTranslations("categories");
-  // Static stats — updated periodically, no API call on page load
-  const totalListings = 16;
-  const totalCountries = 10;
-
   const categories = [
     {
       title: tc("internships"),
@@ -70,11 +65,7 @@ export default async function HomePage() {
     },
   ];
 
-  const stats = [
-    { label: t("opportunities"), value: totalListings, icon: Sparkles },
-    { label: t("countries"), value: `${totalCountries}+`, icon: MapPin },
-    { label: t("students"), value: "500+", icon: Users },
-  ];
+  // Stats are loaded client-side via LiveStats component
 
   return (
     <div>
@@ -133,17 +124,7 @@ export default async function HomePage() {
             </form>
 
             {/* Stats */}
-            <div className="flex justify-center gap-8 md:gap-16">
-              {stats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <stat.icon className="h-5 w-5 mx-auto mb-1 text-primary/60" />
-                  <div className="text-2xl font-bold">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <LiveStats />
           </div>
         </div>
       </section>

@@ -1,19 +1,22 @@
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { serverFetch } from "@/lib/api";
 import { ListingCard } from "@/components/listing-card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ListingsPageProps {
-  searchParams: Promise<{ type?: string; q?: string }>;
+  searchParams: Promise<{ type?: string; q?: string; page?: string }>;
 }
 
 export default async function ListingsPage({ searchParams }: ListingsPageProps) {
   const params = await searchParams;
   const activeType = params.type || "";
   const query = params.q || "";
+  const page = parseInt(params.page || "1");
+  const limit = 12;
   const t = await getTranslations("listings");
   const tc = await getTranslations("common");
 
@@ -28,21 +31,33 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
 
   let listings: any[] = [];
   let totalCount = 0;
+  let totalPages = 1;
 
   try {
     const queryParams = new URLSearchParams();
     if (activeType) queryParams.set("type", activeType);
     if (query) queryParams.set("q", query);
-    queryParams.set("limit", "50");
+    queryParams.set("page", String(page));
+    queryParams.set("limit", String(limit));
 
     const res = await serverFetch(`/listings?${queryParams}`);
     if (res.ok) {
       const data = await res.json();
       listings = data.listings || [];
       totalCount = data.total || 0;
+      totalPages = data.totalPages || 1;
     }
   } catch {
     // API not available
+  }
+
+  function buildUrl(newPage: number) {
+    const p = new URLSearchParams();
+    if (activeType) p.set("type", activeType);
+    if (query) p.set("q", query);
+    if (newPage > 1) p.set("page", String(newPage));
+    const qs = p.toString();
+    return `/listings${qs ? `?${qs}` : ""}`;
   }
 
   return (
@@ -74,20 +89,20 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
       </div>
 
       <div className="flex flex-wrap gap-2 mb-8">
-        {listingTypes.map((t) => (
+        {listingTypes.map((lt) => (
           <a
-            key={t.value}
+            key={lt.value}
             href={
-              t.value
-                ? `/listings?type=${t.value}${query ? `&q=${query}` : ""}`
+              lt.value
+                ? `/listings?type=${lt.value}${query ? `&q=${query}` : ""}`
                 : `/listings${query ? `?q=${query}` : ""}`
             }
           >
             <Badge
-              variant={activeType === t.value ? "default" : "secondary"}
+              variant={activeType === lt.value ? "default" : "secondary"}
               className="cursor-pointer text-sm px-3 py-1"
             >
-              {t.label}
+              {lt.label}
             </Badge>
           </a>
         ))}
@@ -107,19 +122,53 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
               title={listing.title}
               slug={listing.slug}
               type={listing.type}
-              organization={listing.organizationId?.name}
+              organization={listing.organizationId?.name || listing.organizationName}
               location={listing.location ?? undefined}
               country={listing.country ?? undefined}
               isRemote={listing.isRemote}
               isPaid={listing.isPaid}
               deadline={listing.deadline ? new Date(listing.deadline) : null}
               description={listing.description}
+              createdAt={listing.createdAt}
             />
           ))}
         </div>
       )}
 
-      <div className="text-center mt-8 text-sm text-muted-foreground">
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-10">
+          {page > 1 ? (
+            <Button variant="outline" size="sm" render={<Link href={buildUrl(page - 1)} />}>
+              <ChevronLeft className="h-4 w-4 mr-1" />
+              Previous
+            </Button>
+          ) : (
+            <Button variant="outline" size="sm" disabled>
+              <ChevronLeft className="h-4 w-4 mr-1" />
+              Previous
+            </Button>
+          )}
+
+          <span className="text-sm text-muted-foreground px-3">
+            Page {page} of {totalPages}
+          </span>
+
+          {page < totalPages ? (
+            <Button variant="outline" size="sm" render={<Link href={buildUrl(page + 1)} />}>
+              Next
+              <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          ) : (
+            <Button variant="outline" size="sm" disabled>
+              Next
+              <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          )}
+        </div>
+      )}
+
+      <div className="text-center mt-6 text-sm text-muted-foreground">
         {tc("showingResults", { count: listings.length, total: totalCount })}
       </div>
     </div>
