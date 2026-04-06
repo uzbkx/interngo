@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -90,6 +92,15 @@ export default function ScouterAdminPage() {
   // Run history
   const [runHistory, setRunHistory] = useState<ScouterRunLog[]>([]);
 
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!authLoading && (!user || user.role !== "ADMIN")) {
+      router.replace("/");
+    }
+  }, [user, authLoading, router]);
+
   async function fetchData() {
     setLoading(true);
     try {
@@ -110,8 +121,16 @@ export default function ScouterAdminPage() {
   }
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (user?.role === "ADMIN") fetchData();
+  }, [user]);
+
+  if (authLoading || !user || user.role !== "ADMIN") {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
 
   async function addSource(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
