@@ -106,9 +106,15 @@ export default function AboutPage() {
               </a>
             </li>
             <li>
-              Telegram:{" "}
-              <a href="https://t.me/interngo" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
-                @interngo
+              Telegram Channel:{" "}
+              <a href="https://t.me/interngouz" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+                @interngouz
+              </a>
+            </li>
+            <li>
+              Support:{" "}
+              <a href="https://t.me/interngouzsupportbot" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+                @interngouzsupportbot
               </a>
             </li>
           </ul>

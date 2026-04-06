@@ -68,7 +68,8 @@ export default function ContactPage() {
         <div className="space-y-3">
           {[
             { icon: Mail, title: "Email", value: "contact@interngo.uz", href: "mailto:contact@interngo.uz" },
-            { icon: MessageSquare, title: "Telegram", value: "@interngo", href: "https://t.me/interngo" },
+            { icon: MessageSquare, title: "Telegram Channel", value: "@interngouz", href: "https://t.me/interngouz" },
+            { icon: MessageSquare, title: "Support Bot", value: "@interngouzsupportbot", href: "https://t.me/interngouzsupportbot" },
             { icon: MapPin, title: "Location", value: "Tashkent, Uzbekistan" },
           ].map((item) => (
             <Card key={item.title}>

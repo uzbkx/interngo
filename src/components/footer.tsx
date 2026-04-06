@@ -24,7 +24,7 @@ export function Footer() {
     { title: t("about"), links: [
       { href: "/about", label: t("aboutUs") },
       { href: "/contact", label: t("contact") },
-      { href: "https://t.me/interngo", label: "Telegram", external: true },
+      { href: "https://t.me/interngouz", label: "Telegram", external: true },
     ]},
     { title: t("legal"), links: [
       { href: "/terms", label: t("terms") },
@@ -44,7 +44,7 @@ export function Footer() {
               <span className="font-bold">InternGo</span>
             </Link>
             <p className="text-xs text-muted-foreground leading-relaxed mb-4">{t("tagline")}</p>
-            <a href="https://t.me/interngo" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors">
+            <a href="https://t.me/interngouz" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors">
               <Send className="h-3.5 w-3.5" />Telegram
             </a>
           </div>
