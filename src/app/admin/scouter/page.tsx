@@ -25,24 +25,23 @@ import {
 } from "lucide-react";
 
 interface Source {
-  id: string;
+  _id: string;
   name: string;
   url: string;
   description: string | null;
   isActive: boolean;
   lastScraped: string | null;
-  _count: { results: number };
 }
 
 interface ScoutedResult {
-  id: string;
+  _id: string;
   title: string;
   description: string | null;
   url: string | null;
   isApproved: boolean;
   isRejected: boolean;
   createdAt: string;
-  source: { name: string };
+  sourceId: { name: string } | null;
 }
 
 interface ScoutRunResult {
@@ -62,7 +61,7 @@ interface DiscoveredSource {
 }
 
 interface ScouterRunLog {
-  id: string;
+  _id: string;
   type: string;
   status: string;
   sourcesCount: number;
@@ -102,9 +101,9 @@ export default function ScouterAdminPage() {
       const sourcesData = await sourcesRes.json();
       const resultsData = await resultsRes.json();
       const runsData = await runsRes.json();
-      setSources(sourcesData.sources || []);
-      setResults(resultsData.results || []);
-      setRunHistory(runsData.runs || []);
+      setSources(Array.isArray(sourcesData) ? sourcesData : sourcesData.sources || []);
+      setResults(Array.isArray(resultsData) ? resultsData : resultsData.results || []);
+      setRunHistory(Array.isArray(runsData) ? runsData : runsData.runs || []);
     } finally {
       setLoading(false);
     }
@@ -175,7 +174,7 @@ export default function ScouterAdminPage() {
       method: "PATCH",
       body: JSON.stringify({ approve: action === "approve" }),
     });
-    setResults((prev) => prev.filter((r) => r.id !== id));
+    setResults((prev) => prev.filter((r) => r._id !== id));
   }
 
   async function handleDiscover() {
@@ -331,7 +330,7 @@ export default function ScouterAdminPage() {
           ) : (
             <div className="space-y-3">
               {sources.map((source) => (
-                <Card key={source.id}>
+                <Card key={source._id}>
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
@@ -360,7 +359,6 @@ export default function ScouterAdminPage() {
                           </p>
                         )}
                         <div className="flex gap-4 mt-2 text-xs text-muted-foreground">
-                          <span>{source._count.results} results found</span>
                           {source.lastScraped && (
                             <span>
                               Last scraped:{" "}
@@ -374,10 +372,10 @@ export default function ScouterAdminPage() {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => runScout(source.id)}
+                        onClick={() => runScout(source._id)}
                         disabled={runningSource !== null}
                       >
-                        {runningSource === source.id ? (
+                        {runningSource === source._id ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
                           <Play className="h-4 w-4" />
@@ -401,14 +399,14 @@ export default function ScouterAdminPage() {
           ) : (
             <div className="space-y-3">
               {results.map((result) => (
-                <Card key={result.id}>
+                <Card key={result._id}>
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <h3 className="font-semibold">{result.title}</h3>
                           <Badge variant="outline" className="text-xs">
-                            via {result.source.name}
+                            via {result.sourceId?.name}
                           </Badge>
                         </div>
                         {result.description && (
@@ -430,14 +428,14 @@ export default function ScouterAdminPage() {
                       <div className="flex gap-2 shrink-0">
                         <Button
                           size="sm"
-                          onClick={() => handleResult(result.id, "approve")}
+                          onClick={() => handleResult(result._id, "approve")}
                         >
                           <CheckCircle className="h-4 w-4" />
                         </Button>
                         <Button
                           size="sm"
                           variant="destructive"
-                          onClick={() => handleResult(result.id, "reject")}
+                          onClick={() => handleResult(result._id, "reject")}
                         >
                           <XCircle className="h-4 w-4" />
                         </Button>
@@ -539,7 +537,7 @@ export default function ScouterAdminPage() {
           ) : (
             <div className="space-y-3">
               {runHistory.map((run) => (
-                <Card key={run.id}>
+                <Card key={run._id}>
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1">
