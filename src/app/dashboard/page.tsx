@@ -128,17 +128,17 @@ export default function DashboardPage() {
         <p className="text-sm text-muted-foreground">{t("description")}</p>
       </div>
 
-      <div className="grid grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {[
-          { label: t("saved"), value: saved.length },
-          { label: t("applied"), value: applications.filter((a) => a.status === "APPLIED").length },
-          { label: t("interviews"), value: applications.filter((a) => a.status === "INTERVIEW").length },
-          { label: t("accepted"), value: applications.filter((a) => a.status === "ACCEPTED").length },
+          { label: t("saved"), value: saved.length, color: "border-l-indigo-500" },
+          { label: t("applied"), value: applications.filter((a) => a.status === "APPLIED").length, color: "border-l-blue-500" },
+          { label: t("interviews"), value: applications.filter((a) => a.status === "INTERVIEW").length, color: "border-l-amber-500" },
+          { label: t("accepted"), value: applications.filter((a) => a.status === "ACCEPTED").length, color: "border-l-emerald-500" },
         ].map((stat) => (
-          <Card key={stat.label}>
-            <CardContent className="p-3 text-center">
-              <div className="text-xl font-bold">{stat.value}</div>
-              <div className="text-[11px] text-muted-foreground">{stat.label}</div>
+          <Card key={stat.label} className={`border-l-4 ${stat.color}`}>
+            <CardContent className="p-4">
+              <div className="text-2xl font-bold">{stat.value}</div>
+              <div className="text-xs text-muted-foreground">{stat.label}</div>
             </CardContent>
           </Card>
         ))}

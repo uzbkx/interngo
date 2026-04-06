@@ -43,7 +43,7 @@ export function ListingCard({
 
   return (
     <Link href={`/listings/${slug}`}>
-      <Card className="h-full hover:border-primary/30 transition-colors cursor-pointer group">
+      <Card className="h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group">
         <CardContent className="p-4">
           <div className="flex items-start justify-between gap-2 mb-2">
             <div className="flex-1 min-w-0">

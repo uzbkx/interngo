@@ -85,7 +85,7 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
         </Button>
       </form>
 
-      <div className="flex flex-wrap gap-1.5 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         {listingTypes.map((lt) => (
           <a
             key={lt.value}
@@ -94,13 +94,13 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
                 ? `/listings?type=${lt.value}${query ? `&q=${query}` : ""}`
                 : `/listings${query ? `?q=${query}` : ""}`
             }
+            className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+              activeType === lt.value
+                ? "bg-gradient-to-r from-indigo-500 to-blue-500 text-white shadow-md"
+                : "bg-secondary text-secondary-foreground hover:bg-accent"
+            }`}
           >
-            <Badge
-              variant={activeType === lt.value ? "default" : "secondary"}
-              className="cursor-pointer text-xs px-2.5 py-0.5"
-            >
-              {lt.label}
-            </Badge>
+            {lt.label}
           </a>
         ))}
       </div>

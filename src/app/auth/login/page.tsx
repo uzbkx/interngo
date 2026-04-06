@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { GraduationCap } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { GraduationCap, Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { getApiBase } from "@/lib/api";
 
@@ -24,32 +25,28 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     const result = await login(email, password);
-    if (result.error) {
-      setError(result.error);
-      setLoading(false);
-      return;
-    }
-
+    if (result.error) { setError(result.error); setLoading(false); return; }
     window.location.href = "/";
   }
 
-  function handleGoogleLogin() {
-    window.location.href = `${getApiBase()}/auth/google`;
-  }
-
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4">
-      <Card className="w-full max-w-sm">
-        <CardContent className="p-6">
-          <div className="text-center mb-6">
-            <GraduationCap className="h-8 w-8 mx-auto text-primary mb-2" />
-            <h1 className="text-xl font-bold">{t("welcomeBack")}</h1>
-            <p className="text-xs text-muted-foreground mt-1">{t("loginDesc")}</p>
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
+      <Card className="w-full max-w-md shadow-xl overflow-hidden">
+        <div className="h-1 bg-gradient-to-r from-indigo-600 via-blue-600 to-sky-600" />
+        <CardContent className="p-8">
+          <div className="flex flex-col items-center mb-6">
+            <div className="relative mb-4">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 to-blue-600 rounded-2xl blur-xl opacity-30 scale-150" />
+              <div className="relative flex items-center justify-center h-14 w-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-600 shadow-lg">
+                <GraduationCap className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            <h1 className="text-2xl font-bold text-gradient">{t("welcomeBack")}</h1>
+            <p className="text-sm text-muted-foreground mt-1">{t("loginDesc")}</p>
           </div>
 
-          <Button variant="outline" className="w-full" size="sm" onClick={handleGoogleLogin}>
+          <Button variant="outline" className="w-full h-11" onClick={() => { window.location.href = `${getApiBase()}/auth/google`; }}>
             <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -59,41 +56,35 @@ export default function LoginPage() {
             {t("googleContinue")}
           </Button>
 
-          <div className="relative my-5">
+          <div className="relative my-6">
             <Separator />
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-[10px] uppercase text-muted-foreground">
-              {t("orEmail")}
-            </span>
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-3 text-xs text-muted-foreground">{t("orEmail")}</span>
           </div>
 
-          <form onSubmit={handleLogin} className="space-y-3">
-            <div>
-              <Label htmlFor="email" className="text-xs">{t("email")}</Label>
-              <Input id="email" type="email" placeholder={t("emailPlaceholder")} value={email} onChange={(e) => setEmail(e.target.value)} required className="h-9" />
+          {error && <Alert variant="destructive" className="mb-4"><AlertDescription>{error}</AlertDescription></Alert>}
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">{t("email")}</Label>
+              <Input id="email" type="email" placeholder={t("emailPlaceholder")} value={email} onChange={(e) => setEmail(e.target.value)} required className="h-11" />
             </div>
-            <div>
-              <Label htmlFor="password" className="text-xs">{t("password")}</Label>
-              <Input id="password" type="password" placeholder={t("passwordPlaceholder")} value={password} onChange={(e) => setPassword(e.target.value)} required className="h-9" />
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">{t("password")}</Label>
+                <Link href="/auth/forgot-password" className="text-xs text-primary hover:underline">Forgot password?</Link>
+              </div>
+              <Input id="password" type="password" placeholder={t("passwordPlaceholder")} value={password} onChange={(e) => setPassword(e.target.value)} required className="h-11" />
             </div>
-            {error && <p className="text-xs text-destructive">{error}</p>}
-            <Button type="submit" className="w-full" size="sm" disabled={loading}>
+            <Button type="submit" disabled={loading} className="w-full h-11 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-md">
+              {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
               {loading ? t("loggingIn") : t("login")}
             </Button>
           </form>
 
-          <div className="text-center mt-4 space-y-1.5">
-            <p className="text-xs text-muted-foreground">
-              <Link href="/auth/forgot-password" className="text-primary hover:underline">
-                Forgot password?
-              </Link>
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {t("noAccount")}{" "}
-              <Link href="/auth/signup" className="text-primary font-medium hover:underline">
-                {t("createAccountBtn")}
-              </Link>
-            </p>
-          </div>
+          <p className="text-center text-sm text-muted-foreground mt-6">
+            {t("noAccount")}{" "}
+            <Link href="/auth/signup" className="text-primary font-medium hover:underline">{t("createAccountBtn")}</Link>
+          </p>
         </CardContent>
       </Card>
     </div>

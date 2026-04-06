@@ -71,7 +71,7 @@
   --chart-3: oklch(0.72 0.12 264);
   --chart-4: oklch(0.55 0.14 230);
   --chart-5: oklch(0.65 0.1 250);
-  --radius: 0.5rem;
+  --radius: 0.625rem;
   --sidebar: oklch(0.985 0.005 265);
   --sidebar-foreground: oklch(0.145 0.015 265);
   --sidebar-primary: oklch(0.488 0.185 264);
@@ -126,4 +126,49 @@
   html {
     @apply font-sans;
   }
+}
+
+/* Custom animations */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(3deg); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-slower {
+  animation: float 10s ease-in-out infinite;
+}
+
+/* Dot grid pattern */
+.bg-dot-pattern {
+  background-image: radial-gradient(circle, oklch(0.488 0.185 264 / 8%) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.dark .bg-dot-pattern {
+  background-image: radial-gradient(circle, oklch(0.62 0.19 264 / 8%) 1px, transparent 1px);
+}
+
+/* Gradient text utility */
+.text-gradient {
+  background: linear-gradient(135deg, oklch(0.488 0.185 264), oklch(0.5 0.18 250), oklch(0.55 0.16 235));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

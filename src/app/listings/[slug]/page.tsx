@@ -100,7 +100,7 @@ export default async function ListingDetailPage({
             )}
           </div>
 
-          <Separator className="mb-5" />
+          <div className="h-0.5 bg-gradient-to-r from-indigo-600 to-blue-600 rounded-full mb-5" />
 
           <div className="text-sm leading-relaxed">
             {listing.description.split("\n").map((line: string, i: number) => {
@@ -127,11 +127,11 @@ export default async function ListingDetailPage({
         </div>
 
         <div className="lg:col-span-1">
-          <Card className="sticky top-20">
+          <Card className="sticky top-20 shadow-lg">
             <CardContent className="p-5 space-y-3">
               {listing.applyUrl && !isExpired && (
                 <Button
-                  className="w-full"
+                  className="w-full h-11 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
                   render={
                     <a href={listing.applyUrl} target="_blank" rel="noopener noreferrer" />
                   }

@@ -5,6 +5,8 @@ import { getLocale, getMessages } from "next-intl/server";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { AuthProvider } from "@/lib/auth-context";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -72,9 +74,12 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <AuthProvider>
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
+            <TooltipProvider>
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <Toaster richColors position="bottom-right" />
+            </TooltipProvider>
           </AuthProvider>
         </NextIntlClientProvider>
       </body>

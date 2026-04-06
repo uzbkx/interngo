@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import {
   GraduationCap,
   Send,
@@ -23,6 +24,7 @@ import {
   Building2,
   User,
   ArrowLeft,
+  CheckCircle,
 } from "lucide-react";
 
 const TYPE_KEYS = [
@@ -171,10 +173,13 @@ export default function PostListingPage() {
   if (submitted) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center px-4">
-        <Card className="w-full max-w-sm">
-          <CardContent className="p-6 text-center">
-            <GraduationCap className="h-8 w-8 mx-auto text-primary mb-2" />
-            <h1 className="text-xl font-bold mb-1">{t("successTitle")}</h1>
+        <Card className="w-full max-w-md shadow-xl overflow-hidden">
+          <div className="h-1 bg-gradient-to-r from-emerald-500 to-green-500" />
+          <CardContent className="p-8 text-center">
+            <div className="flex items-center justify-center h-16 w-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 mx-auto mb-4">
+              <CheckCircle className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <h1 className="text-xl font-bold mb-2">{t("successTitle")}</h1>
             <p className="text-sm text-muted-foreground">{t("successDesc")}</p>
           </CardContent>
         </Card>
@@ -365,22 +370,22 @@ export default function PostListingPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-5">
-              <label className="flex items-center gap-1.5 text-xs cursor-pointer">
-                <input type="checkbox" className="rounded" checked={isRemote} onChange={(e) => setIsRemote(e.target.checked)} />
-                {t("remoteAvailable")}
-              </label>
-              <label className="flex items-center gap-1.5 text-xs cursor-pointer">
-                <input type="checkbox" className="rounded" checked={isPaid} onChange={(e) => setIsPaid(e.target.checked)} />
-                {t("paidOpportunity")}
-              </label>
+            <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2">
+                <Switch checked={isRemote} onCheckedChange={setIsRemote} />
+                <Label className="text-xs">{t("remoteAvailable")}</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch checked={isPaid} onCheckedChange={setIsPaid} />
+                <Label className="text-xs">{t("paidOpportunity")}</Label>
+              </div>
             </div>
 
             <Captcha ref={captchaRef} />
 
             {error && <p className="text-xs text-destructive">{error}</p>}
 
-            <Button type="submit" className="w-full" size="sm" disabled={loading || !type}>
+            <Button type="submit" className="w-full h-11 bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-md" disabled={loading || !type}>
               {loading ? (
                 <><Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />{t("submitting")}</>
               ) : (
