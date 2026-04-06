@@ -24,9 +24,9 @@ export function LatestListings() {
 
   if (loading) {
     return (
-      <section className="bg-muted/30 py-16">
+      <section className="py-16">
         <div className="container mx-auto px-4 text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto text-muted-foreground" />
+          <Loader2 className="h-6 w-6 animate-spin mx-auto text-muted-foreground" />
         </div>
       </section>
     );
@@ -35,22 +35,22 @@ export function LatestListings() {
   if (listings.length === 0) return null;
 
   return (
-    <section className="bg-muted/30 py-16">
+    <section className="py-16 bg-muted/30">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-end justify-between mb-6">
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold mb-1">
+            <h2 className="text-xl font-bold mb-1">
               {t("latestTitle")}
             </h2>
-            <p className="text-muted-foreground">{t("latestDesc")}</p>
+            <p className="text-sm text-muted-foreground">{t("latestDesc")}</p>
           </div>
-          <Button variant="outline" render={<Link href="/listings" />}>
+          <Button variant="ghost" size="sm" render={<Link href="/listings" />}>
             {tc("viewAll")}
-            <ArrowRight className="ml-2 h-4 w-4" />
+            <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {listings.map((listing: any) => (
             <ListingCard
               key={listing._id}

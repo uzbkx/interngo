@@ -6,13 +6,13 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="container mx-auto px-4 py-12 max-w-3xl">
-      <h1 className="text-3xl font-bold mb-2">Terms of Use</h1>
-      <p className="text-sm text-muted-foreground mb-8">
+    <div className="container mx-auto px-4 py-12 max-w-2xl">
+      <h1 className="text-2xl font-bold mb-1">Terms of Use</h1>
+      <p className="text-xs text-muted-foreground mb-6">
         Last updated: March 21, 2026
       </p>
 
-      <div className="prose prose-sm max-w-none space-y-6 text-muted-foreground">
+      <div className="space-y-5 text-sm text-muted-foreground leading-relaxed">
         <section>
           <h2 className="text-lg font-semibold text-foreground">
             1. Acceptance of Terms

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { apiFetch } from "@/lib/api";
-import { Sparkles, MapPin, Users } from "lucide-react";
 
 export function LiveStats() {
   const [total, setTotal] = useState(0);
@@ -16,7 +15,6 @@ export function LiveStats() {
       })
       .catch(() => {});
 
-    // Estimate countries from a larger fetch
     apiFetch("/listings?limit=50")
       .then((r) => r.json())
       .then((d) => {
@@ -29,18 +27,17 @@ export function LiveStats() {
   }, []);
 
   const stats = [
-    { label: "Opportunities", value: total || "—", icon: Sparkles },
-    { label: "Countries", value: countries ? `${countries}+` : "—", icon: MapPin },
-    { label: "Students", value: "500+", icon: Users },
+    { label: "Opportunities", value: total || "—" },
+    { label: "Countries", value: countries ? `${countries}+` : "—" },
+    { label: "Students", value: "500+" },
   ];
 
   return (
-    <div className="flex justify-center gap-8 md:gap-16">
+    <div className="flex justify-center gap-10">
       {stats.map((stat) => (
         <div key={stat.label} className="text-center">
-          <stat.icon className="h-5 w-5 mx-auto mb-1 text-primary/60" />
-          <div className="text-2xl font-bold">{stat.value}</div>
-          <div className="text-sm text-muted-foreground">{stat.label}</div>
+          <div className="text-2xl font-bold text-primary">{stat.value}</div>
+          <div className="text-xs text-muted-foreground">{stat.label}</div>
         </div>
       ))}
     </div>

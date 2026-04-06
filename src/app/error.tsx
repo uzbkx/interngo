@@ -11,19 +11,18 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div className="container mx-auto px-4 py-20 flex flex-col items-center text-center">
-      <h1 className="text-4xl font-bold mb-2">Something went wrong</h1>
-      <p className="text-muted-foreground mb-8 max-w-md">
-        An unexpected error occurred. Please try again or go back to the
-        homepage.
+    <div className="container mx-auto px-4 py-24 flex flex-col items-center text-center">
+      <h1 className="text-lg font-bold mb-1">Something went wrong</h1>
+      <p className="text-sm text-muted-foreground mb-6 max-w-sm">
+        An unexpected error occurred. Please try again.
       </p>
-      <div className="flex gap-3">
-        <Button variant="outline" render={<Link href="/" />}>
-          <ArrowLeft className="mr-2 h-4 w-4" />
+      <div className="flex gap-2">
+        <Button variant="outline" size="sm" render={<Link href="/" />}>
+          <ArrowLeft className="mr-1.5 h-3.5 w-3.5" />
           Home
         </Button>
-        <Button onClick={() => reset()}>
-          <RefreshCw className="mr-2 h-4 w-4" />
+        <Button size="sm" onClick={() => reset()}>
+          <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
           Try Again
         </Button>
       </div>

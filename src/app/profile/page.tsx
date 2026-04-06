@@ -22,7 +22,6 @@ import {
   Check,
   Building2,
   LogOut,
-  FileText,
   Heart,
   Settings,
 } from "lucide-react";
@@ -47,7 +46,6 @@ interface Organization {
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [org, setOrg] = useState<Organization | null>(null);
-  const [myListings, setMyListings] = useState<any[]>([]);
   const [savedListings, setSavedListings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -117,7 +115,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
@@ -125,20 +123,20 @@ export default function ProfilePage() {
   if (!profile) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <p className="text-muted-foreground">Please log in to view your profile.</p>
+        <p className="text-sm text-muted-foreground">Please log in to view your profile.</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <div className="flex items-center justify-between mb-8">
+    <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold mb-1">My Profile</h1>
-          <p className="text-muted-foreground">Manage your account and see your activity</p>
+          <h1 className="text-2xl font-bold mb-0.5">My Profile</h1>
+          <p className="text-sm text-muted-foreground">Manage your account</p>
         </div>
-        <Button variant="outline" onClick={handleLogout}>
-          <LogOut className="h-4 w-4 mr-2" />
+        <Button variant="outline" size="sm" onClick={handleLogout}>
+          <LogOut className="h-3.5 w-3.5 mr-1.5" />
           Log out
         </Button>
       </div>
@@ -146,43 +144,36 @@ export default function ProfilePage() {
       <Tabs defaultValue="profile">
         <TabsList>
           <TabsTrigger value="profile">
-            <Settings className="h-4 w-4 mr-1.5" />
+            <Settings className="h-3.5 w-3.5 mr-1.5" />
             Profile
           </TabsTrigger>
           <TabsTrigger value="saved">
-            <Heart className="h-4 w-4 mr-1.5" />
+            <Heart className="h-3.5 w-3.5 mr-1.5" />
             Saved ({savedListings.length})
           </TabsTrigger>
         </TabsList>
 
-        {/* Profile Tab */}
-        <TabsContent value="profile" className="mt-4 space-y-6">
-          {/* Account info card */}
+        <TabsContent value="profile" className="mt-4 space-y-4">
           <Card>
-            <CardContent className="p-6">
-              <h2 className="font-semibold mb-4 flex items-center gap-2">
-                <User className="h-5 w-5" />
-                Account Info
-              </h2>
-
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary text-2xl font-bold">
+            <CardContent className="p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary text-lg font-bold">
                   {(profile.name || profile.email)[0].toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-medium">{profile.name || "No name set"}</p>
-                  <p className="text-sm text-muted-foreground flex items-center gap-1">
+                  <p className="text-sm font-medium">{profile.name || "No name set"}</p>
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
                     <Mail className="h-3 w-3" />
                     {profile.email}
                   </p>
-                  <div className="flex gap-2 mt-1">
-                    <Badge variant="secondary" className="text-xs">
-                      <Shield className="h-3 w-3 mr-1" />
+                  <div className="flex gap-1.5 mt-1">
+                    <Badge variant="secondary" className="text-[10px] px-1.5">
+                      <Shield className="h-2.5 w-2.5 mr-0.5" />
                       {profile.role}
                     </Badge>
-                    <Badge variant="outline" className="text-xs">
-                      <Calendar className="h-3 w-3 mr-1" />
-                      Joined {new Date(profile.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                    <Badge variant="outline" className="text-[10px] px-1.5">
+                      <Calendar className="h-2.5 w-2.5 mr-0.5" />
+                      {new Date(profile.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
                     </Badge>
                   </div>
                 </div>
@@ -190,59 +181,57 @@ export default function ProfilePage() {
 
               <Separator className="my-4" />
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div>
-                  <Label htmlFor="name">Display Name</Label>
-                  <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
+                  <Label htmlFor="name" className="text-xs">Display Name</Label>
+                  <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className="h-9" />
                 </div>
                 <div>
-                  <Label htmlFor="bio">Bio</Label>
-                  <Textarea id="bio" value={bio} onChange={(e) => setBio(e.target.value)} placeholder="Tell us about yourself..." rows={3} />
+                  <Label htmlFor="bio" className="text-xs">Bio</Label>
+                  <Textarea id="bio" value={bio} onChange={(e) => setBio(e.target.value)} placeholder="Tell us about yourself..." rows={2} />
                 </div>
 
-                {error && <p className="text-sm text-destructive">{error}</p>}
+                {error && <p className="text-xs text-destructive">{error}</p>}
 
-                <Button onClick={handleSave} disabled={saving}>
+                <Button size="sm" onClick={handleSave} disabled={saving}>
                   {saving ? (
-                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Saving...</>
+                    <><Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />Saving...</>
                   ) : saved ? (
-                    <><Check className="mr-2 h-4 w-4" />Saved</>
+                    <><Check className="mr-1.5 h-3.5 w-3.5" />Saved</>
                   ) : (
-                    <><Save className="mr-2 h-4 w-4" />Save Changes</>
+                    <><Save className="mr-1.5 h-3.5 w-3.5" />Save Changes</>
                   )}
                 </Button>
               </div>
             </CardContent>
           </Card>
 
-          {/* Organization card */}
           <Card>
-            <CardContent className="p-6">
-              <h2 className="font-semibold mb-4 flex items-center gap-2">
-                <Building2 className="h-5 w-5" />
+            <CardContent className="p-5">
+              <h2 className="text-sm font-medium mb-3 flex items-center gap-1.5">
+                <Building2 className="h-4 w-4" />
                 Organization
               </h2>
 
               {org ? (
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold">
+                  <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary text-sm font-bold">
                     {org.name[0].toUpperCase()}
                   </div>
                   <div>
-                    <p className="font-medium">{org.name}</p>
+                    <p className="text-sm font-medium">{org.name}</p>
                     {org.website && (
                       <a href={org.website} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">
                         {org.website}
                       </a>
                     )}
-                    {org.description && <p className="text-sm text-muted-foreground mt-1">{org.description}</p>}
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-4">
-                  <p className="text-muted-foreground mb-3">No organization yet.</p>
-                  <Button variant="outline" onClick={() => (window.location.href = "/post")}>
-                    <Building2 className="mr-2 h-4 w-4" />
+                <div className="text-center py-3">
+                  <p className="text-xs text-muted-foreground mb-2">No organization yet.</p>
+                  <Button variant="outline" size="sm" onClick={() => (window.location.href = "/post")}>
+                    <Building2 className="mr-1.5 h-3.5 w-3.5" />
                     Create Organization
                   </Button>
                 </div>
@@ -251,18 +240,17 @@ export default function ProfilePage() {
           </Card>
         </TabsContent>
 
-        {/* Saved Listings Tab */}
         <TabsContent value="saved" className="mt-4">
           {savedListings.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
-              <Heart className="h-10 w-10 mx-auto mb-3 opacity-30" />
-              <p className="mb-2">No saved listings yet</p>
-              <Button variant="outline" render={<Link href="/listings" />}>
+              <Heart className="h-8 w-8 mx-auto mb-2 opacity-20" />
+              <p className="text-sm mb-3">No saved listings yet</p>
+              <Button variant="outline" size="sm" render={<Link href="/listings" />}>
                 Browse Opportunities
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {savedListings.map((item: any) => {
                 const listing = item.listing || item;
                 return (
@@ -285,10 +273,10 @@ export default function ProfilePage() {
                         e.preventDefault();
                         handleUnsave(listing._id || item.listingId);
                       }}
-                      className="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow hover:bg-red-50 transition-colors z-10"
+                      className="absolute top-2 right-2 bg-background rounded-full p-1 shadow-sm border hover:bg-muted transition-colors z-10"
                       title="Remove from saved"
                     >
-                      <Heart className="h-4 w-4 text-red-500 fill-red-500" />
+                      <Heart className="h-3.5 w-3.5 text-primary fill-primary" />
                     </button>
                   </div>
                 );

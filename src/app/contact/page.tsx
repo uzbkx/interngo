@@ -56,120 +56,79 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold mb-3">Contact Us</h1>
-        <p className="text-muted-foreground max-w-xl mx-auto">
-          Have a question, feedback, or partnership inquiry? We&apos;re here to
-          help.
+    <div className="container mx-auto px-4 py-12 max-w-3xl">
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-bold mb-2">Contact Us</h1>
+        <p className="text-sm text-muted-foreground">
+          Have a question, feedback, or partnership inquiry?
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Contact info */}
-        <div className="space-y-6">
-          <Card>
-            <CardContent className="p-5">
-              <Mail className="h-5 w-5 text-primary mb-2" />
-              <h3 className="font-semibold text-sm mb-1">Email</h3>
-              <a
-                href="mailto:contact@interngo.uz"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                contact@interngo.uz
-              </a>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-5">
-              <MessageSquare className="h-5 w-5 text-primary mb-2" />
-              <h3 className="font-semibold text-sm mb-1">Telegram</h3>
-              <a
-                href="https://t.me/interngo"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                @interngo
-              </a>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-5">
-              <MapPin className="h-5 w-5 text-primary mb-2" />
-              <h3 className="font-semibold text-sm mb-1">Location</h3>
-              <p className="text-sm text-muted-foreground">
-                Tashkent, Uzbekistan
-              </p>
-            </CardContent>
-          </Card>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-3">
+          {[
+            { icon: Mail, title: "Email", value: "contact@interngo.uz", href: "mailto:contact@interngo.uz" },
+            { icon: MessageSquare, title: "Telegram", value: "@interngo", href: "https://t.me/interngo" },
+            { icon: MapPin, title: "Location", value: "Tashkent, Uzbekistan" },
+          ].map((item) => (
+            <Card key={item.title}>
+              <CardContent className="p-4">
+                <item.icon className="h-4 w-4 text-primary mb-1.5" />
+                <h3 className="text-xs font-medium mb-0.5">{item.title}</h3>
+                {item.href ? (
+                  <a
+                    href={item.href}
+                    target={item.href.startsWith("http") ? "_blank" : undefined}
+                    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className="text-xs text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {item.value}
+                  </a>
+                ) : (
+                  <p className="text-xs text-muted-foreground">{item.value}</p>
+                )}
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
-        {/* Contact form */}
         <div className="md:col-span-2">
           {submitted ? (
             <Card>
               <CardContent className="p-8 text-center">
-                <CheckCircle className="h-10 w-10 mx-auto text-emerald-500 mb-3" />
-                <h2 className="text-xl font-bold mb-2">Message Sent!</h2>
-                <p className="text-muted-foreground">
-                  Thank you for reaching out. We&apos;ll get back to you within
-                  24 hours.
+                <CheckCircle className="h-8 w-8 mx-auto text-primary mb-2" />
+                <h2 className="text-lg font-bold mb-1">Message Sent</h2>
+                <p className="text-sm text-muted-foreground">
+                  We&apos;ll get back to you within 24 hours.
                 </p>
               </CardContent>
             </Card>
           ) : (
             <Card>
-              <CardContent className="p-6">
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <CardContent className="p-5">
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <Label htmlFor="name">Name</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        placeholder="Your name"
-                        required
-                      />
+                      <Label htmlFor="name" className="text-xs">Name</Label>
+                      <Input id="name" name="name" placeholder="Your name" required className="h-9" />
                     </div>
                     <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="you@example.com"
-                        required
-                      />
+                      <Label htmlFor="email" className="text-xs">Email</Label>
+                      <Input id="email" name="email" type="email" placeholder="you@example.com" required className="h-9" />
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="subject">Subject</Label>
-                    <Input
-                      id="subject"
-                      name="subject"
-                      placeholder="How can we help?"
-                      required
-                    />
+                    <Label htmlFor="subject" className="text-xs">Subject</Label>
+                    <Input id="subject" name="subject" placeholder="How can we help?" required className="h-9" />
                   </div>
                   <div>
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      placeholder="Tell us more..."
-                      rows={5}
-                      required
-                    />
+                    <Label htmlFor="message" className="text-xs">Message</Label>
+                    <Textarea id="message" name="message" placeholder="Tell us more..." rows={4} required />
                   </div>
                   <Captcha ref={captchaRef} />
-                  {error && (
-                    <p className="text-sm text-destructive">{error}</p>
-                  )}
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    <Send className="mr-2 h-4 w-4" />
+                  {error && <p className="text-xs text-destructive">{error}</p>}
+                  <Button type="submit" className="w-full" size="sm" disabled={loading}>
+                    <Send className="mr-2 h-3.5 w-3.5" />
                     {loading ? "Sending..." : "Send Message"}
                   </Button>
                 </form>

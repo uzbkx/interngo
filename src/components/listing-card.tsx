@@ -22,15 +22,6 @@ interface ListingCardProps {
   createdAt?: string;
 }
 
-const typeColors: Record<string, string> = {
-  INTERNSHIP: "bg-blue-100 text-blue-800",
-  SCHOLARSHIP: "bg-green-100 text-green-800",
-  PROGRAM: "bg-purple-100 text-purple-800",
-  VOLUNTEER: "bg-orange-100 text-orange-800",
-  JOB: "bg-cyan-100 text-cyan-800",
-  OTHER: "bg-gray-100 text-gray-800",
-};
-
 export function ListingCard({
   title,
   slug,
@@ -52,43 +43,43 @@ export function ListingCard({
 
   return (
     <Link href={`/listings/${slug}`}>
-      <Card className="h-full hover:shadow-md transition-shadow cursor-pointer group">
-        <CardContent className="p-5">
-          <div className="flex items-start justify-between gap-3 mb-3">
+      <Card className="h-full hover:border-primary/30 transition-colors cursor-pointer group">
+        <CardContent className="p-4">
+          <div className="flex items-start justify-between gap-2 mb-2">
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-semibold group-hover:text-primary transition-colors line-clamp-2">
-                  {title}
-                </h3>
-                {isNew && (
-                  <Badge className="text-[10px] px-1.5 py-0 bg-emerald-100 text-emerald-800 shrink-0">
-                    <Sparkles className="h-2.5 w-2.5 mr-0.5" />
-                    New
-                  </Badge>
-                )}
-              </div>
+              <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
+                {title}
+              </h3>
               {organization && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {organization}
                 </p>
               )}
             </div>
-            <Badge variant="secondary" className={typeColors[type] || ""}>
-              {tt(type as string)}
-            </Badge>
+            <div className="flex items-center gap-1.5 shrink-0">
+              {isNew && (
+                <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                  <Sparkles className="h-2.5 w-2.5 mr-0.5" />
+                  New
+                </Badge>
+              )}
+              <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                {tt(type as string)}
+              </Badge>
+            </div>
           </div>
 
-          <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+          <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
             {description}
           </p>
 
           {deadlineDate && deadlineDate.getTime() > Date.now() && (
-            <div className="mb-3">
+            <div className="mb-2">
               <DeadlineBadge deadline={deadlineDate} />
             </div>
           )}
 
-          <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+          <div className="flex flex-wrap gap-2.5 text-[11px] text-muted-foreground">
             {(location || country) && (
               <span className="flex items-center gap-1">
                 <MapPin className="h-3 w-3" />
@@ -113,7 +104,6 @@ export function ListingCard({
                 {deadlineDate.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
-                  year: "numeric",
                 })}
               </span>
             )}

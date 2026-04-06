@@ -5,7 +5,7 @@ import { ListingCard } from "@/components/listing-card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, SlidersHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ListingsPageProps {
   searchParams: Promise<{ type?: string; q?: string; page?: string }>;
@@ -61,34 +61,31 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">{t("title")}</h1>
-        <p className="text-muted-foreground">{t("description")}</p>
+    <div className="container mx-auto px-4 py-8 max-w-5xl">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold mb-1">{t("title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("description")}</p>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        <form className="flex-1 flex gap-2" action="/listings" method="GET">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              name="q"
-              placeholder={t("searchPlaceholder")}
-              defaultValue={query}
-              className="pl-10"
-            />
-          </div>
-          {activeType && (
-            <input type="hidden" name="type" value={activeType} />
-          )}
-          <Button type="submit" variant="secondary">
-            <SlidersHorizontal className="h-4 w-4 mr-2" />
-            {tc("search")}
-          </Button>
-        </form>
-      </div>
+      <form className="flex gap-2 mb-4" action="/listings" method="GET">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            name="q"
+            placeholder={t("searchPlaceholder")}
+            defaultValue={query}
+            className="pl-10 h-9"
+          />
+        </div>
+        {activeType && (
+          <input type="hidden" name="type" value={activeType} />
+        )}
+        <Button type="submit" size="sm">
+          {tc("search")}
+        </Button>
+      </form>
 
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="flex flex-wrap gap-1.5 mb-6">
         {listingTypes.map((lt) => (
           <a
             key={lt.value}
@@ -100,7 +97,7 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
           >
             <Badge
               variant={activeType === lt.value ? "default" : "secondary"}
-              className="cursor-pointer text-sm px-3 py-1"
+              className="cursor-pointer text-xs px-2.5 py-0.5"
             >
               {lt.label}
             </Badge>
@@ -109,12 +106,12 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
       </div>
 
       {listings.length === 0 ? (
-        <div className="text-center py-16 text-muted-foreground">
-          <p className="text-lg mb-2">{tc("noResults")}</p>
-          <p className="text-sm">{tc("tryAdjusting")}</p>
+        <div className="text-center py-20 text-muted-foreground">
+          <p className="text-sm mb-1">{tc("noResults")}</p>
+          <p className="text-xs">{tc("tryAdjusting")}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {listings.map((listing: any) => (
             <ListingCard
               key={listing._id}
@@ -135,42 +132,37 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
         </div>
       )}
 
-      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2 mt-10">
+        <div className="flex justify-center items-center gap-2 mt-8">
           {page > 1 ? (
             <Button variant="outline" size="sm" render={<Link href={buildUrl(page - 1)} />}>
-              <ChevronLeft className="h-4 w-4 mr-1" />
-              Previous
+              <ChevronLeft className="h-4 w-4" />
             </Button>
           ) : (
             <Button variant="outline" size="sm" disabled>
-              <ChevronLeft className="h-4 w-4 mr-1" />
-              Previous
+              <ChevronLeft className="h-4 w-4" />
             </Button>
           )}
 
-          <span className="text-sm text-muted-foreground px-3">
-            Page {page} of {totalPages}
+          <span className="text-xs text-muted-foreground px-2">
+            {page} / {totalPages}
           </span>
 
           {page < totalPages ? (
             <Button variant="outline" size="sm" render={<Link href={buildUrl(page + 1)} />}>
-              Next
-              <ChevronRight className="h-4 w-4 ml-1" />
+              <ChevronRight className="h-4 w-4" />
             </Button>
           ) : (
             <Button variant="outline" size="sm" disabled>
-              Next
-              <ChevronRight className="h-4 w-4 ml-1" />
+              <ChevronRight className="h-4 w-4" />
             </Button>
           )}
         </div>
       )}
 
-      <div className="text-center mt-6 text-sm text-muted-foreground">
+      <p className="text-center mt-4 text-xs text-muted-foreground">
         {tc("showingResults", { count: listings.length, total: totalCount })}
-      </div>
+      </p>
     </div>
   );
 }

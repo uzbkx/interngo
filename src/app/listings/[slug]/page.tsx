@@ -75,41 +75,38 @@ export default async function ListingDetailPage({
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <Link
-        href="/listings"
-        className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6"
-      >
+      <Button variant="ghost" size="sm" className="mb-4 -ml-2" render={<Link href="/listings" />}>
         <ArrowLeft className="h-4 w-4 mr-1" />
         {t("backToListings")}
-      </Link>
+      </Button>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <div className="mb-6">
-            <div className="flex flex-wrap gap-2 mb-3">
-              <Badge variant="secondary">
+          <div className="mb-5">
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              <Badge variant="secondary" className="text-xs">
                 {tt(listing.type as string)}
               </Badge>
               {listing.source === "AI_SCOUTED" && (
-                <Badge variant="outline">{t("aiDiscovered")}</Badge>
+                <Badge variant="outline" className="text-xs">{t("aiDiscovered")}</Badge>
               )}
             </div>
-            <h1 className="text-3xl font-bold mb-2">{listing.title}</h1>
+            <h1 className="text-2xl font-bold mb-1">{listing.title}</h1>
             {listing.organizationId?.name && (
-              <p className="text-lg text-muted-foreground flex items-center gap-2">
-                <Building2 className="h-4 w-4" />
+              <p className="text-sm text-muted-foreground flex items-center gap-1.5">
+                <Building2 className="h-3.5 w-3.5" />
                 {listing.organizationId.name}
               </p>
             )}
           </div>
 
-          <Separator className="mb-6" />
+          <Separator className="mb-5" />
 
-          <div className="prose prose-sm max-w-none">
+          <div className="text-sm leading-relaxed">
             {listing.description.split("\n").map((line: string, i: number) => {
               if (line.startsWith("## ")) {
                 return (
-                  <h2 key={i} className="text-lg font-semibold mt-6 mb-3">
+                  <h2 key={i} className="text-base font-semibold mt-5 mb-2 text-foreground">
                     {line.replace("## ", "")}
                   </h2>
                 );
@@ -130,22 +127,21 @@ export default async function ListingDetailPage({
         </div>
 
         <div className="lg:col-span-1">
-          <Card className="sticky top-24">
-            <CardContent className="p-6 space-y-4">
+          <Card className="sticky top-20">
+            <CardContent className="p-5 space-y-3">
               {listing.applyUrl && !isExpired && (
                 <Button
                   className="w-full"
-                  size="lg"
                   render={
                     <a href={listing.applyUrl} target="_blank" rel="noopener noreferrer" />
                   }
                 >
                   {tc("apply")}
-                  <ExternalLink className="ml-2 h-4 w-4" />
+                  <ExternalLink className="ml-2 h-3.5 w-3.5" />
                 </Button>
               )}
               {isExpired && (
-                <Button className="w-full" size="lg" disabled>
+                <Button className="w-full" disabled>
                   {tc("deadlinePassed")}
                 </Button>
               )}
@@ -163,10 +159,10 @@ export default async function ListingDetailPage({
 
               <Separator />
 
-              <div className="space-y-3 text-sm">
+              <div className="space-y-2.5 text-xs">
                 {(listing.location || listing.country) && (
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <MapPin className="h-4 w-4 shrink-0" />
+                    <MapPin className="h-3.5 w-3.5 shrink-0" />
                     <span>
                       {[listing.city, listing.location, listing.country]
                         .filter(Boolean)
@@ -176,37 +172,37 @@ export default async function ListingDetailPage({
                 )}
                 {listing.isRemote && (
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <Globe className="h-4 w-4 shrink-0" />
+                    <Globe className="h-3.5 w-3.5 shrink-0" />
                     <span>{tc("remote")}</span>
                   </div>
                 )}
                 {listing.isPaid && listing.salary && (
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <DollarSign className="h-4 w-4 shrink-0" />
+                    <DollarSign className="h-3.5 w-3.5 shrink-0" />
                     <span>{listing.salary}{listing.currency ? ` ${listing.currency}` : ""}</span>
                   </div>
                 )}
                 {deadline && (
                   <div className={`flex items-center gap-2 ${isExpired ? "text-destructive" : "text-muted-foreground"}`}>
-                    <Calendar className="h-4 w-4 shrink-0" />
+                    <Calendar className="h-3.5 w-3.5 shrink-0" />
                     <span>
-                      {t("deadline")}: {deadline.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+                      {t("deadline")}: {deadline.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                     </span>
                   </div>
                 )}
                 {startDate && (
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <Clock className="h-4 w-4 shrink-0" />
+                    <Clock className="h-3.5 w-3.5 shrink-0" />
                     <span>
-                      {t("starts")}: {startDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+                      {t("starts")}: {startDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                     </span>
                   </div>
                 )}
                 {endDate && (
                   <div className="flex items-center gap-2 text-muted-foreground">
-                    <Clock className="h-4 w-4 shrink-0" />
+                    <Clock className="h-3.5 w-3.5 shrink-0" />
                     <span>
-                      {t("ends")}: {endDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+                      {t("ends")}: {endDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                     </span>
                   </div>
                 )}

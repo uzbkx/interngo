@@ -60,15 +60,6 @@ const STATUS_KEYS = [
   "WITHDRAWN",
 ] as const;
 
-const statusColors: Record<string, string> = {
-  INTERESTED: "bg-blue-100 text-blue-800",
-  APPLIED: "bg-yellow-100 text-yellow-800",
-  INTERVIEW: "bg-purple-100 text-purple-800",
-  ACCEPTED: "bg-green-100 text-green-800",
-  REJECTED: "bg-red-100 text-red-800",
-  WITHDRAWN: "bg-gray-100 text-gray-800",
-};
-
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
   const ts = useTranslations("status");
@@ -125,101 +116,84 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">{t("title")}</h1>
-        <p className="text-muted-foreground">{t("description")}</p>
+    <div className="container mx-auto px-4 py-8 max-w-3xl">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold mb-1">{t("title")}</h1>
+        <p className="text-sm text-muted-foreground">{t("description")}</p>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold">{saved.length}</div>
-            <div className="text-xs text-muted-foreground">{t("saved")}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold">
-              {applications.filter((a) => a.status === "APPLIED").length}
-            </div>
-            <div className="text-xs text-muted-foreground">{t("applied")}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold">
-              {applications.filter((a) => a.status === "INTERVIEW").length}
-            </div>
-            <div className="text-xs text-muted-foreground">{t("interviews")}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold">
-              {applications.filter((a) => a.status === "ACCEPTED").length}
-            </div>
-            <div className="text-xs text-muted-foreground">{t("accepted")}</div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-4 gap-3 mb-6">
+        {[
+          { label: t("saved"), value: saved.length },
+          { label: t("applied"), value: applications.filter((a) => a.status === "APPLIED").length },
+          { label: t("interviews"), value: applications.filter((a) => a.status === "INTERVIEW").length },
+          { label: t("accepted"), value: applications.filter((a) => a.status === "ACCEPTED").length },
+        ].map((stat) => (
+          <Card key={stat.label}>
+            <CardContent className="p-3 text-center">
+              <div className="text-xl font-bold">{stat.value}</div>
+              <div className="text-[11px] text-muted-foreground">{stat.label}</div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       <Tabs defaultValue="saved">
         <TabsList>
           <TabsTrigger value="saved">
-            <Bookmark className="h-4 w-4 mr-1.5" />
+            <Bookmark className="h-3.5 w-3.5 mr-1.5" />
             {t("saved")} ({saved.length})
           </TabsTrigger>
           <TabsTrigger value="applications">
-            <ClipboardList className="h-4 w-4 mr-1.5" />
+            <ClipboardList className="h-3.5 w-3.5 mr-1.5" />
             {t("applications")} ({applications.length})
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="saved" className="mt-4">
+        <TabsContent value="saved" className="mt-3">
           {saved.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
-              <Bookmark className="h-10 w-10 mx-auto mb-3 opacity-30" />
-              <p className="mb-2">{t("noSaved")}</p>
-              <Button variant="outline" render={<Link href="/listings" />}>
+              <Bookmark className="h-8 w-8 mx-auto mb-2 opacity-20" />
+              <p className="text-sm mb-3">{t("noSaved")}</p>
+              <Button variant="outline" size="sm" render={<Link href="/listings" />}>
                 {t("browseOpportunities")}
               </Button>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {saved.map((item) => (
                 <Card key={item.id}>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between gap-3">
+                  <CardContent className="p-3">
+                    <div className="flex items-center justify-between gap-3">
                       <div className="flex-1 min-w-0">
-                        <Link href={`/listings/${item.listing.slug}`} className="font-semibold hover:text-primary transition-colors line-clamp-1">
+                        <Link href={`/listings/${item.listing.slug}`} className="text-sm font-medium hover:text-primary transition-colors line-clamp-1">
                           {item.listing.title}
                         </Link>
-                        <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
                           {item.listing.organization && <span>{item.listing.organization.name}</span>}
                           {item.listing.country && (
-                            <span className="flex items-center gap-1">
+                            <span className="flex items-center gap-0.5">
                               <MapPin className="h-3 w-3" />{item.listing.country}
                             </span>
                           )}
                           {item.listing.deadline && (
-                            <span className="flex items-center gap-1">
+                            <span className="flex items-center gap-0.5">
                               <Calendar className="h-3 w-3" />
                               {new Date(item.listing.deadline).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                             </span>
                           )}
                         </div>
                       </div>
-                      <div className="flex gap-2 shrink-0">
-                        <Badge variant="secondary" className="text-xs">{item.listing.type}</Badge>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <Badge variant="outline" className="text-[10px]">{item.listing.type}</Badge>
                         <Button size="sm" variant="ghost" onClick={() => handleUnsave(item.listingId)}>
-                          <Trash2 className="h-4 w-4 text-muted-foreground" />
+                          <Trash2 className="h-3.5 w-3.5 text-muted-foreground" />
                         </Button>
                       </div>
                     </div>
@@ -230,51 +204,49 @@ export default function DashboardPage() {
           )}
         </TabsContent>
 
-        <TabsContent value="applications" className="mt-4">
+        <TabsContent value="applications" className="mt-3">
           {applications.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
-              <ClipboardList className="h-10 w-10 mx-auto mb-3 opacity-30" />
-              <p className="mb-2">{t("noApplications")}</p>
-              <p className="text-sm">{t("noApplicationsHint")}</p>
+              <ClipboardList className="h-8 w-8 mx-auto mb-2 opacity-20" />
+              <p className="text-sm mb-1">{t("noApplications")}</p>
+              <p className="text-xs">{t("noApplicationsHint")}</p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {applications.map((app) => (
                 <Card key={app.id}>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between gap-3">
+                  <CardContent className="p-3">
+                    <div className="flex items-center justify-between gap-3">
                       <div className="flex-1 min-w-0">
-                        <Link href={`/listings/${app.listing.slug}`} className="font-semibold hover:text-primary transition-colors line-clamp-1">
+                        <Link href={`/listings/${app.listing.slug}`} className="text-sm font-medium hover:text-primary transition-colors line-clamp-1">
                           {app.listing.title}
                         </Link>
-                        <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
                           {app.listing.organization && <span>{app.listing.organization.name}</span>}
-                          <span>{t("updated")} {new Date(app.updatedAt).toLocaleDateString()}</span>
+                          <span>{new Date(app.updatedAt).toLocaleDateString()}</span>
                         </div>
                         {app.notes && (
-                          <p className="text-xs text-muted-foreground mt-2 bg-muted p-2 rounded">{app.notes}</p>
+                          <p className="text-xs text-muted-foreground mt-1.5 bg-muted px-2 py-1 rounded">{app.notes}</p>
                         )}
                       </div>
-                      <div className="flex items-center gap-2 shrink-0">
+                      <div className="flex items-center gap-1.5 shrink-0">
                         <Select value={app.status} onValueChange={(v) => handleStatusChange(app.id, v ?? app.status)}>
-                          <SelectTrigger className="w-32 h-8 text-xs">
+                          <SelectTrigger className="w-28 h-7 text-xs">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
                             {STATUS_KEYS.map((key) => (
                               <SelectItem key={key} value={key}>
-                                <Badge variant="secondary" className={`text-xs ${statusColors[key] || ""}`}>
-                                  {ts(key)}
-                                </Badge>
+                                {ts(key)}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                         <Button size="sm" variant="ghost" render={<Link href={`/listings/${app.listing.slug}`} />}>
-                          <ExternalLink className="h-4 w-4" />
+                          <ExternalLink className="h-3.5 w-3.5" />
                         </Button>
                         <Button size="sm" variant="ghost" onClick={() => handleDeleteApp(app.id)}>
-                          <Trash2 className="h-4 w-4 text-muted-foreground" />
+                          <Trash2 className="h-3.5 w-3.5 text-muted-foreground" />
                         </Button>
                       </div>
                     </div>

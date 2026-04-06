@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { GraduationCap } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { getApiBase } from "@/lib/api";
@@ -50,15 +51,15 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4">
-      <Card className="w-full max-w-md">
-        <CardContent className="p-8">
-          <div className="text-center mb-8">
-            <GraduationCap className="h-10 w-10 mx-auto text-primary mb-3" />
-            <h1 className="text-2xl font-bold">{t("createAccount")}</h1>
-            <p className="text-sm text-muted-foreground mt-1">{t("createAccountDesc")}</p>
+      <Card className="w-full max-w-sm">
+        <CardContent className="p-6">
+          <div className="text-center mb-6">
+            <GraduationCap className="h-8 w-8 mx-auto text-primary mb-2" />
+            <h1 className="text-xl font-bold">{t("createAccount")}</h1>
+            <p className="text-xs text-muted-foreground mt-1">{t("createAccountDesc")}</p>
           </div>
 
-          <Button variant="outline" className="w-full mb-6" onClick={handleGoogleSignUp}>
+          <Button variant="outline" className="w-full" size="sm" onClick={handleGoogleSignUp}>
             <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -68,34 +69,34 @@ export default function SignUpPage() {
             {t("googleContinue")}
           </Button>
 
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center"><div className="w-full border-t" /></div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">{t("orEmail")}</span>
-            </div>
+          <div className="relative my-5">
+            <Separator />
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 text-[10px] uppercase text-muted-foreground">
+              {t("orEmail")}
+            </span>
           </div>
 
-          <form onSubmit={handleSignUp} className="space-y-4">
+          <form onSubmit={handleSignUp} className="space-y-3">
             <div>
-              <Label htmlFor="name">{t("name")}</Label>
-              <Input id="name" type="text" placeholder={t("namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} required />
+              <Label htmlFor="name" className="text-xs">{t("name")}</Label>
+              <Input id="name" type="text" placeholder={t("namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} required className="h-9" />
             </div>
             <div>
-              <Label htmlFor="email">{t("email")}</Label>
-              <Input id="email" type="email" placeholder={t("emailPlaceholder")} value={email} onChange={(e) => setEmail(e.target.value)} required />
+              <Label htmlFor="email" className="text-xs">{t("email")}</Label>
+              <Input id="email" type="email" placeholder={t("emailPlaceholder")} value={email} onChange={(e) => setEmail(e.target.value)} required className="h-9" />
             </div>
             <div>
-              <Label htmlFor="password">{t("password")}</Label>
-              <Input id="password" type="password" placeholder={t("passwordSignupPlaceholder")} value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
+              <Label htmlFor="password" className="text-xs">{t("password")}</Label>
+              <Input id="password" type="password" placeholder={t("passwordSignupPlaceholder")} value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} className="h-9" />
             </div>
             <Captcha ref={captchaRef} />
-            {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" className="w-full" disabled={loading}>
+            {error && <p className="text-xs text-destructive">{error}</p>}
+            <Button type="submit" className="w-full" size="sm" disabled={loading}>
               {loading ? t("creatingAccount") : t("createAccountBtn")}
             </Button>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground mt-6">
+          <p className="text-center text-xs text-muted-foreground mt-4">
             {t("haveAccount")}{" "}
             <Link href="/auth/login" className="text-primary font-medium hover:underline">
               {t("login")}

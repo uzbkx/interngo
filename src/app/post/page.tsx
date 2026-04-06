@@ -60,7 +60,6 @@ export default function PostListingPage() {
   const [isRemote, setIsRemote] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
 
-  // Check if user has an organization
   useEffect(() => {
     apiFetch("/organizations/mine")
       .then((res) => res.json())
@@ -169,43 +168,41 @@ export default function PostListingPage() {
     }
   }
 
-  // Success screen
   if (submitted) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center px-4">
-        <Card className="w-full max-w-md">
-          <CardContent className="p-8 text-center">
-            <GraduationCap className="h-10 w-10 mx-auto text-primary mb-3" />
-            <h1 className="text-2xl font-bold mb-2">{t("successTitle")}</h1>
-            <p className="text-muted-foreground">{t("successDesc")}</p>
+        <Card className="w-full max-w-sm">
+          <CardContent className="p-6 text-center">
+            <GraduationCap className="h-8 w-8 mx-auto text-primary mb-2" />
+            <h1 className="text-xl font-bold mb-1">{t("successTitle")}</h1>
+            <p className="text-sm text-muted-foreground">{t("successDesc")}</p>
           </CardContent>
         </Card>
       </div>
     );
   }
 
-  // Step 1: Choose how to post
   if (mode === "choose") {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-2xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">{t("title")}</h1>
-          <p className="text-muted-foreground">{t("description")}</p>
+      <div className="container mx-auto px-4 py-8 max-w-lg">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold mb-1">{t("title")}</h1>
+          <p className="text-sm text-muted-foreground">{t("description")}</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           <Card
-            className="cursor-pointer hover:shadow-lg transition-all hover:-translate-y-0.5 hover:border-primary/30"
+            className="cursor-pointer hover:border-primary/30 transition-colors"
             onClick={handleChooseOrg}
           >
-            <CardContent className="p-8 text-center">
-              <Building2 className="h-12 w-12 mx-auto text-primary mb-4" />
-              <h3 className="text-lg font-semibold mb-2">As Organization</h3>
-              <p className="text-sm text-muted-foreground">
-                Post on behalf of a company, university, or organization
+            <CardContent className="p-6 text-center">
+              <Building2 className="h-8 w-8 mx-auto text-primary mb-3" />
+              <h3 className="text-sm font-medium mb-1">As Organization</h3>
+              <p className="text-xs text-muted-foreground">
+                Post on behalf of a company or organization
               </p>
               {organization && (
-                <p className="text-xs text-primary mt-3 font-medium">
+                <p className="text-xs text-primary mt-2 font-medium">
                   {organization.name}
                 </p>
               )}
@@ -213,14 +210,14 @@ export default function PostListingPage() {
           </Card>
 
           <Card
-            className="cursor-pointer hover:shadow-lg transition-all hover:-translate-y-0.5 hover:border-primary/30"
+            className="cursor-pointer hover:border-primary/30 transition-colors"
             onClick={handleChooseIndividual}
           >
-            <CardContent className="p-8 text-center">
-              <User className="h-12 w-12 mx-auto text-primary mb-4" />
-              <h3 className="text-lg font-semibold mb-2">As Individual</h3>
-              <p className="text-sm text-muted-foreground">
-                Share an opportunity you found or want to recommend
+            <CardContent className="p-6 text-center">
+              <User className="h-8 w-8 mx-auto text-primary mb-3" />
+              <h3 className="text-sm font-medium mb-1">As Individual</h3>
+              <p className="text-xs text-muted-foreground">
+                Share an opportunity you found
               </p>
             </CardContent>
           </Card>
@@ -229,63 +226,47 @@ export default function PostListingPage() {
     );
   }
 
-  // Step 2: Create organization (if needed)
   if (mode === "org-create") {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-lg">
+      <div className="container mx-auto px-4 py-8 max-w-md">
         <Button
           variant="ghost"
           size="sm"
-          className="mb-4"
+          className="mb-3 -ml-2"
           onClick={() => setMode("choose")}
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
           Back
         </Button>
 
-        <h1 className="text-2xl font-bold mb-2">Create Your Organization</h1>
-        <p className="text-muted-foreground mb-6">
-          Set up your organization profile to post opportunities
+        <h1 className="text-xl font-bold mb-1">Create Your Organization</h1>
+        <p className="text-sm text-muted-foreground mb-4">
+          Set up your organization profile
         </p>
 
         <Card>
-          <CardContent className="p-6">
-            <form onSubmit={handleCreateOrg} className="space-y-4">
+          <CardContent className="p-5">
+            <form onSubmit={handleCreateOrg} className="space-y-3">
               <div>
-                <Label htmlFor="orgName">Organization Name *</Label>
-                <Input
-                  id="orgName"
-                  name="orgName"
-                  placeholder="e.g. Google, United Nations, MIT"
-                  required
-                />
+                <Label htmlFor="orgName" className="text-xs">Organization Name *</Label>
+                <Input id="orgName" name="orgName" placeholder="e.g. Google, United Nations" required className="h-9" />
               </div>
               <div>
-                <Label htmlFor="orgDescription">Description</Label>
-                <Textarea
-                  id="orgDescription"
-                  name="orgDescription"
-                  placeholder="Brief description of your organization..."
-                  rows={3}
-                />
+                <Label htmlFor="orgDescription" className="text-xs">Description</Label>
+                <Textarea id="orgDescription" name="orgDescription" placeholder="Brief description..." rows={2} />
               </div>
               <div>
-                <Label htmlFor="orgWebsite">Website</Label>
-                <Input
-                  id="orgWebsite"
-                  name="orgWebsite"
-                  type="url"
-                  placeholder="https://..."
-                />
+                <Label htmlFor="orgWebsite" className="text-xs">Website</Label>
+                <Input id="orgWebsite" name="orgWebsite" type="url" placeholder="https://..." className="h-9" />
               </div>
 
-              {error && <p className="text-sm text-destructive">{error}</p>}
+              {error && <p className="text-xs text-destructive">{error}</p>}
 
-              <Button type="submit" className="w-full" disabled={loadingOrg}>
+              <Button type="submit" className="w-full" size="sm" disabled={loadingOrg}>
                 {loadingOrg ? (
-                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Creating...</>
+                  <><Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />Creating...</>
                 ) : (
-                  <><Building2 className="mr-2 h-4 w-4" />Create & Continue</>
+                  <><Building2 className="mr-1.5 h-3.5 w-3.5" />Create & Continue</>
                 )}
               </Button>
             </form>
@@ -295,22 +276,21 @@ export default function PostListingPage() {
     );
   }
 
-  // Step 3: Listing form
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
+    <div className="container mx-auto px-4 py-8 max-w-xl">
       <Button
         variant="ghost"
         size="sm"
-        className="mb-4"
+        className="mb-3 -ml-2"
         onClick={() => { setMode("choose"); setError(""); }}
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
         Back
       </Button>
 
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">{t("title")}</h1>
-        <p className="text-sm text-muted-foreground">
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold mb-1">{t("title")}</h1>
+        <p className="text-xs text-muted-foreground">
           Posting as{" "}
           <span className="font-medium text-foreground">
             {postAs === "organization" && organization
@@ -321,18 +301,18 @@ export default function PostListingPage() {
       </div>
 
       <Card>
-        <CardContent className="p-6">
-          <form onSubmit={handleSubmitListing} className="space-y-6">
+        <CardContent className="p-5">
+          <form onSubmit={handleSubmitListing} className="space-y-4">
             <div>
-              <Label htmlFor="title">{t("fieldTitle")} *</Label>
-              <Input id="title" name="title" placeholder={t("titlePlaceholder")} required />
+              <Label htmlFor="title" className="text-xs">{t("fieldTitle")} *</Label>
+              <Input id="title" name="title" placeholder={t("titlePlaceholder")} required className="h-9" />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label htmlFor="type">{t("fieldType")} *</Label>
+                <Label htmlFor="type" className="text-xs">{t("fieldType")} *</Label>
                 <Select value={type} onValueChange={(v) => setType(v ?? "")} required>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-9">
                     <SelectValue placeholder={t("selectType")} />
                   </SelectTrigger>
                   <SelectContent>
@@ -346,51 +326,51 @@ export default function PostListingPage() {
               </div>
               {postAs === "individual" && (
                 <div>
-                  <Label htmlFor="posterName">Your Name</Label>
-                  <Input id="posterName" name="posterName" placeholder="Your name (optional)" />
+                  <Label htmlFor="posterName" className="text-xs">Your Name</Label>
+                  <Input id="posterName" name="posterName" placeholder="Optional" className="h-9" />
                 </div>
               )}
               {postAs === "organization" && (
                 <div>
-                  <Label>{t("fieldOrg")}</Label>
-                  <Input value={organization?.name || ""} disabled />
+                  <Label className="text-xs">{t("fieldOrg")}</Label>
+                  <Input value={organization?.name || ""} disabled className="h-9" />
                 </div>
               )}
             </div>
 
             <div>
-              <Label htmlFor="description">{t("fieldDesc")} *</Label>
-              <Textarea id="description" name="description" placeholder={t("descPlaceholder")} rows={8} required />
+              <Label htmlFor="description" className="text-xs">{t("fieldDesc")} *</Label>
+              <Textarea id="description" name="description" placeholder={t("descPlaceholder")} rows={6} required />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label htmlFor="country">{t("fieldCountry")}</Label>
-                <Input id="country" name="country" placeholder={t("countryPlaceholder")} />
+                <Label htmlFor="country" className="text-xs">{t("fieldCountry")}</Label>
+                <Input id="country" name="country" placeholder={t("countryPlaceholder")} className="h-9" />
               </div>
               <div>
-                <Label htmlFor="city">{t("fieldCity")}</Label>
-                <Input id="city" name="city" placeholder={t("cityPlaceholder")} />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="deadline">{t("fieldDeadline")}</Label>
-                <Input id="deadline" name="deadline" type="date" />
-              </div>
-              <div>
-                <Label htmlFor="applyUrl">{t("fieldApplyUrl")}</Label>
-                <Input id="applyUrl" name="applyUrl" type="url" placeholder="https://..." />
+                <Label htmlFor="city" className="text-xs">{t("fieldCity")}</Label>
+                <Input id="city" name="city" placeholder={t("cityPlaceholder")} className="h-9" />
               </div>
             </div>
 
-            <div className="flex items-center gap-6">
-              <label className="flex items-center gap-2 text-sm cursor-pointer">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label htmlFor="deadline" className="text-xs">{t("fieldDeadline")}</Label>
+                <Input id="deadline" name="deadline" type="date" className="h-9" />
+              </div>
+              <div>
+                <Label htmlFor="applyUrl" className="text-xs">{t("fieldApplyUrl")}</Label>
+                <Input id="applyUrl" name="applyUrl" type="url" placeholder="https://..." className="h-9" />
+              </div>
+            </div>
+
+            <div className="flex items-center gap-5">
+              <label className="flex items-center gap-1.5 text-xs cursor-pointer">
                 <input type="checkbox" className="rounded" checked={isRemote} onChange={(e) => setIsRemote(e.target.checked)} />
                 {t("remoteAvailable")}
               </label>
-              <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <label className="flex items-center gap-1.5 text-xs cursor-pointer">
                 <input type="checkbox" className="rounded" checked={isPaid} onChange={(e) => setIsPaid(e.target.checked)} />
                 {t("paidOpportunity")}
               </label>
@@ -398,13 +378,13 @@ export default function PostListingPage() {
 
             <Captcha ref={captchaRef} />
 
-            {error && <p className="text-sm text-destructive">{error}</p>}
+            {error && <p className="text-xs text-destructive">{error}</p>}
 
-            <Button type="submit" size="lg" className="w-full" disabled={loading || !type}>
+            <Button type="submit" className="w-full" size="sm" disabled={loading || !type}>
               {loading ? (
-                <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{t("submitting")}</>
+                <><Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />{t("submitting")}</>
               ) : (
-                <><Send className="mr-2 h-4 w-4" />{t("submit")}</>
+                <><Send className="mr-1.5 h-3.5 w-3.5" />{t("submit")}</>
               )}
             </Button>
           </form>
