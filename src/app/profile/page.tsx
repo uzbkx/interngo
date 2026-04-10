@@ -24,6 +24,10 @@ import {
   LogOut,
   Heart,
   Settings,
+  Send,
+  Copy,
+  LinkIcon,
+  Unlink,
 } from "lucide-react";
 
 interface Profile {
@@ -34,6 +38,8 @@ interface Profile {
   avatarUrl: string;
   role: string;
   createdAt: string;
+  telegramId?: string;
+  telegramUsername?: string;
 }
 
 interface Organization {
@@ -54,6 +60,8 @@ export default function ProfilePage() {
 
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
+  const [telegramCode, setTelegramCode] = useState("");
+  const [telegramLoading, setTelegramLoading] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -233,6 +241,88 @@ export default function ProfilePage() {
                   <Button variant="outline" size="sm" onClick={() => (window.location.href = "/post")}>
                     <Building2 className="mr-1.5 h-3.5 w-3.5" />
                     Create Organization
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Telegram Connect */}
+          <Card>
+            <CardContent className="p-5">
+              <h2 className="text-sm font-medium mb-3 flex items-center gap-1.5">
+                <Send className="h-4 w-4" />
+                Telegram Bot
+              </h2>
+
+              {profile.telegramId ? (
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Badge className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white text-xs">
+                      <LinkIcon className="h-3 w-3 mr-1" />
+                      Connected
+                    </Badge>
+                    {profile.telegramUsername && (
+                      <span className="text-xs text-muted-foreground">@{profile.telegramUsername}</span>
+                    )}
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-destructive"
+                    onClick={async () => {
+                      await apiFetch("/users/telegram/unlink", { method: "DELETE" });
+                      setProfile((p) => p ? { ...p, telegramId: undefined, telegramUsername: undefined } : p);
+                    }}
+                  >
+                    <Unlink className="h-3.5 w-3.5 mr-1" />
+                    Unlink
+                  </Button>
+                </div>
+              ) : telegramCode ? (
+                <div className="space-y-3">
+                  <p className="text-xs text-muted-foreground">
+                    Send this code to <a href="https://t.me/interngouzbot" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">@interngouzbot</a> on Telegram:
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <code className="flex-1 bg-muted px-4 py-2 rounded-lg text-center text-lg font-bold tracking-widest">
+                      {telegramCode}
+                    </code>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        navigator.clipboard.writeText(`/link ${telegramCode}`);
+                      }}
+                    >
+                      <Copy className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Code expires in 10 minutes. Send: <code className="bg-muted px-1 rounded">/link {telegramCode}</code>
+                  </p>
+                </div>
+              ) : (
+                <div className="text-center py-2">
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Connect your Telegram to get notified about new opportunities
+                  </p>
+                  <Button
+                    size="sm"
+                    disabled={telegramLoading}
+                    onClick={async () => {
+                      setTelegramLoading(true);
+                      try {
+                        const res = await apiFetch("/users/telegram/link-code", { method: "POST" });
+                        const data = await res.json();
+                        setTelegramCode(data.code);
+                      } catch {}
+                      setTelegramLoading(false);
+                    }}
+                    className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white"
+                  >
+                    {telegramLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" /> : <Send className="h-3.5 w-3.5 mr-1.5" />}
+                    Connect Telegram
                   </Button>
                 </div>
               )}
