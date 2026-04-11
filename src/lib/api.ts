@@ -1,5 +1,5 @@
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1";
+  process.env.NEXT_PUBLIC_API_URL || "https://interngo-back.onrender.com/api/v1";
 
 export function getApiBase() {
   return API_BASE;
