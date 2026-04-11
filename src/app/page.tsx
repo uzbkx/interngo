@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { Button } from "@/components/ui/button";
@@ -13,7 +12,7 @@ import { ShineBorder } from "@/components/ui/shine-border";
 import { LiveStats } from "@/components/live-stats";
 import { LatestListings } from "@/components/latest-listings";
 
-const SpotlightBackground = dynamic(() => import("@/components/ui/spotlight-background"), { ssr: false });
+import SpotlightBackground from "@/components/ui/spotlight-background";
 import {
   Search, Briefcase, BookOpen, Globe, Heart,
   ArrowRight, Sparkles, Radar, Zap, Shield, ChevronRight,
