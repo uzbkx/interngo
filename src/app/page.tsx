@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
 import { LogosCarousel } from "@/components/ui/logos-carousel";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
-import { ShineBorder } from "@/components/ui/shine-border";
+import { GlowCard } from "@/components/ui/spotlight-card";
 import { LiveStats } from "@/components/live-stats";
 import { LatestListings } from "@/components/latest-listings";
 
@@ -57,10 +57,10 @@ export default async function HomePage() {
   const tc = await getTranslations("categories");
 
   const categories = [
-    { title: tc("internships"), description: tc("internshipsDesc"), icon: Briefcase, href: "/listings?type=INTERNSHIP", bg: "from-indigo-50 to-blue-50 dark:from-indigo-950/30 dark:to-blue-950/30", iconBg: "bg-indigo-100 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400" },
-    { title: tc("scholarships"), description: tc("scholarshipsDesc"), icon: BookOpen, href: "/listings?type=SCHOLARSHIP", bg: "from-emerald-50 to-green-50 dark:from-emerald-950/30 dark:to-green-950/30", iconBg: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 dark:text-emerald-400" },
-    { title: tc("programs"), description: tc("programsDesc"), icon: Globe, href: "/listings?type=PROGRAM", bg: "from-blue-50 to-sky-50 dark:from-blue-950/30 dark:to-sky-950/30", iconBg: "bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" },
-    { title: tc("volunteering"), description: tc("volunteeringDesc"), icon: Heart, href: "/listings?type=VOLUNTEER", bg: "from-rose-50 to-pink-50 dark:from-rose-950/30 dark:to-pink-950/30", iconBg: "bg-rose-100 text-rose-600 dark:bg-rose-900/50 dark:text-rose-400" },
+    { title: tc("internships"), description: tc("internshipsDesc"), icon: Briefcase, href: "/listings?type=INTERNSHIP", iconBg: "bg-indigo-100 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400", glow: "blue" as const },
+    { title: tc("scholarships"), description: tc("scholarshipsDesc"), icon: BookOpen, href: "/listings?type=SCHOLARSHIP", iconBg: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/50 dark:text-emerald-400", glow: "green" as const },
+    { title: tc("programs"), description: tc("programsDesc"), icon: Globe, href: "/listings?type=PROGRAM", iconBg: "bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400", glow: "purple" as const },
+    { title: tc("volunteering"), description: tc("volunteeringDesc"), icon: Heart, href: "/listings?type=VOLUNTEER", iconBg: "bg-rose-100 text-rose-600 dark:bg-rose-900/50 dark:text-rose-400", glow: "red" as const },
   ];
 
   return (
@@ -110,21 +110,15 @@ export default async function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {categories.map((cat) => (
               <Link key={cat.title} href={cat.href}>
-                <ShineBorder
-                  className="h-full p-0 bg-transparent"
-                  color={["#4f46e5", "#2563eb", "#0ea5e9"]}
-                  borderWidth={1.5}
-                >
-                  <Card className={`bg-gradient-to-br ${cat.bg} border-0 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer h-full`}>
-                    <CardContent className="p-6 text-center">
-                      <div className={`inline-flex items-center justify-center h-12 w-12 rounded-xl ${cat.iconBg} mb-3`}>
-                        <cat.icon className="h-6 w-6" />
-                      </div>
-                      <h3 className="font-semibold mb-1">{cat.title}</h3>
-                      <p className="text-xs text-muted-foreground">{cat.description}</p>
-                    </CardContent>
-                  </Card>
-                </ShineBorder>
+                <GlowCard glowColor={cat.glow} className="h-full cursor-pointer">
+                  <div className="p-6 text-center">
+                    <div className={`inline-flex items-center justify-center h-12 w-12 rounded-xl ${cat.iconBg} mb-3`}>
+                      <cat.icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="font-semibold mb-1">{cat.title}</h3>
+                    <p className="text-xs text-muted-foreground">{cat.description}</p>
+                  </div>
+                </GlowCard>
               </Link>
             ))}
           </div>
@@ -165,22 +159,15 @@ export default async function HomePage() {
               { icon: Zap, title: t("aiUpdatesTitle"), desc: t("aiUpdatesDesc") },
               { icon: Shield, title: t("aiVerifiedTitle"), desc: t("aiVerifiedDesc") },
             ].map((item, i) => (
-              <ShineBorder
-                key={item.title}
-                className={`p-0 bg-transparent ${i === 1 ? "md:-mt-4" : ""}`}
-                color={["#4f46e5", "#2563eb", "#0ea5e9"]}
-                borderWidth={1}
-              >
-                <Card className="border-0 hover:shadow-lg transition-all duration-300">
-                  <CardContent className="p-6 text-center">
-                    <div className="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-100 to-blue-100 dark:from-indigo-900/30 dark:to-blue-900/30 mb-4">
-                      <item.icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <h3 className="font-semibold mb-2">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">{item.desc}</p>
-                  </CardContent>
-                </Card>
-              </ShineBorder>
+              <GlowCard key={item.title} glowColor="blue" className={i === 1 ? "md:-mt-4" : ""}>
+                <div className="p-6 text-center">
+                  <div className="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-indigo-100 to-blue-100 dark:from-indigo-900/30 dark:to-blue-900/30 mb-4">
+                    <item.icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="font-semibold mb-2">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground">{item.desc}</p>
+                </div>
+              </GlowCard>
             ))}
           </div>
         </div>
