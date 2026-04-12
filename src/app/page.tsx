@@ -12,7 +12,7 @@ import { ShineBorder } from "@/components/ui/shine-border";
 import { LiveStats } from "@/components/live-stats";
 import { LatestListings } from "@/components/latest-listings";
 
-import SpotlightBackground from "@/components/ui/spotlight-background";
+import AuroraBackground from "@/components/ui/aurora-background";
 import {
   Search, Briefcase, BookOpen, Globe, Heart,
   ArrowRight, Sparkles, Radar, Zap, Shield, ChevronRight,
@@ -39,13 +39,9 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-blue-50 to-sky-50 dark:from-indigo-950/30 dark:via-blue-950/30 dark:to-sky-950/30">
-        <SpotlightBackground />
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-20 -left-20 w-72 h-72 bg-indigo-400/10 rounded-full blur-3xl animate-float" />
-          <div className="absolute top-1/3 -right-10 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl animate-float-slow" />
-          <div className="absolute -bottom-20 left-1/3 w-80 h-80 bg-sky-400/10 rounded-full blur-3xl animate-float-slower" />
-        </div>
+      <section className="relative overflow-hidden min-h-[80vh] flex items-center">
+        <AuroraBackground />
+        <div className="absolute inset-0 bg-background/60 dark:bg-background/70" />
         <div className="container mx-auto px-4 py-20 md:py-32 text-center relative z-10">
           <AnimatedGradientText className="mb-6">
             <Sparkles className="h-4 w-4 mr-2" />
