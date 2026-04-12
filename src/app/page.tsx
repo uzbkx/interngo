@@ -19,21 +19,21 @@ import {
 } from "lucide-react";
 
 const partners = [
-  { id: "erasmus", name: "Erasmus+" },
-  { id: "daad", name: "DAAD" },
-  { id: "chevening", name: "Chevening" },
-  { id: "fulbright", name: "Fulbright" },
-  { id: "un", name: "United Nations" },
-  { id: "aiesec", name: "AIESEC" },
-  { id: "kgsp", name: "KGSP" },
-  { id: "wwf", name: "WWF" },
-  { id: "british-council", name: "British Council" },
-  { id: "world-bank", name: "World Bank" },
-  { id: "oist", name: "OIST" },
-  { id: "google", name: "Google" },
-  { id: "stanford", name: "Stanford" },
-  { id: "unesco", name: "UNESCO" },
-  { id: "technovation", name: "Technovation" },
+  { id: "erasmus", name: "Erasmus+", image: "/logos/erasmus.svg" },
+  { id: "daad", name: "DAAD", image: "/logos/daad.svg" },
+  { id: "chevening", name: "Chevening", image: "/logos/chevening.svg" },
+  { id: "fulbright", name: "Fulbright", image: "/logos/fulbright.svg" },
+  { id: "un", name: "United Nations", image: "/logos/un.svg" },
+  { id: "aiesec", name: "AIESEC", image: "/logos/aiesec.svg" },
+  { id: "kgsp", name: "KGSP", image: "/logos/kgsp.svg" },
+  { id: "wwf", name: "WWF", image: "/logos/wwf.svg" },
+  { id: "british-council", name: "British Council", image: "/logos/british-council.svg" },
+  { id: "world-bank", name: "World Bank", image: "/logos/world-bank.svg" },
+  { id: "oist", name: "OIST", image: "/logos/oist.svg" },
+  { id: "google", name: "Google", image: "/logos/google.svg" },
+  { id: "stanford", name: "Stanford", image: "/logos/stanford.svg" },
+  { id: "unesco", name: "UNESCO", image: "/logos/unesco.svg" },
+  { id: "technovation", name: "Technovation", image: "/logos/technovation.svg" },
 ];
 
 export default async function HomePage() {
