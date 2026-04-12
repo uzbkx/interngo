@@ -17,10 +17,6 @@ export function Footer() {
       { href: "/listings?type=VOLUNTEER", label: tc("volunteering") },
       { href: "/archive", label: "Archive" },
     ]},
-    { title: t("forOrgs"), links: [
-      { href: "/post", label: t("postListing") },
-      { href: "/auth/signup", label: t("createAccount") },
-    ]},
     { title: t("about"), links: [
       { href: "/about", label: t("aboutUs") },
       { href: "/contact", label: t("contact") },
@@ -35,7 +31,7 @@ export function Footer() {
   return (
     <footer className="border-t bg-gradient-to-b from-background to-muted/30">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-3">
               <div className="flex items-center justify-center h-7 w-7 rounded-lg bg-gradient-to-br from-indigo-600 to-blue-600">
