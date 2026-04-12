@@ -1,0 +1,62 @@
+"use client";
+
+import AutoScroll from "embla-carousel-auto-scroll";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+
+interface Logo {
+  id: string;
+  name: string;
+  image?: string;
+}
+
+interface LogosCarouselProps {
+  heading?: string;
+  logos?: Logo[];
+}
+
+const LogosCarousel = ({ heading, logos = [] }: LogosCarouselProps) => {
+  return (
+    <section className="py-8 border-b">
+      {heading && (
+        <p className="text-center text-xs text-muted-foreground mb-4">{heading}</p>
+      )}
+      <div className="relative mx-auto flex items-center justify-center lg:max-w-5xl">
+        <Carousel
+          opts={{ loop: true }}
+          plugins={[AutoScroll({ playOnInit: true, speed: 0.8 })]}
+        >
+          <CarouselContent className="ml-0">
+            {logos.map((logo) => (
+              <CarouselItem
+                key={logo.id}
+                className="flex basis-1/3 justify-center pl-0 sm:basis-1/4 md:basis-1/5 lg:basis-1/6"
+              >
+                <div className="mx-6 flex shrink-0 items-center justify-center">
+                  {logo.image ? (
+                    <img
+                      src={logo.image}
+                      alt={logo.name}
+                      className="h-6 w-auto opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
+                    />
+                  ) : (
+                    <span className="text-sm font-medium text-muted-foreground whitespace-nowrap hover:text-foreground transition-colors">
+                      {logo.name}
+                    </span>
+                  )}
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+        <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-background to-transparent z-10" />
+        <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-background to-transparent z-10" />
+      </div>
+    </section>
+  );
+};
+
+export { LogosCarousel };

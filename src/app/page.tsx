@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
-import { Marquee } from "@/components/ui/marquee";
+import { LogosCarousel } from "@/components/ui/logos-carousel";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { ShineBorder } from "@/components/ui/shine-border";
 import { LiveStats } from "@/components/live-stats";
@@ -19,10 +19,21 @@ import {
 } from "lucide-react";
 
 const partners = [
-  { name: "Erasmus+" }, { name: "DAAD" }, { name: "Chevening" },
-  { name: "Fulbright" }, { name: "United Nations" }, { name: "AIESEC" },
-  { name: "KGSP" }, { name: "WWF" }, { name: "British Council" },
-  { name: "World Bank" }, { name: "OIST" }, { name: "Google" },
+  { id: "erasmus", name: "Erasmus+" },
+  { id: "daad", name: "DAAD" },
+  { id: "chevening", name: "Chevening" },
+  { id: "fulbright", name: "Fulbright" },
+  { id: "un", name: "United Nations" },
+  { id: "aiesec", name: "AIESEC" },
+  { id: "kgsp", name: "KGSP" },
+  { id: "wwf", name: "WWF" },
+  { id: "british-council", name: "British Council" },
+  { id: "world-bank", name: "World Bank" },
+  { id: "oist", name: "OIST" },
+  { id: "google", name: "Google" },
+  { id: "stanford", name: "Stanford" },
+  { id: "unesco", name: "UNESCO" },
+  { id: "technovation", name: "Technovation" },
 ];
 
 export default async function HomePage() {
@@ -69,17 +80,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Partners Marquee */}
-      <section className="py-6 border-b">
-        <p className="text-center text-xs text-muted-foreground mb-3">{t("sourcedFrom")}</p>
-        <Marquee pauseOnHover className="[--duration:25s]">
-          {partners.map((p) => (
-            <div key={p.name} className="flex items-center gap-2 mx-4">
-              <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">{p.name}</span>
-            </div>
-          ))}
-        </Marquee>
-      </section>
+      {/* Partners Carousel */}
+      <LogosCarousel heading={t("sourcedFrom")} logos={partners} />
 
       {/* Categories */}
       <section className="py-16">
