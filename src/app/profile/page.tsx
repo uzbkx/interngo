@@ -28,7 +28,14 @@ import {
   Copy,
   LinkIcon,
   Unlink,
+  Sparkles,
+  Bell,
+  Globe,
+  DollarSign,
+  MapPin,
 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { toast } from "sonner";
 
 interface Profile {
   _id: string;
@@ -40,6 +47,11 @@ interface Profile {
   createdAt: string;
   telegramId?: string;
   telegramUsername?: string;
+  preferredTypes?: string[];
+  preferredCountries?: string[];
+  preferRemote?: boolean;
+  preferPaid?: boolean;
+  notificationsEnabled?: boolean;
 }
 
 interface Organization {
@@ -62,6 +74,12 @@ export default function ProfilePage() {
   const [bio, setBio] = useState("");
   const [telegramCode, setTelegramCode] = useState("");
   const [telegramLoading, setTelegramLoading] = useState(false);
+  const [prefTypes, setPrefTypes] = useState<string[]>([]);
+  const [prefCountries, setPrefCountries] = useState("");
+  const [prefRemote, setPrefRemote] = useState(false);
+  const [prefPaid, setPrefPaid] = useState(false);
+  const [notifEnabled, setNotifEnabled] = useState(false);
+  const [prefSaving, setPrefSaving] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -73,6 +91,11 @@ export default function ProfilePage() {
         setProfile(profileData);
         setName(profileData.name || "");
         setBio(profileData.bio || "");
+        setPrefTypes(profileData.preferredTypes || []);
+        setPrefCountries((profileData.preferredCountries || []).join(", "));
+        setPrefRemote(profileData.preferRemote || false);
+        setPrefPaid(profileData.preferPaid || false);
+        setNotifEnabled(profileData.notificationsEnabled || false);
         setOrg(orgData.organization || null);
         setSavedListings(savedData.saved || []);
       })
@@ -154,6 +177,10 @@ export default function ProfilePage() {
           <TabsTrigger value="profile">
             <Settings className="h-3.5 w-3.5 mr-1.5" />
             Profile
+          </TabsTrigger>
+          <TabsTrigger value="interests">
+            <Sparkles className="h-3.5 w-3.5 mr-1.5" />
+            Interests
           </TabsTrigger>
           <TabsTrigger value="saved">
             <Heart className="h-3.5 w-3.5 mr-1.5" />
@@ -326,6 +353,137 @@ export default function ProfilePage() {
                   </Button>
                 </div>
               )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="interests" className="mt-4 space-y-4">
+          <Card>
+            <CardContent className="p-5">
+              <h2 className="text-sm font-medium mb-1 flex items-center gap-1.5">
+                <Sparkles className="h-4 w-4" />
+                Opportunity Preferences
+              </h2>
+              <p className="text-xs text-muted-foreground mb-4">
+                Set your interests to filter opportunities on the site and receive matching notifications via Telegram bot.
+              </p>
+
+              <div className="space-y-5">
+                {/* Opportunity Types */}
+                <div>
+                  <Label className="text-xs font-medium mb-2 block">Opportunity Types</Label>
+                  <div className="flex flex-wrap gap-2">
+                    {["INTERNSHIP", "SCHOLARSHIP", "PROGRAM", "VOLUNTEER", "JOB"].map((type) => {
+                      const labels: Record<string, string> = { INTERNSHIP: "Internships", SCHOLARSHIP: "Scholarships", PROGRAM: "Programs", VOLUNTEER: "Volunteering", JOB: "Jobs" };
+                      const isSelected = prefTypes.includes(type);
+                      return (
+                        <button
+                          key={type}
+                          onClick={() => setPrefTypes((prev) => isSelected ? prev.filter((t) => t !== type) : [...prev, type])}
+                          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                            isSelected
+                              ? "bg-gradient-to-r from-indigo-500 to-blue-500 text-white shadow-sm"
+                              : "bg-secondary text-secondary-foreground hover:bg-accent"
+                          }`}
+                        >
+                          {labels[type]}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {prefTypes.length === 0 && (
+                    <p className="text-[11px] text-muted-foreground mt-1.5">Select at least one type to receive notifications</p>
+                  )}
+                </div>
+
+                <Separator />
+
+                {/* Countries */}
+                <div>
+                  <Label className="text-xs font-medium flex items-center gap-1 mb-2">
+                    <MapPin className="h-3 w-3" />
+                    Preferred Countries
+                  </Label>
+                  <Input
+                    placeholder="e.g. USA, Germany, Japan, South Korea"
+                    value={prefCountries}
+                    onChange={(e) => setPrefCountries(e.target.value)}
+                    className="h-9"
+                  />
+                  <p className="text-[11px] text-muted-foreground mt-1">Comma-separated. Leave empty for all countries.</p>
+                </div>
+
+                <Separator />
+
+                {/* Toggles */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs flex items-center gap-1.5">
+                      <Globe className="h-3.5 w-3.5" />
+                      Remote opportunities only
+                    </Label>
+                    <Switch checked={prefRemote} onCheckedChange={setPrefRemote} />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Label className="text-xs flex items-center gap-1.5">
+                      <DollarSign className="h-3.5 w-3.5" />
+                      Paid opportunities only
+                    </Label>
+                    <Switch checked={prefPaid} onCheckedChange={setPrefPaid} />
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label className="text-xs flex items-center gap-1.5">
+                        <Bell className="h-3.5 w-3.5" />
+                        Telegram Notifications
+                      </Label>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">
+                        {profile.telegramId
+                          ? "Receive matching opportunities via Telegram"
+                          : "Connect Telegram first to enable notifications"}
+                      </p>
+                    </div>
+                    <Switch
+                      checked={notifEnabled}
+                      onCheckedChange={setNotifEnabled}
+                      disabled={!profile.telegramId}
+                    />
+                  </div>
+                </div>
+
+                <Separator />
+
+                <Button
+                  size="sm"
+                  disabled={prefSaving}
+                  onClick={async () => {
+                    setPrefSaving(true);
+                    try {
+                      const countries = prefCountries.split(",").map((c) => c.trim()).filter(Boolean);
+                      await apiFetch("/users/preferences", {
+                        method: "PATCH",
+                        body: JSON.stringify({
+                          preferredTypes: prefTypes,
+                          preferredCountries: countries,
+                          preferRemote: prefRemote,
+                          preferPaid: prefPaid,
+                          notificationsEnabled: notifEnabled,
+                        }),
+                      });
+                      toast.success("Preferences saved!");
+                    } catch {
+                      toast.error("Failed to save preferences");
+                    } finally {
+                      setPrefSaving(false);
+                    }
+                  }}
+                  className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white"
+                >
+                  {prefSaving ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" /> : <Save className="h-3.5 w-3.5 mr-1.5" />}
+                  Save Preferences
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
