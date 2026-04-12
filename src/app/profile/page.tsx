@@ -422,14 +422,14 @@ export default function ProfilePage() {
                       <Globe className="h-3.5 w-3.5" />
                       Remote opportunities only
                     </Label>
-                    <Switch checked={prefRemote} onCheckedChange={setPrefRemote} />
+                    <Switch checked={prefRemote} onCheckedChange={(v) => setPrefRemote(v)} />
                   </div>
                   <div className="flex items-center justify-between">
                     <Label className="text-xs flex items-center gap-1.5">
                       <DollarSign className="h-3.5 w-3.5" />
                       Paid opportunities only
                     </Label>
-                    <Switch checked={prefPaid} onCheckedChange={setPrefPaid} />
+                    <Switch checked={prefPaid} onCheckedChange={(v) => setPrefPaid(v)} />
                   </div>
                   <Separator />
                   <div className="flex items-center justify-between">
@@ -446,7 +446,7 @@ export default function ProfilePage() {
                     </div>
                     <Switch
                       checked={notifEnabled}
-                      onCheckedChange={setNotifEnabled}
+                      onCheckedChange={(v) => setNotifEnabled(v)}
                       disabled={!profile.telegramId}
                     />
                   </div>
