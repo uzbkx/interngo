@@ -19,21 +19,21 @@ import {
 } from "lucide-react";
 
 const partners = [
-  { id: "erasmus", name: "Erasmus+", image: "/logos/erasmus.svg" },
-  { id: "daad", name: "DAAD", image: "/logos/daad.svg" },
-  { id: "chevening", name: "Chevening", image: "/logos/chevening.svg" },
-  { id: "fulbright", name: "Fulbright", image: "/logos/fulbright.svg" },
-  { id: "un", name: "United Nations", image: "/logos/un.svg" },
-  { id: "aiesec", name: "AIESEC", image: "/logos/aiesec.svg" },
-  { id: "kgsp", name: "KGSP", image: "/logos/kgsp.svg" },
-  { id: "wwf", name: "WWF", image: "/logos/wwf.svg" },
-  { id: "british-council", name: "British Council", image: "/logos/british-council.svg" },
-  { id: "world-bank", name: "World Bank", image: "/logos/world-bank.svg" },
-  { id: "oist", name: "OIST", image: "/logos/oist.svg" },
-  { id: "google", name: "Google", image: "/logos/google.svg" },
-  { id: "stanford", name: "Stanford", image: "/logos/stanford.svg" },
-  { id: "unesco", name: "UNESCO", image: "/logos/unesco.svg" },
-  { id: "technovation", name: "Technovation", image: "/logos/technovation.svg" },
+  { id: "erasmus", name: "Erasmus+", image: "https://logo.clearbit.com/ec.europa.eu" },
+  { id: "daad", name: "DAAD", image: "https://logo.clearbit.com/daad.de" },
+  { id: "chevening", name: "Chevening", image: "https://logo.clearbit.com/chevening.org" },
+  { id: "fulbright", name: "Fulbright", image: "https://logo.clearbit.com/fulbright.org" },
+  { id: "un", name: "United Nations", image: "https://logo.clearbit.com/un.org" },
+  { id: "aiesec", name: "AIESEC", image: "https://logo.clearbit.com/aiesec.org" },
+  { id: "kgsp", name: "KGSP" },
+  { id: "wwf", name: "WWF", image: "https://logo.clearbit.com/wwf.org" },
+  { id: "british-council", name: "British Council", image: "https://logo.clearbit.com/britishcouncil.org" },
+  { id: "world-bank", name: "World Bank", image: "https://logo.clearbit.com/worldbank.org" },
+  { id: "oist", name: "OIST", image: "https://logo.clearbit.com/oist.jp" },
+  { id: "google", name: "Google", image: "https://logo.clearbit.com/google.com" },
+  { id: "stanford", name: "Stanford", image: "https://logo.clearbit.com/stanford.edu" },
+  { id: "unesco", name: "UNESCO", image: "https://logo.clearbit.com/unesco.org" },
+  { id: "technovation", name: "Technovation", image: "https://logo.clearbit.com/technovation.org" },
 ];
 
 export default async function HomePage() {

@@ -35,15 +35,20 @@ const LogosCarousel = ({ heading, logos = [] }: LogosCarouselProps) => {
                 key={logo.id}
                 className="flex basis-1/3 justify-center pl-0 sm:basis-1/4 md:basis-1/5 lg:basis-1/6"
               >
-                <div className="mx-6 flex shrink-0 items-center justify-center">
+                <div className="mx-8 flex shrink-0 items-center justify-center gap-2 opacity-50 hover:opacity-100 transition-opacity">
                   {logo.image ? (
-                    <img
-                      src={logo.image}
-                      alt={logo.name}
-                      className="h-6 w-auto opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0"
-                    />
+                    <>
+                      <img
+                        src={logo.image}
+                        alt={logo.name}
+                        className="h-8 w-8 rounded object-contain"
+                      />
+                      <span className="text-sm font-semibold text-muted-foreground whitespace-nowrap">
+                        {logo.name}
+                      </span>
+                    </>
                   ) : (
-                    <span className="text-sm font-medium text-muted-foreground whitespace-nowrap hover:text-foreground transition-colors">
+                    <span className="text-sm font-semibold text-muted-foreground whitespace-nowrap">
                       {logo.name}
                     </span>
                   )}
