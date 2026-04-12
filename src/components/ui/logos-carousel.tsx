@@ -41,7 +41,7 @@ const LogosCarousel = ({ heading, logos = [] }: LogosCarouselProps) => {
                       <img
                         src={logo.image}
                         alt={logo.name}
-                        className="h-6 w-6 object-contain"
+                        className="h-7 w-7 object-contain"
                       />
                       <span className="text-sm font-semibold text-foreground/70 whitespace-nowrap">
                         {logo.name}
