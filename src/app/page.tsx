@@ -19,21 +19,21 @@ import {
 } from "lucide-react";
 
 const partners = [
-  { id: "erasmus", name: "Erasmus+", image: "https://logo.clearbit.com/ec.europa.eu" },
-  { id: "daad", name: "DAAD", image: "https://logo.clearbit.com/daad.de" },
-  { id: "chevening", name: "Chevening", image: "https://logo.clearbit.com/chevening.org" },
-  { id: "fulbright", name: "Fulbright", image: "https://logo.clearbit.com/fulbright.org" },
-  { id: "un", name: "United Nations", image: "https://logo.clearbit.com/un.org" },
-  { id: "aiesec", name: "AIESEC", image: "https://logo.clearbit.com/aiesec.org" },
+  { id: "erasmus", name: "Erasmus+", image: "https://www.google.com/s2/favicons?domain=erasmusplus.ec.europa.eu&sz=64" },
+  { id: "daad", name: "DAAD", image: "https://www.google.com/s2/favicons?domain=daad.de&sz=64" },
+  { id: "chevening", name: "Chevening", image: "https://www.google.com/s2/favicons?domain=chevening.org&sz=64" },
+  { id: "fulbright", name: "Fulbright", image: "https://www.google.com/s2/favicons?domain=fulbright.org&sz=64" },
+  { id: "un", name: "United Nations", image: "https://www.google.com/s2/favicons?domain=un.org&sz=64" },
+  { id: "aiesec", name: "AIESEC", image: "https://www.google.com/s2/favicons?domain=aiesec.org&sz=64" },
   { id: "kgsp", name: "KGSP" },
-  { id: "wwf", name: "WWF", image: "https://logo.clearbit.com/wwf.org" },
-  { id: "british-council", name: "British Council", image: "https://logo.clearbit.com/britishcouncil.org" },
-  { id: "world-bank", name: "World Bank", image: "https://logo.clearbit.com/worldbank.org" },
-  { id: "oist", name: "OIST", image: "https://logo.clearbit.com/oist.jp" },
-  { id: "google", name: "Google", image: "https://logo.clearbit.com/google.com" },
-  { id: "stanford", name: "Stanford", image: "https://logo.clearbit.com/stanford.edu" },
-  { id: "unesco", name: "UNESCO", image: "https://logo.clearbit.com/unesco.org" },
-  { id: "technovation", name: "Technovation", image: "https://logo.clearbit.com/technovation.org" },
+  { id: "wwf", name: "WWF", image: "https://www.google.com/s2/favicons?domain=wwf.org&sz=64" },
+  { id: "british-council", name: "British Council", image: "https://www.google.com/s2/favicons?domain=britishcouncil.org&sz=64" },
+  { id: "world-bank", name: "World Bank", image: "https://www.google.com/s2/favicons?domain=worldbank.org&sz=64" },
+  { id: "oist", name: "OIST", image: "https://www.google.com/s2/favicons?domain=oist.jp&sz=64" },
+  { id: "google", name: "Google", image: "https://www.google.com/s2/favicons?domain=google.com&sz=64" },
+  { id: "stanford", name: "Stanford", image: "https://www.google.com/s2/favicons?domain=stanford.edu&sz=64" },
+  { id: "unesco", name: "UNESCO", image: "https://www.google.com/s2/favicons?domain=unesco.org&sz=64" },
+  { id: "technovation", name: "Technovation", image: "https://www.google.com/s2/favicons?domain=technovation.org&sz=64" },
 ];
 
 export default async function HomePage() {
