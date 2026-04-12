@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
@@ -30,6 +31,7 @@ import {
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const t = useTranslations("nav");
   const tc = useTranslations("common");
   const locale = useLocale();
@@ -60,21 +62,47 @@ export function Navbar() {
           <span className="text-lg font-bold tracking-tight">InternGo</span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1">
+        {/* Desktop nav with animated tabs */}
+        <nav className="hidden md:flex items-center">
           {navLinks.map((link) => (
-            <Button
+            <Link
               key={link.href}
-              variant="ghost"
-              size="sm"
-              render={<Link href={link.href} />}
-              className={
-                isActive(link.href)
-                  ? "bg-accent text-accent-foreground relative after:absolute after:bottom-0 after:left-2 after:right-2 after:h-0.5 after:bg-gradient-to-r after:from-indigo-600 after:to-blue-600 after:rounded-full"
-                  : ""
-              }
+              href={link.href}
+              className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                isActive(link.href) ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
+              onMouseEnter={() => setHoveredLink(link.href)}
+              onMouseLeave={() => setHoveredLink(null)}
             >
-              {link.label}
-            </Button>
+              <span className="relative z-10">{link.label}</span>
+
+              {/* Hover background */}
+              {hoveredLink === link.href && (
+                <motion.div
+                  layoutId="nav-hover-bg"
+                  className="absolute inset-0 bg-primary/10 rounded-md"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                />
+              )}
+
+              {/* Active underline */}
+              {isActive(link.href) && (
+                <motion.div
+                  layoutId="nav-active-underline"
+                  className="absolute bottom-0 left-2 right-2 h-0.5 bg-gradient-to-r from-indigo-600 to-blue-600 rounded-full"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                />
+              )}
+
+              {/* Hover underline (when not active) */}
+              {hoveredLink === link.href && !isActive(link.href) && (
+                <motion.div
+                  layoutId="nav-hover-underline"
+                  className="absolute bottom-0 left-2 right-2 h-0.5 bg-primary/40 rounded-full"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                />
+              )}
+            </Link>
           ))}
         </nav>
 
@@ -124,6 +152,7 @@ export function Navbar() {
           ) : null}
         </div>
 
+        {/* Mobile nav */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
             <Menu className="h-5 w-5" />
