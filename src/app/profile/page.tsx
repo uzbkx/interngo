@@ -82,12 +82,13 @@ export default function ProfilePage() {
   const [prefSaving, setPrefSaving] = useState(false);
 
   useEffect(() => {
-    Promise.all([
-      apiFetch("/users/profile").then((r) => r.json()),
-      apiFetch("/organizations/mine").then((r) => r.json()),
-      apiFetch("/saved").then((r) => r.json()),
-    ])
-      .then(([profileData, orgData, savedData]) => {
+    async function loadProfile() {
+      try {
+        const profileRes = await apiFetch("/users/profile");
+        if (!profileRes.ok) { window.location.href = "/auth/login"; return; }
+        const profileData = await profileRes.json();
+        if (profileData.error) { window.location.href = "/auth/login"; return; }
+
         setProfile(profileData);
         setName(profileData.name || "");
         setBio(profileData.bio || "");
@@ -96,13 +97,24 @@ export default function ProfilePage() {
         setPrefRemote(profileData.preferRemote || false);
         setPrefPaid(profileData.preferPaid || false);
         setNotifEnabled(profileData.notificationsEnabled || false);
-        setOrg(orgData.organization || null);
-        setSavedListings(savedData.saved || []);
-      })
-      .catch(() => {
+
+        // These can fail without breaking the page
+        try {
+          const orgRes = await apiFetch("/organizations/mine");
+          if (orgRes.ok) { const orgData = await orgRes.json(); setOrg(orgData.organization || null); }
+        } catch {}
+
+        try {
+          const savedRes = await apiFetch("/saved");
+          if (savedRes.ok) { const savedData = await savedRes.json(); setSavedListings(savedData.saved || []); }
+        } catch {}
+      } catch {
         window.location.href = "/auth/login";
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadProfile();
   }, []);
 
   async function handleSave() {
