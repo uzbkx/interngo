@@ -5,9 +5,10 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { apiFetch } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
-import { Card, CardContent } from "@/components/ui/card";
+import { MagicCard } from "@/components/ui/magic-card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, DollarSign, Globe, Sparkles, Heart } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { MapPin, Calendar, DollarSign, Globe, Sparkles, Heart, ArrowUpRight, Clock } from "lucide-react";
 import { DeadlineBadge } from "@/components/deadline-badge";
 
 interface ListingCardProps {
@@ -24,6 +25,15 @@ interface ListingCardProps {
   description: string;
   createdAt?: string;
 }
+
+const typeConfig: Record<string, { color: string; gradient: string }> = {
+  INTERNSHIP: { color: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300", gradient: "#4f46e5" },
+  SCHOLARSHIP: { color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300", gradient: "#059669" },
+  PROGRAM: { color: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300", gradient: "#2563eb" },
+  VOLUNTEER: { color: "bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300", gradient: "#e11d48" },
+  JOB: { color: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300", gradient: "#d97706" },
+  OTHER: { color: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300", gradient: "#6b7280" },
+};
 
 export function ListingCard({
   id,
@@ -48,6 +58,8 @@ export function ListingCard({
 
   const deadlineDate = deadline ? new Date(deadline) : null;
   const isNew = createdAt && (Date.now() - new Date(createdAt).getTime()) < 48 * 60 * 60 * 1000;
+  const isPast = deadlineDate && deadlineDate.getTime() < Date.now();
+  const config = typeConfig[type] || typeConfig.OTHER;
 
   useEffect(() => {
     if (!user) return;
@@ -74,71 +86,88 @@ export function ListingCard({
   }
 
   return (
-    <Link href={`/listings/${slug}`}>
-      <Card className="h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-300 cursor-pointer group flex flex-col">
-        <CardContent className="p-4 flex flex-col flex-1">
-          <div className="flex items-start justify-between gap-2 mb-2">
-            <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-medium group-hover:text-primary transition-colors line-clamp-2">
-                {title}
-              </h3>
-              {organization && (
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {organization}
-                </p>
+    <Link href={`/listings/${slug}`} className="block h-full">
+      <MagicCard
+        className="h-full cursor-pointer group"
+        gradientColor={config.gradient + "15"}
+        gradientSize={250}
+        gradientOpacity={1}
+      >
+        <div className="p-5 flex flex-col h-full">
+          {/* Top: type badge + save + new */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-1.5">
+              <Badge className={`text-[10px] font-medium px-2 py-0.5 border-0 ${config.color}`}>
+                {tt(type as string)}
+              </Badge>
+              {isNew && (
+                <Badge className="text-[10px] px-1.5 py-0.5 border-0 bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
+                  <Sparkles className="h-2.5 w-2.5 mr-0.5" />
+                  New
+                </Badge>
               )}
             </div>
-            <div className="flex items-center gap-1.5 shrink-0">
+            <div className="flex items-center gap-1">
               {user && (
                 <button
                   onClick={toggleSave}
-                  className={`p-1 rounded-full transition-all ${savingAnim ? "scale-125" : "hover:scale-110"}`}
+                  className={`p-1.5 rounded-full transition-all hover:bg-muted ${savingAnim ? "scale-125" : "hover:scale-110"}`}
                   aria-label={saved ? "Unsave" : "Save"}
                 >
                   <Heart className={`h-4 w-4 transition-colors ${saved ? "fill-red-500 text-red-500" : "text-muted-foreground hover:text-red-400"}`} />
                 </button>
               )}
-              {isNew && (
-                <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
-                  <Sparkles className="h-2.5 w-2.5 mr-0.5" />
-                  New
-                </Badge>
-              )}
-              <Badge variant="outline" className="text-[10px] px-1.5 py-0">
-                {tt(type as string)}
-              </Badge>
+              <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
           </div>
 
-          <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
+          {/* Title */}
+          <h3 className="text-base font-semibold leading-tight group-hover:text-primary transition-colors line-clamp-2 mb-1">
+            {title}
+          </h3>
+
+          {/* Organization */}
+          {organization && (
+            <p className="text-sm text-muted-foreground mb-2">{organization}</p>
+          )}
+
+          {/* Description */}
+          <p className="text-sm text-muted-foreground/80 line-clamp-2 mb-4 leading-relaxed">
             {description}
           </p>
 
-          <div className="flex flex-wrap gap-2.5 text-[11px] text-muted-foreground mb-3">
+          {/* Tags */}
+          <div className="flex flex-wrap gap-1.5 mb-4">
             {(location || country) && (
-              <span className="flex items-center gap-1">
+              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-1 rounded-md">
                 <MapPin className="h-3 w-3" />
                 {location || country}
               </span>
             )}
             {isRemote && (
-              <span className="flex items-center gap-1">
+              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-1 rounded-md">
                 <Globe className="h-3 w-3" />
                 {tc("remote")}
               </span>
             )}
             {isPaid && (
-              <span className="flex items-center gap-1">
+              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-1 rounded-md">
                 <DollarSign className="h-3 w-3" />
                 {tc("paid")}
               </span>
             )}
           </div>
 
-          {/* Deadline pinned to bottom */}
-          <div className="mt-auto pt-3 border-t border-border/50">
+          {/* Deadline at bottom */}
+          <div className="mt-auto">
+            <Separator className="mb-3" />
             {deadlineDate ? (
-              deadlineDate.getTime() > Date.now() ? (
+              isPast ? (
+                <span className="flex items-center gap-1.5 text-xs text-destructive font-medium">
+                  <Clock className="h-3.5 w-3.5" />
+                  {tc("deadlinePassed")}
+                </span>
+              ) : (
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Calendar className="h-3.5 w-3.5" />
@@ -146,18 +175,13 @@ export function ListingCard({
                   </span>
                   <DeadlineBadge deadline={deadlineDate} />
                 </div>
-              ) : (
-                <span className="flex items-center gap-1.5 text-xs text-destructive">
-                  <Calendar className="h-3.5 w-3.5" />
-                  {tc("deadlinePassed")}
-                </span>
               )
             ) : (
-              <span className="text-xs text-muted-foreground/50">No deadline</span>
+              <span className="text-xs text-muted-foreground/40">No deadline</span>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </MagicCard>
     </Link>
   );
 }
