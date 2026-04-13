@@ -10,7 +10,6 @@ import {
 interface Logo {
   id: string;
   name: string;
-  image?: string;
 }
 
 interface LogosCarouselProps {
@@ -20,9 +19,9 @@ interface LogosCarouselProps {
 
 const LogosCarousel = ({ heading, logos = [] }: LogosCarouselProps) => {
   return (
-    <section className="py-8 border-b">
+    <section className="py-6 border-b">
       {heading && (
-        <p className="text-center text-xs text-muted-foreground mb-4">{heading}</p>
+        <p className="text-center text-xs text-muted-foreground mb-3">{heading}</p>
       )}
       <div className="relative mx-auto flex items-center justify-center lg:max-w-5xl">
         <Carousel
@@ -35,23 +34,10 @@ const LogosCarousel = ({ heading, logos = [] }: LogosCarouselProps) => {
                 key={logo.id}
                 className="flex basis-1/4 justify-center pl-0 sm:basis-1/5 md:basis-1/7 lg:basis-1/9"
               >
-                <div className="mx-2 flex shrink-0 items-center justify-center gap-1.5">
-                  {logo.image ? (
-                    <>
-                      <img
-                        src={logo.image}
-                        alt={logo.name}
-                        className="h-7 w-7 object-contain"
-                      />
-                      <span className="text-sm font-semibold text-foreground/70 whitespace-nowrap">
-                        {logo.name}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-sm font-semibold text-foreground/70 whitespace-nowrap">
-                      {logo.name}
-                    </span>
-                  )}
+                <div className="mx-2 flex shrink-0 items-center justify-center">
+                  <span className="text-sm font-semibold text-foreground/70 whitespace-nowrap">
+                    {logo.name}
+                  </span>
                 </div>
               </CarouselItem>
             ))}

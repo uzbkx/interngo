@@ -12,44 +12,37 @@ import { GlowCard } from "@/components/ui/spotlight-card";
 import { LiveStats } from "@/components/live-stats";
 import { LatestListings } from "@/components/latest-listings";
 
-import AuroraBackground from "@/components/ui/aurora-background";
+// AuroraBackground removed — Three.js is too heavy for slow connections
 import {
   Search, Briefcase, BookOpen, Globe, Heart,
   ArrowRight, Sparkles, Radar, Zap, Shield, ChevronRight,
 } from "lucide-react";
 
-const G = (d: string) => `https://www.google.com/s2/favicons?domain=${d}&sz=128`;
 const partners = [
-  { id: "un", name: "United Nations", image: "/logos/un.png" },
-  { id: "google", name: "Google", image: "/logos/google.png" },
-  { id: "harvard", name: "Harvard", image: "/logos/harvard.png" },
-  { id: "nasa", name: "NASA", image: "/logos/nasa.png" },
-  { id: "cambridge", name: "Cambridge", image: "/logos/cambridge.png" },
-  { id: "who", name: "WHO", image: "/logos/who.png" },
-  { id: "yale", name: "Yale", image: "/logos/yale.png" },
-  { id: "wwf", name: "WWF", image: "/logos/wwf.png" },
-  { id: "unicef", name: "UNICEF", image: "/logos/unicef.png" },
-  { id: "amazon", name: "Amazon", image: "/logos/amazon.png" },
-  { id: "tesla", name: "Tesla", image: "/logos/tesla.png" },
-  { id: "microsoft", name: "Microsoft", image: "/logos/microsoft.png" },
-  { id: "unesco", name: "UNESCO", image: "/logos/unesco.png" },
-  { id: "erasmus", name: "Erasmus+", image: G("erasmusplus.ec.europa.eu") },
-  { id: "daad", name: "DAAD", image: G("daad.de") },
-  { id: "chevening", name: "Chevening", image: G("chevening.org") },
-  { id: "fulbright", name: "Fulbright", image: G("fulbright.org") },
-  { id: "aiesec", name: "AIESEC", image: G("aiesec.org") },
-  { id: "british-council", name: "British Council", image: G("britishcouncil.org") },
-  { id: "world-bank", name: "World Bank", image: G("worldbank.org") },
-  { id: "stanford", name: "Stanford", image: G("stanford.edu") },
-  { id: "mit", name: "MIT", image: G("mit.edu") },
-  { id: "oxford", name: "Oxford", image: G("ox.ac.uk") },
-  { id: "undp", name: "UNDP", image: G("undp.org") },
-  { id: "peace-corps", name: "Peace Corps", image: G("peacecorps.gov") },
-  { id: "technovation", name: "Technovation", image: G("technovation.org") },
-  { id: "oist", name: "OIST", image: G("oist.jp") },
-  { id: "imf", name: "IMF", image: G("imf.org") },
-  { id: "oecd", name: "OECD", image: G("oecd.org") },
-  { id: "gsoc", name: "GSoC", image: G("summerofcode.withgoogle.com") },
+  { id: "un", name: "United Nations" },
+  { id: "google", name: "Google" },
+  { id: "harvard", name: "Harvard" },
+  { id: "nasa", name: "NASA" },
+  { id: "cambridge", name: "Cambridge" },
+  { id: "erasmus", name: "Erasmus+" },
+  { id: "daad", name: "DAAD" },
+  { id: "chevening", name: "Chevening" },
+  { id: "fulbright", name: "Fulbright" },
+  { id: "aiesec", name: "AIESEC" },
+  { id: "stanford", name: "Stanford" },
+  { id: "mit", name: "MIT" },
+  { id: "oxford", name: "Oxford" },
+  { id: "who", name: "WHO" },
+  { id: "unesco", name: "UNESCO" },
+  { id: "unicef", name: "UNICEF" },
+  { id: "wwf", name: "WWF" },
+  { id: "undp", name: "UNDP" },
+  { id: "world-bank", name: "World Bank" },
+  { id: "british-council", name: "British Council" },
+  { id: "microsoft", name: "Microsoft" },
+  { id: "amazon", name: "Amazon" },
+  { id: "tesla", name: "Tesla" },
+  { id: "technovation", name: "Technovation" },
 ];
 
 export default async function HomePage() {
@@ -66,9 +59,12 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden min-h-[80vh] flex items-center">
-        <AuroraBackground />
-        <div className="absolute inset-0 bg-background/60 dark:bg-background/70" />
+      <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gradient-to-br from-indigo-50 via-blue-50 to-sky-50 dark:from-indigo-950/30 dark:via-blue-950/30 dark:to-sky-950/30">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-20 -left-20 w-72 h-72 bg-indigo-400/10 rounded-full blur-3xl animate-float" />
+          <div className="absolute top-1/3 -right-10 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl animate-float-slow" />
+          <div className="absolute -bottom-20 left-1/3 w-80 h-80 bg-sky-400/10 rounded-full blur-3xl animate-float-slower" />
+        </div>
         <div className="container mx-auto px-4 py-20 md:py-32 text-center relative z-10">
           <AnimatedGradientText className="mb-6">
             <Sparkles className="h-4 w-4 mr-2" />
