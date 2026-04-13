@@ -163,21 +163,31 @@ export function ListingCard({
             <Separator className="mb-3" />
             {deadlineDate ? (
               isPast ? (
-                <span className="flex items-center gap-1.5 text-xs text-destructive font-medium">
-                  <Clock className="h-3.5 w-3.5" />
-                  {tc("deadlinePassed")}
-                </span>
-              ) : (
-                <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <Calendar className="h-3.5 w-3.5" />
-                    {deadlineDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                <div className="flex items-center gap-2 bg-destructive/10 px-3 py-2 rounded-lg">
+                  <Clock className="h-4 w-4 text-destructive" />
+                  <span className="text-sm font-semibold text-destructive">
+                    {tc("deadlinePassed")}
                   </span>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between bg-muted/50 px-3 py-2 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-primary" />
+                    <div>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Deadline</p>
+                      <p className="text-sm font-semibold text-foreground">
+                        {deadlineDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                      </p>
+                    </div>
+                  </div>
                   <DeadlineBadge deadline={deadlineDate} />
                 </div>
               )
             ) : (
-              <span className="text-xs text-muted-foreground/40">No deadline</span>
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30">
+                <Calendar className="h-4 w-4 text-muted-foreground/40" />
+                <span className="text-sm text-muted-foreground/50">No deadline</span>
+              </div>
             )}
           </div>
         </div>
