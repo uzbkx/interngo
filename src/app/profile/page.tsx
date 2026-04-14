@@ -216,16 +216,10 @@ export default function ProfilePage() {
                     <Mail className="h-3 w-3" />
                     {profile.email}
                   </p>
-                  <div className="flex gap-1.5 mt-1">
-                    <Badge variant="secondary" className="text-[10px] px-1.5">
-                      <Shield className="h-2.5 w-2.5 mr-0.5" />
-                      {profile.role}
-                    </Badge>
-                    <Badge variant="outline" className="text-[10px] px-1.5">
-                      <Calendar className="h-2.5 w-2.5 mr-0.5" />
-                      {new Date(profile.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
-                    </Badge>
-                  </div>
+                  <Badge variant="outline" className="text-[10px] px-1.5 mt-1">
+                    <Calendar className="h-2.5 w-2.5 mr-0.5" />
+                    {new Date(profile.createdAt).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                  </Badge>
                 </div>
               </div>
 
@@ -239,6 +233,25 @@ export default function ProfilePage() {
                 <div>
                   <Label htmlFor="bio" className="text-xs">Bio</Label>
                   <Textarea id="bio" value={bio} onChange={(e) => setBio(e.target.value)} placeholder={tp("bioPlaceholder")} rows={2} />
+                </div>
+                <div>
+                  <Label className="text-xs">Role (optional)</Label>
+                  <select
+                    value={profile?.role || "STUDENT"}
+                    onChange={async (e) => {
+                      const newRole = e.target.value;
+                      await apiFetch("/users/profile", {
+                        method: "PATCH",
+                        body: JSON.stringify({ role: newRole }),
+                      });
+                      setProfile((p) => p ? { ...p, role: newRole } : p);
+                      toast.success(tp("saved"));
+                    }}
+                    className="flex h-9 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm shadow-sm shadow-black/5 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20"
+                  >
+                    <option value="STUDENT">Student</option>
+                    <option value="ORGANIZATION">Organization</option>
+                  </select>
                 </div>
 
                 {error && <p className="text-xs text-destructive">{error}</p>}
