@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { apiFetch } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,6 +63,8 @@ interface Organization {
 }
 
 export default function ProfilePage() {
+  const tp = useTranslations("profile");
+  const tc = useTranslations("common");
   const [profile, setProfile] = useState<Profile | null>(null);
   const [org, setOrg] = useState<Organization | null>(null);
   const [savedListings, setSavedListings] = useState<any[]>([]);
@@ -175,12 +178,12 @@ export default function ProfilePage() {
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold mb-0.5">My Profile</h1>
-          <p className="text-sm text-muted-foreground">Manage your account</p>
+          <h1 className="text-2xl font-bold mb-0.5">{tp("title")}</h1>
+          <p className="text-sm text-muted-foreground">{tp("manage")}</p>
         </div>
         <Button variant="outline" size="sm" onClick={handleLogout}>
           <LogOut className="h-3.5 w-3.5 mr-1.5" />
-          Log out
+          {tc("logout")}
         </Button>
       </div>
 
@@ -230,23 +233,23 @@ export default function ProfilePage() {
 
               <div className="space-y-3">
                 <div>
-                  <Label htmlFor="name" className="text-xs">Display Name</Label>
+                  <Label htmlFor="name" className="text-xs">{tp("displayName")}</Label>
                   <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className="h-9" />
                 </div>
                 <div>
                   <Label htmlFor="bio" className="text-xs">Bio</Label>
-                  <Textarea id="bio" value={bio} onChange={(e) => setBio(e.target.value)} placeholder="Tell us about yourself..." rows={2} />
+                  <Textarea id="bio" value={bio} onChange={(e) => setBio(e.target.value)} placeholder={tp("bioPlaceholder")} rows={2} />
                 </div>
 
                 {error && <p className="text-xs text-destructive">{error}</p>}
 
                 <Button size="sm" onClick={handleSave} disabled={saving}>
                   {saving ? (
-                    <><Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />Saving...</>
+                    <><Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />{tp("saving")}</>
                   ) : saved ? (
-                    <><Check className="mr-1.5 h-3.5 w-3.5" />Saved</>
+                    <><Check className="mr-1.5 h-3.5 w-3.5" />{tp("saved")}</>
                   ) : (
-                    <><Save className="mr-1.5 h-3.5 w-3.5" />Save Changes</>
+                    <><Save className="mr-1.5 h-3.5 w-3.5" />{tp("saveChanges")}</>
                   )}
                 </Button>
               </div>
@@ -276,7 +279,7 @@ export default function ProfilePage() {
                 </div>
               ) : (
                 <div className="text-center py-3">
-                  <p className="text-xs text-muted-foreground mb-2">No organization yet.</p>
+                  <p className="text-xs text-muted-foreground mb-2">{tp("noOrg")}</p>
                   <Button variant="outline" size="sm" onClick={() => (window.location.href = "/post")}>
                     <Building2 className="mr-1.5 h-3.5 w-3.5" />
                     Create Organization
@@ -344,7 +347,7 @@ export default function ProfilePage() {
               ) : (
                 <div className="text-center py-2">
                   <p className="text-xs text-muted-foreground mb-3">
-                    Connect your Telegram to get notified about new opportunities
+                    {tp("connectTelegramDesc")}
                   </p>
                   <Button
                     size="sm"
@@ -377,13 +380,13 @@ export default function ProfilePage() {
                 Opportunity Preferences
               </h2>
               <p className="text-xs text-muted-foreground mb-4">
-                Set your interests to filter opportunities on the site and receive matching notifications via Telegram bot.
+                {tp("interestsDesc")}
               </p>
 
               <div className="space-y-5">
                 {/* Opportunity Types */}
                 <div>
-                  <Label className="text-xs font-medium mb-2 block">Opportunity Types</Label>
+                  <Label className="text-xs font-medium mb-2 block">{tp("opportunityTypes")}</Label>
                   <div className="flex flex-wrap gap-2">
                     {["INTERNSHIP", "SCHOLARSHIP", "PROGRAM", "VOLUNTEER", "JOB"].map((type) => {
                       const labels: Record<string, string> = { INTERNSHIP: "Internships", SCHOLARSHIP: "Scholarships", PROGRAM: "Programs", VOLUNTEER: "Volunteering", JOB: "Jobs" };
@@ -404,7 +407,7 @@ export default function ProfilePage() {
                     })}
                   </div>
                   {prefTypes.length === 0 && (
-                    <p className="text-[11px] text-muted-foreground mt-1.5">Select at least one type to receive notifications</p>
+                    <p className="text-[11px] text-muted-foreground mt-1.5">{tp("selectType")}</p>
                   )}
                 </div>
 
@@ -417,12 +420,12 @@ export default function ProfilePage() {
                     Preferred Countries
                   </Label>
                   <Input
-                    placeholder="e.g. USA, Germany, Japan, South Korea"
+                    placeholder={tp("countriesPlaceholder")}
                     value={prefCountries}
                     onChange={(e) => setPrefCountries(e.target.value)}
                     className="h-9"
                   />
-                  <p className="text-[11px] text-muted-foreground mt-1">Comma-separated. Leave empty for all countries.</p>
+                  <p className="text-[11px] text-muted-foreground mt-1">{tp("countriesHint")}</p>
                 </div>
 
                 <Separator />
@@ -452,8 +455,8 @@ export default function ProfilePage() {
                       </Label>
                       <p className="text-[11px] text-muted-foreground mt-0.5">
                         {profile.telegramId
-                          ? "Receive matching opportunities via Telegram"
-                          : "Connect Telegram first to enable notifications"}
+                          ? tp("notifEnabled")
+                          : tp("notifDisabled")}
                       </p>
                     </div>
                     <Switch
@@ -483,9 +486,9 @@ export default function ProfilePage() {
                           notificationsEnabled: notifEnabled,
                         }),
                       });
-                      toast.success("Preferences saved!");
+                      toast.success(tp("preferencesSaved"));
                     } catch {
-                      toast.error("Failed to save preferences");
+                      toast.error(tp("preferencesFailed"));
                     } finally {
                       setPrefSaving(false);
                     }
@@ -504,7 +507,7 @@ export default function ProfilePage() {
           {savedListings.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
               <Heart className="h-8 w-8 mx-auto mb-2 opacity-20" />
-              <p className="text-sm mb-3">No saved listings yet</p>
+              <p className="text-sm mb-3">{tp("noSaved")}</p>
               <Button variant="outline" size="sm" render={<Link href="/listings" />}>
                 Browse Opportunities
               </Button>

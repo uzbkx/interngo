@@ -107,7 +107,7 @@ export function ListingCard({
               {isNew && (
                 <Badge className="text-[10px] px-1.5 py-0.5 border-0 bg-gradient-to-r from-indigo-500 to-blue-500 text-white">
                   <Sparkles className="h-2.5 w-2.5 mr-0.5" />
-                  New
+                  {tc("new")}
                 </Badge>
               )}
             </div>
@@ -162,7 +162,7 @@ export function ListingCard({
             )}
             {isFree && (
               <span className="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-md">
-                ✅ Free
+                ✅ {tc("free")}
               </span>
             )}
             {applicationFee && !isFree && (
@@ -188,7 +188,7 @@ export function ListingCard({
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-primary" />
                     <div>
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Deadline</p>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">{tc("deadline")}</p>
                       <p className="text-sm font-semibold text-foreground">
                         {deadlineDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                       </p>
@@ -200,7 +200,7 @@ export function ListingCard({
             ) : (
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30">
                 <Calendar className="h-4 w-4 text-muted-foreground/40" />
-                <span className="text-sm text-muted-foreground/50">No deadline</span>
+                <span className="text-sm text-muted-foreground/50">{tc("noDeadline")}</span>
               </div>
             )}
           </div>
