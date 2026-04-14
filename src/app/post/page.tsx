@@ -61,6 +61,8 @@ export default function PostListingPage() {
   const [type, setType] = useState("");
   const [isRemote, setIsRemote] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
+  const [isFree, setIsFree] = useState(true);
+  const [applicationFee, setApplicationFee] = useState("");
 
   useEffect(() => {
     apiFetch("/organizations/mine")
@@ -143,6 +145,8 @@ export default function PostListingPage() {
       applyUrl: formData.get("applyUrl") || undefined,
       isRemote,
       isPaid,
+      isFree,
+      applicationFee: applicationFee || undefined,
     };
 
     if (postAs === "organization" && organization) {
@@ -370,7 +374,7 @@ export default function PostListingPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-8">
+            <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
                 <Switch checked={isRemote} onCheckedChange={setIsRemote} />
                 <Label className="text-xs">{t("remoteAvailable")}</Label>
@@ -379,7 +383,24 @@ export default function PostListingPage() {
                 <Switch checked={isPaid} onCheckedChange={setIsPaid} />
                 <Label className="text-xs">{t("paidOpportunity")}</Label>
               </div>
+              <div className="flex items-center gap-2">
+                <Switch checked={isFree} onCheckedChange={(v) => { setIsFree(v); if (v) setApplicationFee(""); }} />
+                <Label className="text-xs">Free to apply</Label>
+              </div>
             </div>
+
+            {!isFree && (
+              <div>
+                <Label htmlFor="applicationFee" className="text-xs">Application Fee</Label>
+                <Input
+                  id="applicationFee"
+                  placeholder="e.g. $50, €30, Free for nationals"
+                  value={applicationFee}
+                  onChange={(e) => setApplicationFee(e.target.value)}
+                  className="h-9"
+                />
+              </div>
+            )}
 
             <Captcha ref={captchaRef} />
 

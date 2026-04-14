@@ -61,6 +61,8 @@ export function LatestListings() {
               country={listing.country ?? undefined}
               isRemote={listing.isRemote}
               isPaid={listing.isPaid}
+              isFree={listing.isFree}
+              applicationFee={listing.applicationFee}
               deadline={listing.deadline ? new Date(listing.deadline) : null}
               description={listing.description}
               createdAt={listing.createdAt}
