@@ -21,6 +21,8 @@ interface ListingCardProps {
   country?: string;
   isRemote?: boolean;
   isPaid?: boolean;
+  isFree?: boolean;
+  applicationFee?: string;
   deadline?: Date | string | null;
   description: string;
   createdAt?: string;
@@ -45,6 +47,8 @@ export function ListingCard({
   country,
   isRemote,
   isPaid,
+  isFree,
+  applicationFee,
   deadline,
   description,
   createdAt,
@@ -151,9 +155,19 @@ export function ListingCard({
               </span>
             )}
             {isPaid && (
-              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground bg-muted/60 px-2 py-1 rounded-md">
+              <span className="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-md">
                 <DollarSign className="h-3 w-3" />
                 {tc("paid")}
+              </span>
+            )}
+            {isFree && (
+              <span className="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded-md">
+                ✅ Free
+              </span>
+            )}
+            {applicationFee && !isFree && (
+              <span className="inline-flex items-center gap-1 text-xs text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 px-2 py-1 rounded-md">
+                💳 {applicationFee}
               </span>
             )}
           </div>

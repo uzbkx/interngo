@@ -176,12 +176,23 @@ export default async function ListingDetailPage({
                     <span>{tc("remote")}</span>
                   </div>
                 )}
-                {listing.isPaid && listing.salary && (
-                  <div className="flex items-center gap-2 text-muted-foreground">
+                {listing.isPaid && (
+                  <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
                     <DollarSign className="h-3.5 w-3.5 shrink-0" />
-                    <span>{listing.salary}{listing.currency ? ` ${listing.currency}` : ""}</span>
+                    <span className="font-medium">Paid{listing.salary ? ` — ${listing.salary}${listing.currency ? ` ${listing.currency}` : ""}` : ""}</span>
                   </div>
                 )}
+                {listing.isFree ? (
+                  <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+                    <DollarSign className="h-3.5 w-3.5 shrink-0" />
+                    <span className="font-medium">Free to apply</span>
+                  </div>
+                ) : listing.applicationFee ? (
+                  <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+                    <DollarSign className="h-3.5 w-3.5 shrink-0" />
+                    <span className="font-medium">Application fee: {listing.applicationFee}</span>
+                  </div>
+                ) : null}
                 {deadline && (
                   <div className={`flex items-center gap-2 ${isExpired ? "text-destructive" : "text-muted-foreground"}`}>
                     <Calendar className="h-3.5 w-3.5 shrink-0" />
