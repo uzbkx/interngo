@@ -58,8 +58,8 @@
     "dashboard": "Kabinet"
   },
   "home": {
-    "heroTitle": "Sizning yo'lingiz",
-    "heroHighlight": "jahon imkoniyatlariga",
+    "heroTitle": "Jahon imkoniyatlariga",
+    "heroHighlight": "sizning yo'lingiz",
     "heroDescription": "O'zbekiston talabalari va yoshlari uchun amaliyotlar, grantlar va xalqaro dasturlarni kashf eting.",
     "browseCta": "Imkoniyatlarni ko'rish",
     "postCta": "E'lon joylashtirish",
