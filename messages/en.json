@@ -83,7 +83,8 @@
     "aiVerifiedDesc": "Every listing is quality-checked. No scams, no expired posts — just real opportunities for real students.",
     "ctaTitle": "Ready to Start?",
     "ctaDesc": "Create a free account to save opportunities, track applications, and get personalized recommendations.",
-    "ctaButton": "Get Started — It's Free"
+    "ctaButton": "Get Started — It's Free",
+    "heroSuffix": ""
   },
   "categories": {
     "internships": "Internships",

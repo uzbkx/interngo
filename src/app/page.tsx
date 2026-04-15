@@ -72,6 +72,7 @@ export default async function HomePage() {
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
             {t("heroTitle")}{" "}
             <span className="text-gradient">{t("heroHighlight")}</span>
+            {t("heroSuffix") && t("heroSuffix") !== "heroSuffix" ? " " + t("heroSuffix") : ""}
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">{t("heroDescription")}</p>
 
