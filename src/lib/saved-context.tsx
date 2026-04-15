@@ -18,6 +18,15 @@ const SavedContext = createContext<SavedContextType>({
   loading: false,
 });
 
+function extractListingId(item: any): string | null {
+  // listingId could be a populated object or a string
+  if (typeof item.listingId === "string") return item.listingId;
+  if (item.listingId?._id) return String(item.listingId._id);
+  if (item.listing?._id) return String(item.listing._id);
+  if (item._id) return String(item._id);
+  return null;
+}
+
 export function SavedProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
@@ -30,10 +39,11 @@ export function SavedProvider({ children }: { children: ReactNode }) {
     }
     setLoading(true);
     apiFetch("/saved")
-      .then((res) => res.ok ? res.json() : { saved: [] })
+      .then((res) => res.ok ? res.json() : [])
       .then((data) => {
+        const items = Array.isArray(data) ? data : (data.saved || []);
         const ids = new Set<string>(
-          (data.saved || data || []).map((s: any) => s.listingId || s.listing?._id || s._id).filter(Boolean)
+          items.map(extractListingId).filter(Boolean) as string[]
         );
         setSavedIds(ids);
       })
@@ -44,6 +54,15 @@ export function SavedProvider({ children }: { children: ReactNode }) {
   const isSaved = useCallback((id: string) => savedIds.has(id), [savedIds]);
 
   const toggleSave = useCallback(async (id: string): Promise<boolean> => {
+    // Optimistic update
+    const wasSaved = savedIds.has(id);
+    setSavedIds((prev) => {
+      const next = new Set(prev);
+      if (wasSaved) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
     try {
       const res = await apiFetch("/saved", {
         method: "POST",
@@ -51,6 +70,8 @@ export function SavedProvider({ children }: { children: ReactNode }) {
       });
       const data = await res.json();
       const nowSaved = data.saved;
+
+      // Correct if server disagrees
       setSavedIds((prev) => {
         const next = new Set(prev);
         if (nowSaved) next.add(id);
@@ -59,9 +80,16 @@ export function SavedProvider({ children }: { children: ReactNode }) {
       });
       return nowSaved;
     } catch {
-      return false;
+      // Revert on error
+      setSavedIds((prev) => {
+        const next = new Set(prev);
+        if (wasSaved) next.add(id);
+        else next.delete(id);
+        return next;
+      });
+      return wasSaved;
     }
-  }, []);
+  }, [savedIds]);
 
   return (
     <SavedContext.Provider value={{ savedIds, isSaved, toggleSave, loading }}>
