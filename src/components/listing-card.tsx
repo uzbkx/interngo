@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { apiFetch } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
+import { useSaved } from "@/lib/saved-context";
 import { MagicCard } from "@/components/ui/magic-card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -56,36 +56,22 @@ export function ListingCard({
   const tt = useTranslations("types");
   const tc = useTranslations("common");
   const { user } = useAuth();
+  const { isSaved, toggleSave: ctxToggleSave } = useSaved();
 
-  const [saved, setSaved] = useState(false);
   const [savingAnim, setSavingAnim] = useState(false);
+  const saved = isSaved(id);
 
   const deadlineDate = deadline ? new Date(deadline) : null;
   const isNew = createdAt && (Date.now() - new Date(createdAt).getTime()) < 48 * 60 * 60 * 1000;
   const isPast = deadlineDate && deadlineDate.getTime() < Date.now();
   const config = typeConfig[type] || typeConfig.OTHER;
 
-  useEffect(() => {
-    if (!user) return;
-    apiFetch(`/saved/${id}`)
-      .then((res) => res.json())
-      .then((data) => setSaved(data.saved))
-      .catch(() => {});
-  }, [id, user]);
-
-  async function toggleSave(e: React.MouseEvent) {
+  async function handleToggleSave(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
     if (!user) return;
     setSavingAnim(true);
-    try {
-      const res = await apiFetch("/saved", {
-        method: "POST",
-        body: JSON.stringify({ listingId: id }),
-      });
-      const data = await res.json();
-      setSaved(data.saved);
-    } catch {}
+    await ctxToggleSave(id);
     setTimeout(() => setSavingAnim(false), 300);
   }
 
@@ -114,7 +100,7 @@ export function ListingCard({
             <div className="flex items-center gap-1">
               {user && (
                 <button
-                  onClick={toggleSave}
+                  onClick={handleToggleSave}
                   className={`p-1.5 rounded-full transition-all hover:bg-muted ${savingAnim ? "scale-125" : "hover:scale-110"}`}
                   aria-label={saved ? "Unsave" : "Save"}
                 >
