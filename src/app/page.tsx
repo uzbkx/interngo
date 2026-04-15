@@ -19,11 +19,19 @@ import {
 } from "lucide-react";
 
 const partners = [
-  { id: "un", name: "United Nations" },
-  { id: "google", name: "Google" },
-  { id: "harvard", name: "Harvard" },
-  { id: "nasa", name: "NASA" },
-  { id: "cambridge", name: "Cambridge" },
+  { id: "un", name: "United Nations", image: "/logos/un.png" },
+  { id: "google", name: "Google", image: "/logos/google.png" },
+  { id: "harvard", name: "Harvard", image: "/logos/harvard.png" },
+  { id: "nasa", name: "NASA", image: "/logos/nasa.png" },
+  { id: "cambridge", name: "Cambridge", image: "/logos/cambridge.png" },
+  { id: "who", name: "WHO", image: "/logos/who.png" },
+  { id: "yale", name: "Yale", image: "/logos/yale.png" },
+  { id: "unicef", name: "UNICEF", image: "/logos/unicef.png" },
+  { id: "unesco", name: "UNESCO", image: "/logos/unesco.png" },
+  { id: "wwf", name: "WWF", image: "/logos/wwf.png" },
+  { id: "amazon", name: "Amazon", image: "/logos/amazon.png" },
+  { id: "microsoft", name: "Microsoft", image: "/logos/microsoft.png" },
+  { id: "tesla", name: "Tesla", image: "/logos/tesla.png" },
   { id: "erasmus", name: "Erasmus+" },
   { id: "daad", name: "DAAD" },
   { id: "chevening", name: "Chevening" },
@@ -32,17 +40,6 @@ const partners = [
   { id: "stanford", name: "Stanford" },
   { id: "mit", name: "MIT" },
   { id: "oxford", name: "Oxford" },
-  { id: "who", name: "WHO" },
-  { id: "unesco", name: "UNESCO" },
-  { id: "unicef", name: "UNICEF" },
-  { id: "wwf", name: "WWF" },
-  { id: "undp", name: "UNDP" },
-  { id: "world-bank", name: "World Bank" },
-  { id: "british-council", name: "British Council" },
-  { id: "microsoft", name: "Microsoft" },
-  { id: "amazon", name: "Amazon" },
-  { id: "tesla", name: "Tesla" },
-  { id: "technovation", name: "Technovation" },
 ];
 
 export default async function HomePage() {

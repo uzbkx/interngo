@@ -10,6 +10,7 @@ import {
 interface Logo {
   id: string;
   name: string;
+  image?: string;
 }
 
 interface LogosCarouselProps {
@@ -19,9 +20,9 @@ interface LogosCarouselProps {
 
 const LogosCarousel = ({ heading, logos = [] }: LogosCarouselProps) => {
   return (
-    <section className="py-6 border-b">
+    <section className="py-8 border-b">
       {heading && (
-        <p className="text-center text-xs text-muted-foreground mb-3">{heading}</p>
+        <p className="text-center text-xs text-muted-foreground mb-4">{heading}</p>
       )}
       <div className="relative mx-auto flex items-center justify-center lg:max-w-5xl">
         <Carousel
@@ -32,19 +33,33 @@ const LogosCarousel = ({ heading, logos = [] }: LogosCarouselProps) => {
             {logos.map((logo) => (
               <CarouselItem
                 key={logo.id}
-                className="flex basis-1/4 justify-center pl-0 sm:basis-1/5 md:basis-1/7 lg:basis-1/9"
+                className="flex basis-1/3 justify-center pl-0 sm:basis-1/4 md:basis-1/5 lg:basis-1/7"
               >
-                <div className="mx-2 flex shrink-0 items-center justify-center">
-                  <span className="text-sm font-semibold text-foreground/70 whitespace-nowrap">
-                    {logo.name}
-                  </span>
+                <div className="mx-4 flex shrink-0 items-center justify-center gap-2 opacity-60 hover:opacity-100 transition-opacity">
+                  {logo.image ? (
+                    <>
+                      <img
+                        src={logo.image}
+                        alt={logo.name}
+                        className="h-7 w-7 object-contain"
+                        loading="lazy"
+                      />
+                      <span className="text-sm font-semibold text-foreground/80 whitespace-nowrap hidden sm:inline">
+                        {logo.name}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-sm font-semibold text-foreground/70 whitespace-nowrap">
+                      {logo.name}
+                    </span>
+                  )}
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
         </Carousel>
-        <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-background to-transparent z-10" />
-        <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-background to-transparent z-10" />
+        <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10" />
+        <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10" />
       </div>
     </section>
   );
