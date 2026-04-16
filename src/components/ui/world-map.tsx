@@ -22,7 +22,7 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5", isDark = false }: M
   const svgMap = useMemo(
     () => map.getSVG({
       radius: 0.22,
-      color: isDark ? "#FFFFFF15" : "#00000015",
+      color: isDark ? "#FFFFFF50" : "#00000040",
       shape: "circle",
       backgroundColor: "transparent",
     }),
@@ -48,7 +48,7 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5", isDark = false }: M
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-      <div className="absolute inset-0 flex items-center justify-center opacity-40">
+      <div className="absolute inset-0 flex items-center justify-center opacity-80">
         <Image
           src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
           className="w-full h-full object-cover [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)]"
