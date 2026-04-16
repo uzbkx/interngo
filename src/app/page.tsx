@@ -87,7 +87,7 @@ export default async function HomePage() {
           <form action="/listings" method="GET" className="flex max-w-xl mx-auto gap-2 mb-10">
             <div className="relative flex-1">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input name="q" placeholder={t("searchPlaceholder")} className="h-12 pl-12 rounded-xl text-base shadow-sm border-indigo-400/50 focus-visible:border-indigo-500" />
+              <Input name="q" placeholder={t("searchPlaceholder")} className="h-12 pl-12 rounded-xl text-base shadow-sm border-indigo-400/50 focus-visible:border-indigo-500 bg-background" />
             </div>
             <ShimmerButton className="h-12 px-6 rounded-xl" shimmerColor="rgba(255,255,255,0.3)" background="linear-gradient(135deg, #4f46e5, #2563eb)">
               {t("browseCta")}
