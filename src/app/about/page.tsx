@@ -101,8 +101,8 @@ export default function AboutPage() {
           <ul className="space-y-1">
             <li>
               Email:{" "}
-              <a href="mailto:contact@interngo.uz" className="text-primary hover:underline">
-                contact@interngo.uz
+              <a href="mailto:support@interngo.uz" className="text-primary hover:underline">
+                support@interngo.uz
               </a>
             </li>
             <li>

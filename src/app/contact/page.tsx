@@ -67,7 +67,7 @@ export default function ContactPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-3">
           {[
-            { icon: Mail, title: "Email", value: "contact@interngo.uz", href: "mailto:contact@interngo.uz" },
+            { icon: Mail, title: "Email", value: "support@interngo.uz", href: "mailto:support@interngo.uz" },
             { icon: MessageSquare, title: "Telegram Channel", value: "@interngouz", href: "https://t.me/interngouz" },
             { icon: MessageSquare, title: "Support Bot", value: "@interngouzsupportbot", href: "https://t.me/interngouzsupportbot" },
             { icon: MapPin, title: "Location", value: "Tashkent, Uzbekistan" },
