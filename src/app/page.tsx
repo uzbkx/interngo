@@ -12,7 +12,7 @@ import { GlowCard } from "@/components/ui/spotlight-card";
 import { LiveStats } from "@/components/live-stats";
 import { LatestListings } from "@/components/latest-listings";
 
-// AuroraBackground removed — Three.js is too heavy for slow connections
+import { WorldMap } from "@/components/ui/world-map";
 import {
   Search, Briefcase, BookOpen, Globe, Heart,
   ArrowRight, Sparkles, Radar, Zap, Shield, ChevronRight,
@@ -57,11 +57,19 @@ export default async function HomePage() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gradient-to-br from-indigo-50 via-blue-50 to-sky-50 dark:from-indigo-950/30 dark:via-blue-950/30 dark:to-sky-950/30">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-20 -left-20 w-72 h-72 bg-indigo-400/10 rounded-full blur-3xl animate-float" />
-          <div className="absolute top-1/3 -right-10 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl animate-float-slow" />
-          <div className="absolute -bottom-20 left-1/3 w-80 h-80 bg-sky-400/10 rounded-full blur-3xl animate-float-slower" />
-        </div>
+        <WorldMap
+          lineColor="#4f46e5"
+          dots={[
+            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 52.5, lng: 13.4 } },
+            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 48.9, lng: 2.35 } },
+            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 40.7, lng: -74.0 } },
+            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 51.5, lng: -0.13 } },
+            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 35.7, lng: 139.7 } },
+            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 37.6, lng: 127.0 } },
+            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 55.8, lng: 37.6 } },
+            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 39.9, lng: 116.4 } },
+          ]}
+        />
         <div className="container mx-auto px-4 py-20 md:py-32 text-center relative z-10">
           <AnimatedGradientText className="mb-6">
             <Sparkles className="h-4 w-4 mr-2" />
