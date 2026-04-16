@@ -109,7 +109,7 @@ export default function ProfilePage() {
 
         try {
           const savedRes = await apiFetch("/saved");
-          if (savedRes.ok) { const savedData = await savedRes.json(); setSavedListings(savedData.saved || []); }
+          if (savedRes.ok) { const savedData = await savedRes.json(); setSavedListings(Array.isArray(savedData) ? savedData : (savedData.saved || [])); }
         } catch {}
       } catch {
         window.location.href = "/auth/login";
