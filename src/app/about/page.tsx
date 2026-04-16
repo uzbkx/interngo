@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { GraduationCap, Radar, Globe, Users, Heart } from "lucide-react";
+import { GraduationCap, Radar, Globe, Users } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -58,11 +58,6 @@ export default function AboutPage() {
                 icon: Users,
                 title: "Built for Uzbek Students",
                 desc: "Available in Uzbek, Russian, and English. Focused on programs accepting Central Asian applicants.",
-              },
-              {
-                icon: Heart,
-                title: "Completely Free",
-                desc: "No premium tiers, no hidden fees. Every opportunity is accessible to everyone.",
               },
             ].map((item) => (
               <Card key={item.title}>
