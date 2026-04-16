@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { apiFetch } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -63,6 +64,8 @@ const STATUS_KEYS = [
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
   const ts = useTranslations("status");
+  const tc = useTranslations("common");
+  const { user, loading: authLoading } = useAuth();
 
   const [saved, setSaved] = useState<SavedItem[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
@@ -87,8 +90,28 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (user) fetchData();
+  }, [user]);
+
+  if (!authLoading && !user) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center px-4 text-center">
+        <div className="flex size-14 shrink-0 items-center justify-center rounded-full border border-border mb-4">
+          <Bookmark className="h-6 w-6 text-primary" />
+        </div>
+        <h2 className="text-xl font-semibold mb-2">{t("title")}</h2>
+        <p className="text-sm text-muted-foreground mb-6 max-w-sm">{t("description")}</p>
+        <div className="flex gap-3">
+          <Button render={<Link href="/auth/login" />} className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
+            {tc("login")}
+          </Button>
+          <Button variant="outline" render={<Link href="/auth/signup" />}>
+            {tc("signup")}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   async function handleUnsave(listingId: string) {
     await apiFetch("/saved", {
