@@ -82,7 +82,7 @@ export default async function HomePage() {
             <span className="text-gradient">{t("heroHighlight")}</span>
             {t("heroSuffix") && t("heroSuffix") !== "heroSuffix" ? " " + t("heroSuffix") : ""}
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">{t("heroDescription")}</p>
+          <p className="text-lg text-indigo-900/70 dark:text-indigo-200/70 max-w-2xl mx-auto mb-8">{t("heroDescription")}</p>
 
           <form action="/listings" method="GET" className="flex max-w-xl mx-auto gap-2 mb-10">
             <div className="relative flex-1">
