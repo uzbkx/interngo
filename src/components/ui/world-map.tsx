@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import DottedMap from "dotted-map";
 import Image from "next/image";
@@ -11,10 +11,18 @@ interface MapProps {
     end: { lat: number; lng: number; label?: string };
   }>;
   lineColor?: string;
-  isDark?: boolean;
 }
 
-export function WorldMap({ dots = [], lineColor = "#4f46e5", isDark = false }: MapProps) {
+export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains("dark"));
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
   const svgRef = useRef<SVGSVGElement>(null);
 
   const map = useMemo(() => new DottedMap({ height: 100, grid: "diagonal" }), []);
@@ -22,7 +30,7 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5", isDark = false }: M
   const svgMap = useMemo(
     () => map.getSVG({
       radius: 0.22,
-      color: isDark ? "#FFFFFF50" : "#00000040",
+      color: isDark ? "#FFFFFF90" : "#00000045",
       shape: "circle",
       backgroundColor: "transparent",
     }),
