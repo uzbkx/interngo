@@ -98,7 +98,7 @@ export default function PostListingPage() {
     const body = {
       name: form.get("orgName"),
       description: form.get("orgDescription"),
-      website: form.get("orgWebsite") || undefined,
+      website: form.get("orgWebsite") ? `https://${(form.get("orgWebsite") as string).replace(/^https?:\/\//, "")}` : undefined,
     };
 
     try {
@@ -266,7 +266,19 @@ export default function PostListingPage() {
               </div>
               <div>
                 <Label htmlFor="orgWebsite" className="text-xs">Website</Label>
-                <Input id="orgWebsite" name="orgWebsite" type="url" placeholder="https://..." className="h-9" />
+                <div className="flex h-9">
+                  <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-input bg-muted text-muted-foreground text-xs">https://</span>
+                  <input
+                    id="orgWebsite"
+                    name="orgWebsite"
+                    placeholder="google.com"
+                    className="flex h-9 w-full rounded-r-lg rounded-l-none border border-input bg-background px-3 py-2 text-sm shadow-sm shadow-black/5 placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20"
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/^https?:\/\//, "");
+                      e.target.value = val;
+                    }}
+                  />
+                </div>
               </div>
 
               {error && <p className="text-xs text-destructive">{error}</p>}
