@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { apiFetch } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
+import { ListingCard } from "@/components/listing-card";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -189,40 +190,33 @@ export default function DashboardPage() {
               </Button>
             </div>
           ) : (
-            <div className="space-y-2">
-              {saved.map((item) => (
-                <Card key={item.id}>
-                  <CardContent className="p-3">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <Link href={`/listings/${item.listing.slug}`} className="text-sm font-medium hover:text-primary transition-colors line-clamp-1">
-                          {item.listing.title}
-                        </Link>
-                        <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
-                          {item.listing.organization && <span>{item.listing.organization.name}</span>}
-                          {item.listing.country && (
-                            <span className="flex items-center gap-0.5">
-                              <MapPin className="h-3 w-3" />{item.listing.country}
-                            </span>
-                          )}
-                          {item.listing.deadline && (
-                            <span className="flex items-center gap-0.5">
-                              <Calendar className="h-3 w-3" />
-                              {new Date(item.listing.deadline).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        <Badge variant="outline" className="text-[10px]">{item.listing.type}</Badge>
-                        <Button size="sm" variant="ghost" onClick={() => handleUnsave(item.listingId)}>
-                          <Trash2 className="h-3.5 w-3.5 text-muted-foreground" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {saved.map((item: any) => {
+                const listing = item.listingId && typeof item.listingId === "object"
+                  ? item.listingId
+                  : (item.listing || item);
+                const lid = listing._id || (typeof item.listingId === "string" ? item.listingId : item._id);
+                if (!listing.title) return null;
+                return (
+                  <ListingCard
+                    key={item._id || lid}
+                    id={lid}
+                    title={listing.title}
+                    slug={listing.slug}
+                    type={listing.type}
+                    organization={listing.organizationId?.name || listing.organizationName}
+                    location={listing.location}
+                    country={listing.country}
+                    isRemote={listing.isRemote}
+                    isPaid={listing.isPaid}
+                    isFree={listing.isFree}
+                    applicationFee={listing.applicationFee}
+                    deadline={listing.deadline ? new Date(listing.deadline) : null}
+                    description={listing.description}
+                    createdAt={listing.createdAt}
+                  />
+                );
+              })}
             </div>
           )}
         </TabsContent>
