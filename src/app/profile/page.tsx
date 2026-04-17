@@ -528,11 +528,18 @@ export default function ProfilePage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {savedListings.map((item: any) => {
-                const listing = item.listing || item;
+                // listingId is populated (full object) or item itself is the listing
+                const listing = item.listingId && typeof item.listingId === "object"
+                  ? item.listingId
+                  : (item.listing || item);
+                const listingId = listing._id || (typeof item.listingId === "string" ? item.listingId : item._id);
+
+                if (!listing.title) return null;
+
                 return (
-                  <div key={item._id || listing._id} className="relative">
+                  <div key={item._id || listingId} className="relative">
                     <ListingCard
-                      id={listing._id}
+                      id={listingId}
                       title={listing.title}
                       slug={listing.slug}
                       type={listing.type}
@@ -541,13 +548,16 @@ export default function ProfilePage() {
                       country={listing.country}
                       isRemote={listing.isRemote}
                       isPaid={listing.isPaid}
+                      isFree={listing.isFree}
+                      applicationFee={listing.applicationFee}
                       deadline={listing.deadline ? new Date(listing.deadline) : null}
                       description={listing.description}
+                      createdAt={listing.createdAt}
                     />
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        handleUnsave(listing._id || item.listingId);
+                        handleUnsave(listingId);
                       }}
                       className="absolute top-2 right-2 bg-background rounded-full p-1 shadow-sm border hover:bg-muted transition-colors z-10"
                       title="Remove from saved"
