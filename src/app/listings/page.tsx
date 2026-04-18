@@ -14,7 +14,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { usePagination } from "@/components/hooks/use-pagination";
+import { getPaginationRange } from "@/components/hooks/use-pagination";
 import { Search } from "lucide-react";
 
 interface ListingsPageProps {
@@ -162,7 +162,7 @@ function ListingsPagination({
   totalPages: number;
   buildUrl: (n: number) => string;
 }) {
-  const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
+  const { pages, showLeftEllipsis, showRightEllipsis } = getPaginationRange({
     currentPage: page,
     totalPages,
     paginationItemsToDisplay: 7,

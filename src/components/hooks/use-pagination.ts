@@ -10,7 +10,7 @@ type UsePaginationReturn = {
   showRightEllipsis: boolean;
 };
 
-export function usePagination({
+export function getPaginationRange({
   currentPage,
   totalPages,
   paginationItemsToDisplay,

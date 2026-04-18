@@ -6,7 +6,14 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+
+const linkBase =
+  "inline-flex shrink-0 items-center justify-center rounded-lg text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
+const linkGhost = "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50";
+const linkOutline =
+  "border border-border bg-background hover:bg-muted hover:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50";
+const sizeIcon = "size-8";
+const sizeDefault = "h-8 gap-1.5 px-2.5";
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -39,8 +46,8 @@ function PaginationItem({ ...props }: React.ComponentProps<"li">) {
 
 type PaginationLinkProps = {
   isActive?: boolean;
-} & Pick<React.ComponentProps<typeof Button>, "size"> &
-  React.ComponentProps<"a">;
+  size?: "default" | "icon";
+} & React.ComponentProps<"a">;
 
 function PaginationLink({
   className,
@@ -54,10 +61,9 @@ function PaginationLink({
       data-slot="pagination-link"
       data-active={isActive}
       className={cn(
-        buttonVariants({
-          variant: isActive ? "outline" : "ghost",
-          size,
-        }),
+        linkBase,
+        isActive ? linkOutline : linkGhost,
+        size === "icon" ? sizeIcon : sizeDefault,
         className,
       )}
       {...props}
@@ -76,7 +82,7 @@ function PaginationPrevious({
       className={cn("gap-1 px-2.5 sm:pl-2.5", className)}
       {...props}
     >
-      <ChevronLeftIcon />
+      <ChevronLeftIcon className="size-4" />
       <span className="hidden sm:block">Previous</span>
     </PaginationLink>
   );
@@ -94,7 +100,7 @@ function PaginationNext({
       {...props}
     >
       <span className="hidden sm:block">Next</span>
-      <ChevronRightIcon />
+      <ChevronRightIcon className="size-4" />
     </PaginationLink>
   );
 }
@@ -107,7 +113,7 @@ function PaginationEllipsis({
     <span
       aria-hidden
       data-slot="pagination-ellipsis"
-      className={cn("flex size-9 items-center justify-center", className)}
+      className={cn("flex size-8 items-center justify-center", className)}
       {...props}
     >
       <MoreHorizontalIcon className="size-4" />
