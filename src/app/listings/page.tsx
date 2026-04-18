@@ -5,7 +5,17 @@ import { ListingCard } from "@/components/listing-card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { usePagination } from "@/components/hooks/use-pagination";
+import { Search } from "lucide-react";
 
 interface ListingsPageProps {
   searchParams: Promise<{ type?: string; q?: string; page?: string }>;
@@ -134,37 +144,79 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
         </div>
       )}
 
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2 mt-8">
-          {page > 1 ? (
-            <Button variant="outline" size="sm" render={<Link href={buildUrl(page - 1)} />}>
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-          ) : (
-            <Button variant="outline" size="sm" disabled>
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-          )}
-
-          <span className="text-xs text-muted-foreground px-2">
-            {page} / {totalPages}
-          </span>
-
-          {page < totalPages ? (
-            <Button variant="outline" size="sm" render={<Link href={buildUrl(page + 1)} />}>
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          ) : (
-            <Button variant="outline" size="sm" disabled>
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          )}
-        </div>
-      )}
+      {totalPages > 1 && <ListingsPagination page={page} totalPages={totalPages} buildUrl={buildUrl} />}
 
       <p className="text-center mt-4 text-xs text-muted-foreground">
         {tc("showingResults", { count: listings.length, total: totalCount })}
       </p>
     </div>
+  );
+}
+
+function ListingsPagination({
+  page,
+  totalPages,
+  buildUrl,
+}: {
+  page: number;
+  totalPages: number;
+  buildUrl: (n: number) => string;
+}) {
+  const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
+    currentPage: page,
+    totalPages,
+    paginationItemsToDisplay: 7,
+  });
+
+  return (
+    <Pagination className="mt-8">
+      <PaginationContent>
+        <PaginationItem>
+          {page > 1 ? (
+            <PaginationPrevious href={buildUrl(page - 1)} />
+          ) : (
+            <PaginationPrevious href="#" aria-disabled className="pointer-events-none opacity-50" />
+          )}
+        </PaginationItem>
+
+        {showLeftEllipsis && (
+          <>
+            <PaginationItem>
+              <PaginationLink href={buildUrl(1)}>1</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          </>
+        )}
+
+        {pages.map((p) => (
+          <PaginationItem key={p}>
+            <PaginationLink href={buildUrl(p)} isActive={p === page}>
+              {p}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+
+        {showRightEllipsis && (
+          <>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href={buildUrl(totalPages)}>{totalPages}</PaginationLink>
+            </PaginationItem>
+          </>
+        )}
+
+        <PaginationItem>
+          {page < totalPages ? (
+            <PaginationNext href={buildUrl(page + 1)} />
+          ) : (
+            <PaginationNext href="#" aria-disabled className="pointer-events-none opacity-50" />
+          )}
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
   );
 }

@@ -1,75 +1,129 @@
 "use client";
 
+import type { ComponentProps, ReactNode } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { motion, useReducedMotion } from "motion/react";
 import { GraduationCap, Send } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 
 export function Footer() {
   const t = useTranslations("footer");
   const tc = useTranslations("categories");
 
-  const sections = [
-    { title: t("explore"), links: [
-      { href: "/listings?type=INTERNSHIP", label: tc("internships") },
-      { href: "/listings?type=SCHOLARSHIP", label: tc("scholarships") },
-      { href: "/listings?type=PROGRAM", label: tc("programs") },
-      { href: "/listings?type=VOLUNTEER", label: tc("volunteering") },
-      { href: "/archive", label: "Archive" },
-    ]},
-    { title: t("about"), links: [
-      { href: "/about", label: t("aboutUs") },
-      { href: "/contact", label: t("contact") },
-      { href: "https://t.me/interngouz", label: "Telegram", external: true },
-    ]},
-    { title: t("legal"), links: [
-      { href: "/terms", label: t("terms") },
-      { href: "/privacy", label: t("privacy") },
-    ]},
+  const sections: {
+    label: string;
+    links: { title: string; href: string; external?: boolean; icon?: React.ComponentType<{ className?: string }> }[];
+  }[] = [
+    {
+      label: t("explore"),
+      links: [
+        { title: tc("internships"), href: "/listings?type=INTERNSHIP" },
+        { title: tc("scholarships"), href: "/listings?type=SCHOLARSHIP" },
+        { title: tc("programs"), href: "/listings?type=PROGRAM" },
+        { title: tc("volunteering"), href: "/listings?type=VOLUNTEER" },
+        { title: "Archive", href: "/archive" },
+      ],
+    },
+    {
+      label: t("about"),
+      links: [
+        { title: t("aboutUs"), href: "/about" },
+        { title: t("contact"), href: "/contact" },
+        { title: "Telegram", href: "https://t.me/interngouz", external: true, icon: Send },
+      ],
+    },
+    {
+      label: t("legal"),
+      links: [
+        { title: t("terms"), href: "/terms" },
+        { title: t("privacy"), href: "/privacy" },
+      ],
+    },
   ];
 
   return (
-    <footer className="border-t bg-gradient-to-b from-background to-muted/30">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-3">
-              <div className="flex items-center justify-center h-7 w-7 rounded-lg bg-gradient-to-br from-indigo-600 to-blue-600">
-                <GraduationCap className="h-4 w-4 text-white" />
-              </div>
-              <span className="font-bold">InternGo</span>
-            </Link>
-            <p className="text-xs text-muted-foreground leading-relaxed mb-4">{t("tagline")}</p>
-            <a href="https://t.me/interngouz" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors">
-              <Send className="h-3.5 w-3.5" />Telegram
-            </a>
-          </div>
-          {sections.map((section) => (
-            <div key={section.title}>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{section.title}</h3>
-              <ul className="space-y-2">
-                {section.links.map((link) => (
-                  <li key={link.href}>
-                    {"external" in link && link.external ? (
-                      <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{link.label}</a>
-                    ) : (
-                      <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{link.label}</Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
+    <footer className="md:rounded-t-6xl relative w-full max-w-6xl mx-auto flex flex-col items-center justify-center rounded-t-4xl border-t bg-[radial-gradient(35%_128px_at_50%_0%,theme(colors.foreground/8%),transparent)] px-6 py-12 lg:py-16">
+      <div className="bg-foreground/20 absolute top-0 right-1/2 left-1/2 h-px w-1/3 -translate-x-1/2 -translate-y-1/2 rounded-full blur" />
+
+      <div className="grid w-full gap-8 xl:grid-cols-3 xl:gap-8">
+        <AnimatedContainer className="space-y-4">
+          <Link href="/" className="inline-flex items-center gap-2">
+            <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-600 to-blue-600 shadow-md">
+              <GraduationCap className="h-5 w-5 text-white" />
             </div>
+            <span className="text-lg font-bold tracking-tight">InternGo</span>
+          </Link>
+          <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">{t("tagline")}</p>
+          <p className="text-muted-foreground text-xs">
+            &copy; {new Date().getFullYear()} InternGo. {t("rights")}
+          </p>
+        </AnimatedContainer>
+
+        <div className="mt-6 grid grid-cols-2 gap-8 md:grid-cols-3 xl:col-span-2 xl:mt-0">
+          {sections.map((section, index) => (
+            <AnimatedContainer key={section.label} delay={0.1 + index * 0.1}>
+              <div className="mb-10 md:mb-0">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  {section.label}
+                </h3>
+                <ul className="text-muted-foreground mt-4 space-y-2 text-sm">
+                  {section.links.map((link) => {
+                    const content = (
+                      <>
+                        {link.icon && <link.icon className="me-1.5 size-4" />}
+                        {link.title}
+                      </>
+                    );
+                    return (
+                      <li key={link.title}>
+                        {link.external ? (
+                          <a
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-foreground inline-flex items-center transition-all duration-300"
+                          >
+                            {content}
+                          </a>
+                        ) : (
+                          <Link
+                            href={link.href}
+                            className="hover:text-foreground inline-flex items-center transition-all duration-300"
+                          >
+                            {content}
+                          </Link>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </AnimatedContainer>
           ))}
-        </div>
-        <Separator className="my-8" />
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} InternGo. {t("rights")}</p>
-          <div className="flex gap-4">
-            <Link href="/terms" className="hover:text-foreground transition-colors">{t("terms")}</Link>
-            <Link href="/privacy" className="hover:text-foreground transition-colors">{t("privacy")}</Link>
-          </div>
         </div>
       </div>
     </footer>
+  );
+}
+
+type ViewAnimationProps = {
+  delay?: number;
+  className?: ComponentProps<typeof motion.div>["className"];
+  children: ReactNode;
+};
+
+function AnimatedContainer({ className, delay = 0.1, children }: ViewAnimationProps) {
+  const shouldReduceMotion = useReducedMotion();
+  if (shouldReduceMotion) return <>{children}</>;
+  return (
+    <motion.div
+      initial={{ filter: "blur(4px)", translateY: -8, opacity: 0 }}
+      whileInView={{ filter: "blur(0px)", translateY: 0, opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.8 }}
+      className={className}
+    >
+      {children}
+    </motion.div>
   );
 }

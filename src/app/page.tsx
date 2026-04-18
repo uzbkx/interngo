@@ -11,6 +11,7 @@ import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { GlowCard } from "@/components/ui/spotlight-card";
 import { LiveStats } from "@/components/live-stats";
 import { LatestListings } from "@/components/latest-listings";
+import { HeroSearch } from "@/components/hero-search";
 
 import { WorldMap } from "@/components/ui/world-map";
 import {
@@ -18,14 +19,24 @@ import {
   ArrowRight, Sparkles, Radar, Zap, Shield, ChevronRight,
 } from "lucide-react";
 
-function AnimatedWords({ text, startDelay = 0, step = 150 }: { text: string; startDelay?: number; step?: number }) {
+function AnimatedWords({
+  text,
+  startDelay = 0,
+  step = 150,
+  wordClassName = "",
+}: {
+  text: string;
+  startDelay?: number;
+  step?: number;
+  wordClassName?: string;
+}) {
   const words = text.split(/\s+/).filter(Boolean);
   return (
     <>
       {words.map((w, i) => (
         <span
           key={`${w}-${i}`}
-          className="word-animate"
+          className={`word-animate ${wordClassName}`}
           style={{ animationDelay: `${startDelay + i * step}ms` }}
         >
           {w}
@@ -90,26 +101,21 @@ export default async function HomePage() {
         <div className="container mx-auto px-4 py-20 md:py-32 text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-extralight tracking-tight leading-tight mb-6">
             <AnimatedWords text={t("heroTitle")} startDelay={0} step={150} />{" "}
-            <span className="text-gradient font-light">
-              <AnimatedWords text={t("heroHighlight")} startDelay={600} step={150} />
-            </span>
+            <AnimatedWords
+              text={t("heroHighlight")}
+              startDelay={600}
+              step={150}
+              wordClassName="text-gradient font-light"
+            />
             {t("heroSuffix") && t("heroSuffix") !== "heroSuffix" ? (
               <> <AnimatedWords text={t("heroSuffix")} startDelay={1200} step={150} /></>
             ) : null}
           </h1>
-          <p className="text-lg font-thin tracking-wide text-indigo-900/70 dark:text-indigo-200/70 max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-xl md:text-2xl font-thin tracking-wide leading-relaxed text-indigo-900/70 dark:text-indigo-200/70 max-w-3xl mx-auto mb-8">
             <AnimatedWords text={t("heroDescription")} startDelay={1400} step={80} />
           </p>
 
-          <form action="/listings" method="GET" className="flex max-w-xl mx-auto gap-2 mb-10">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-              <Input name="q" placeholder={t("searchPlaceholder")} className="h-12 pl-12 rounded-xl text-base shadow-sm border-indigo-400/50 focus-visible:border-indigo-500 bg-background" />
-            </div>
-            <ShimmerButton className="h-12 px-6 rounded-xl" shimmerColor="rgba(255,255,255,0.3)" background="linear-gradient(135deg, #4f46e5, #2563eb)">
-              {t("browseCta")}
-            </ShimmerButton>
-          </form>
+          <HeroSearch />
 
           <LiveStats />
         </div>
