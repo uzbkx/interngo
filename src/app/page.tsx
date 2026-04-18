@@ -101,12 +101,12 @@ export default async function HomePage() {
         <div className="container mx-auto px-4 py-20 md:py-32 text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-extralight tracking-tight leading-tight mb-6">
             <AnimatedWords text={t("heroTitle")} startDelay={0} step={150} />{" "}
-            <AnimatedWords
-              text={t("heroHighlight")}
-              startDelay={600}
-              step={150}
-              wordClassName="text-gradient font-light"
-            />
+            <span
+              className="text-gradient font-light word-animate"
+              style={{ animationDelay: "600ms" }}
+            >
+              {t("heroHighlight")}
+            </span>
             {t("heroSuffix") && t("heroSuffix") !== "heroSuffix" ? (
               <> <AnimatedWords text={t("heroSuffix")} startDelay={1200} step={150} /></>
             ) : null}
@@ -199,16 +199,39 @@ export default async function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-3">{t("ctaTitle")}</h2>
-          <p className="text-indigo-100 max-w-xl mx-auto mb-8">{t("ctaDesc")}</p>
-          <Link href="/auth/signup">
-            <ShimmerButton className="mx-auto" shimmerColor="rgba(79,70,229,0.4)" background="white">
-              <span className="text-indigo-700 font-semibold flex items-center gap-2">
-                {t("ctaButton")} <ArrowRight className="h-4 w-4" />
-              </span>
-            </ShimmerButton>
+      <section className="py-16">
+        <div className="max-w-5xl py-16 md:w-full mx-2 md:mx-auto flex flex-col items-center justify-center text-center bg-gradient-to-b from-[#5524B7] to-[#380B60] rounded-2xl p-10 text-white">
+          <div className="flex flex-wrap items-center justify-center p-1 rounded-full bg-purple-600/10 backdrop-blur border border-purple-500/40 text-sm">
+            <div className="flex items-center">
+              <img
+                className="size-6 md:size-7 rounded-full border-[3px] border-white object-cover"
+                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=50"
+                alt=""
+              />
+              <img
+                className="size-6 md:size-7 rounded-full border-[3px] border-white object-cover -translate-x-2"
+                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=50"
+                alt=""
+              />
+              <img
+                className="size-6 md:size-7 rounded-full border-[3px] border-white object-cover -translate-x-4"
+                src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=50&h=50&auto=format&fit=crop"
+                alt=""
+              />
+            </div>
+            <p className="-translate-x-2 font-medium">Join 10k+ students chasing opportunities</p>
+          </div>
+
+          <h2 className="text-4xl md:text-5xl md:leading-[60px] font-semibold max-w-xl mt-5 bg-gradient-to-r from-white to-[#CAABFF] text-transparent bg-clip-text">
+            {t("ctaTitle")}
+          </h2>
+          <p className="text-purple-100/80 max-w-xl mx-auto mt-4 text-sm md:text-base">{t("ctaDesc")}</p>
+
+          <Link
+            href="/auth/signup"
+            className="inline-flex items-center gap-2 px-8 py-3 text-white bg-violet-600 hover:bg-violet-700 transition-all rounded-full uppercase text-sm mt-8 font-medium"
+          >
+            {t("ctaButton")} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </section>

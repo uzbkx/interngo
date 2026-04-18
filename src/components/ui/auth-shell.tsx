@@ -121,15 +121,15 @@ export function AuthShell({
   children: ReactNode;
 }) {
   return (
-    <div className="min-h-[calc(100vh-8rem)] w-full flex items-center justify-center bg-gradient-to-br from-[#060818] to-[#0d1023] p-4">
+    <div className="min-h-[calc(100vh-8rem)] w-full flex items-center justify-center bg-gradient-to-br from-background to-muted/50 p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.97 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
-        className="w-full max-w-4xl overflow-hidden rounded-2xl flex bg-[#090b13] text-white shadow-2xl"
+        className="w-full max-w-4xl overflow-hidden rounded-2xl flex bg-card text-card-foreground shadow-2xl border border-border"
       >
-        <div className="hidden md:block w-1/2 min-h-[600px] relative overflow-hidden border-r border-[#1f2130]">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0f1120] to-[#151929]">
+        <div className="hidden md:block w-1/2 min-h-[600px] relative overflow-hidden border-r border-border">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 to-blue-700 dark:from-indigo-950 dark:to-blue-950">
             <div className="relative w-full h-full">
               <DotMap />
             </div>
@@ -140,7 +140,7 @@ export function AuthShell({
                 transition={{ delay: 0.3, duration: 0.5 }}
                 className="mb-6"
               >
-                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+                <div className="h-12 w-12 rounded-full bg-white/10 backdrop-blur flex items-center justify-center shadow-lg ring-1 ring-white/20">
                   <GraduationCap className="text-white h-6 w-6" />
                 </div>
               </motion.div>
@@ -148,7 +148,7 @@ export function AuthShell({
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
-                className="text-3xl font-bold mb-2 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500"
+                className="text-3xl font-bold mb-2 text-center text-white"
               >
                 {brandTitle}
               </motion.h2>
@@ -157,7 +157,7 @@ export function AuthShell({
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.5 }}
-                  className="text-sm text-center text-gray-400 max-w-xs"
+                  className="text-sm text-center text-white/70 max-w-xs"
                 >
                   {brandTagline}
                 </motion.p>
@@ -173,7 +173,7 @@ export function AuthShell({
             transition={{ duration: 0.4 }}
           >
             <h1 className="text-2xl md:text-3xl font-bold mb-1">{title}</h1>
-            {subtitle && <p className="text-gray-400 mb-8">{subtitle}</p>}
+            {subtitle && <p className="text-muted-foreground mb-8">{subtitle}</p>}
             {children}
           </motion.div>
         </div>

@@ -11,8 +11,8 @@ import { getApiBase } from "@/lib/api";
 import { Captcha, type CaptchaRef } from "@/components/captcha";
 import { cn } from "@/lib/utils";
 
-const darkField =
-  "w-full h-10 rounded-md bg-[#13151f] border border-[#2a2d3a] px-3 py-2 text-sm text-gray-200 placeholder:text-gray-500 focus-visible:outline-none focus-visible:border-blue-500 focus-visible:ring-[3px] focus-visible:ring-blue-500/20 transition-colors";
+const fieldClass =
+  "w-full h-10 rounded-md bg-background border border-input px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20 transition-colors";
 
 export default function SignUpPage() {
   const t = useTranslations("auth");
@@ -51,7 +51,7 @@ export default function SignUpPage() {
         <button
           type="button"
           onClick={() => { window.location.href = `${getApiBase()}/auth/google`; }}
-          className="w-full flex items-center justify-center gap-2 bg-[#13151f] border border-[#2a2d3a] rounded-lg p-3 hover:bg-[#1a1d2b] transition-colors text-sm text-gray-200"
+          className="w-full flex items-center justify-center gap-2 bg-background border border-input rounded-lg p-3 hover:bg-accent transition-colors text-sm text-foreground"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -65,16 +65,16 @@ export default function SignUpPage() {
 
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-[#2a2d3a]" />
+          <div className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-2 bg-[#090b13] text-gray-400">{t("orEmail")}</span>
+          <span className="px-2 bg-card text-muted-foreground">{t("orEmail")}</span>
         </div>
       </div>
 
       <form onSubmit={handleSignUp} className="space-y-5">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
+          <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1">
             {t("name")} <span className="text-blue-500">*</span>
           </label>
           <input
@@ -84,12 +84,12 @@ export default function SignUpPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder={t("namePlaceholder")}
-            className={darkField}
+            className={fieldClass}
           />
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+          <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">
             {t("email")} <span className="text-blue-500">*</span>
           </label>
           <input
@@ -99,12 +99,12 @@ export default function SignUpPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={t("emailPlaceholder")}
-            className={darkField}
+            className={fieldClass}
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
+          <label htmlFor="password" className="block text-sm font-medium text-foreground mb-1">
             {t("password")} <span className="text-blue-500">*</span>
           </label>
           <div className="relative">
@@ -116,12 +116,12 @@ export default function SignUpPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t("passwordSignupPlaceholder")}
-              className={cn(darkField, "pr-10")}
+              className={cn(fieldClass, "pr-10")}
             />
             <button
               type="button"
               onClick={() => setShowPw((v) => !v)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-200"
+              className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-foreground"
             >
               {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
@@ -131,7 +131,7 @@ export default function SignUpPage() {
         <Captcha ref={captchaRef} />
 
         {error && (
-          <Alert variant="destructive" className="bg-red-950/40 border-red-900/60 text-red-200">
+          <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
@@ -139,7 +139,7 @@ export default function SignUpPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full h-10 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium transition-all shadow-md hover:shadow-blue-500/25 disabled:opacity-60 flex items-center justify-center"
+          className="w-full h-10 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-medium transition-all shadow-md hover:shadow-indigo-500/25 disabled:opacity-60 flex items-center justify-center"
         >
           {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
           {loading ? t("creatingAccount") : <>
@@ -149,13 +149,13 @@ export default function SignUpPage() {
         </button>
       </form>
 
-      <p className="text-center text-xs text-gray-500 mt-6">
+      <p className="text-center text-xs text-muted-foreground mt-6">
         {t("haveAccount")}{" "}
         <Link href="/auth/login" className="text-blue-500 hover:text-blue-400 font-medium">
           {t("login")}
         </Link>
       </p>
-      <p className="text-center text-xs text-gray-500 mt-3">
+      <p className="text-center text-xs text-muted-foreground mt-3">
         By signing up you agree to our{" "}
         <Link className="underline hover:no-underline text-gray-400" href="/terms">Terms</Link>{" "}
         and{" "}
