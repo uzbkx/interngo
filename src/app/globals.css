@@ -179,9 +179,13 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden !important;
+    max-width: 100vw;
   }
   html {
     @apply font-sans;
+    overflow-x: hidden !important;
+    max-width: 100vw;
   }
 }
 
