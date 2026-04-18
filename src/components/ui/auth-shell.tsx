@@ -128,7 +128,7 @@ export function AuthShell({
         transition={{ duration: 0.4 }}
         className="w-full max-w-4xl overflow-hidden rounded-2xl flex bg-card text-card-foreground shadow-2xl border border-border"
       >
-        <div className="hidden md:block w-1/2 min-h-[600px] relative overflow-hidden border-r border-border">
+        <div className="hidden md:block w-1/2 relative overflow-hidden border-r border-border">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 to-blue-700 dark:from-indigo-950 dark:to-blue-950">
             <div className="relative w-full h-full">
               <DotMap />
@@ -166,14 +166,14 @@ export function AuthShell({
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 p-8 md:p-10 flex flex-col justify-center">
+        <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <h1 className="text-2xl md:text-3xl font-bold mb-1">{title}</h1>
-            {subtitle && <p className="text-muted-foreground mb-8">{subtitle}</p>}
+            <h1 className="text-xl md:text-2xl font-bold mb-1">{title}</h1>
+            {subtitle && <p className="text-sm text-muted-foreground mb-5">{subtitle}</p>}
             {children}
           </motion.div>
         </div>

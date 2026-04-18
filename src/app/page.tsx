@@ -14,6 +14,7 @@ import { LatestListings } from "@/components/latest-listings";
 import { HeroSearch } from "@/components/hero-search";
 
 import { WorldMap } from "@/components/ui/world-map";
+import { ParticlesBg } from "@/components/ui/particles-bg";
 import {
   Search, Briefcase, BookOpen, Globe, Heart,
   ArrowRight, Sparkles, Radar, Zap, Shield, ChevronRight,
@@ -84,20 +85,8 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gradient-to-br from-indigo-50 via-blue-50 to-sky-50 dark:from-indigo-950/30 dark:via-blue-950/30 dark:to-sky-950/30">
-        <WorldMap
-          lineColor="#4f46e5"
-          dots={[
-            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 52.5, lng: 13.4 } },
-            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 48.9, lng: 2.35 } },
-            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 40.7, lng: -74.0 } },
-            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 51.5, lng: -0.13 } },
-            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 35.7, lng: 139.7 } },
-            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 37.6, lng: 127.0 } },
-            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 55.8, lng: 37.6 } },
-            { start: { lat: 41.3, lng: 69.3 }, end: { lat: 39.9, lng: 116.4 } },
-          ]}
-        />
+      <section className="relative overflow-hidden min-h-[80vh] flex items-center">
+        <ParticlesBg />
         <div className="container mx-auto px-4 py-20 md:py-32 text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-extralight tracking-tight leading-tight mb-6">
             <AnimatedWords text={t("heroTitle")} startDelay={0} step={150} />{" "}
@@ -123,6 +112,33 @@ export default async function HomePage() {
 
       {/* Partners Carousel */}
       <LogosCarousel heading={t("sourcedFrom")} logos={partners} />
+
+      {/* Global Reach — routes from Tashkent to 10 top destinations */}
+      <section className="relative overflow-hidden min-h-[70vh] flex items-center bg-gradient-to-br from-indigo-50 via-blue-50 to-sky-50 dark:from-indigo-950/30 dark:via-blue-950/30 dark:to-sky-950/30">
+        <WorldMap
+          lineColor="#4f46e5"
+          dots={[
+            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 52.52, lng: 13.40 } },   // Germany (Berlin)
+            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 38.89, lng: -77.04 } },  // USA (Washington DC)
+            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 51.50, lng: -0.13 } },   // UK (London)
+            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 52.37, lng: 4.90 } },    // Netherlands (Amsterdam)
+            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 45.42, lng: -75.70 } },  // Canada (Ottawa)
+            { start: { lat: 41.30, lng: 69.30 }, end: { lat: -35.28, lng: 149.13 } }, // Australia (Canberra)
+            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 48.86, lng: 2.35 } },    // France (Paris)
+            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 35.68, lng: 139.65 } },  // Japan (Tokyo)
+            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 37.57, lng: 126.98 } },  // South Korea (Seoul)
+            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 46.95, lng: 7.45 } },    // Switzerland (Bern)
+          ]}
+        />
+        <div className="container mx-auto px-4 py-16 md:py-24 text-center relative z-10">
+          <h2 className="text-3xl md:text-5xl font-extralight tracking-tight leading-tight mb-4">
+            From Tashkent to <span className="text-gradient font-light">the world</span>
+          </h2>
+          <p className="text-base md:text-lg font-thin tracking-wide text-indigo-900/70 dark:text-indigo-200/70 max-w-2xl mx-auto">
+            Opportunities sourced from 10+ top destinations — Germany, USA, UK, Netherlands, Canada, Australia, France, Japan, South Korea, Switzerland.
+          </p>
+        </div>
+      </section>
 
       {/* Categories */}
       <section className="py-16">

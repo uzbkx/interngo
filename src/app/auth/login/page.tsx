@@ -37,11 +37,11 @@ export default function LoginPage() {
       subtitle={t("loginDesc")}
       brandTagline="Sign in to discover internships, scholarships and programs curated for you."
     >
-      <div className="mb-6">
+      <div className="mb-4">
         <button
           type="button"
           onClick={() => { window.location.href = `${getApiBase()}/auth/google`; }}
-          className="w-full flex items-center justify-center gap-2 bg-background border border-input rounded-lg p-3 hover:bg-accent transition-colors text-sm text-foreground"
+          className="w-full flex items-center justify-center gap-2 bg-background border border-input rounded-lg p-2.5 hover:bg-accent transition-colors text-sm text-foreground"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -53,7 +53,7 @@ export default function LoginPage() {
         </button>
       </div>
 
-      <div className="relative my-6">
+      <div className="relative my-4">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-border" />
         </div>
@@ -62,7 +62,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <form onSubmit={handleLogin} className="space-y-5">
+      <form onSubmit={handleLogin} className="space-y-3">
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-foreground mb-1">
             {t("email")} <span className="text-blue-500">*</span>
@@ -127,7 +127,7 @@ export default function LoginPage() {
         </div>
       </form>
 
-      <p className="text-center text-xs text-muted-foreground mt-8">
+      <p className="text-center text-xs text-muted-foreground mt-5">
         {t("noAccount")}{" "}
         <Link href="/auth/signup" className="text-blue-500 hover:text-blue-400 font-medium">
           {t("createAccountBtn")}

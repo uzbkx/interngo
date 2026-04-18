@@ -47,11 +47,11 @@ export default function SignUpPage() {
       subtitle={t("createAccountDesc")}
       brandTagline="Join a global community of students pursuing internships, scholarships, and programs."
     >
-      <div className="mb-6">
+      <div className="mb-4">
         <button
           type="button"
           onClick={() => { window.location.href = `${getApiBase()}/auth/google`; }}
-          className="w-full flex items-center justify-center gap-2 bg-background border border-input rounded-lg p-3 hover:bg-accent transition-colors text-sm text-foreground"
+          className="w-full flex items-center justify-center gap-2 bg-background border border-input rounded-lg p-2.5 hover:bg-accent transition-colors text-sm text-foreground"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -63,7 +63,7 @@ export default function SignUpPage() {
         </button>
       </div>
 
-      <div className="relative my-6">
+      <div className="relative my-4">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-border" />
         </div>
@@ -72,7 +72,7 @@ export default function SignUpPage() {
         </div>
       </div>
 
-      <form onSubmit={handleSignUp} className="space-y-5">
+      <form onSubmit={handleSignUp} className="space-y-3">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-foreground mb-1">
             {t("name")} <span className="text-blue-500">*</span>
@@ -149,13 +149,13 @@ export default function SignUpPage() {
         </button>
       </form>
 
-      <p className="text-center text-xs text-muted-foreground mt-6">
+      <p className="text-center text-xs text-muted-foreground mt-4">
         {t("haveAccount")}{" "}
         <Link href="/auth/login" className="text-blue-500 hover:text-blue-400 font-medium">
           {t("login")}
         </Link>
       </p>
-      <p className="text-center text-xs text-muted-foreground mt-3">
+      <p className="text-center text-xs text-muted-foreground mt-2">
         By signing up you agree to our{" "}
         <Link className="underline hover:no-underline text-gray-400" href="/terms">Terms</Link>{" "}
         and{" "}
