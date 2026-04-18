@@ -109,7 +109,7 @@ export function ParticlesBg({ className = "" }: { className?: string }) {
   return (
     <div
       id="particles-js"
-      className={`absolute inset-0 transition-colors duration-500 bg-gradient-to-tr from-[#e3f2fd] via-[#90caf9] to-[#64b5f6] dark:from-[#000814] dark:via-[#003566] dark:to-[#0077b6] ${className}`}
+      className={`absolute inset-0 bg-gradient-to-tr from-[#000814] via-[#003566] to-[#0077b6] ${className}`}
     />
   );
 }

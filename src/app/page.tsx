@@ -87,8 +87,8 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="relative overflow-hidden min-h-[80vh] flex items-center">
         <ParticlesBg />
-        <div className="container mx-auto px-4 py-20 md:py-32 text-center relative z-10">
-          <h1 className="text-4xl md:text-6xl font-extralight tracking-tight leading-tight mb-6">
+        <div className="container mx-auto px-4 py-20 md:py-32 text-center relative z-10 pointer-events-none">
+          <h1 className="text-4xl md:text-6xl font-extralight tracking-tight leading-tight mb-6 text-white">
             <AnimatedWords text={t("heroTitle")} startDelay={0} step={150} />{" "}
             <span
               className="text-gradient font-light word-animate"
@@ -100,13 +100,17 @@ export default async function HomePage() {
               <> <AnimatedWords text={t("heroSuffix")} startDelay={1200} step={150} /></>
             ) : null}
           </h1>
-          <p className="text-xl md:text-2xl font-thin tracking-wide leading-relaxed text-indigo-900/70 dark:text-indigo-200/70 max-w-3xl mx-auto mb-8">
+          <p className="text-xl md:text-2xl font-thin tracking-wide leading-relaxed text-blue-100/80 max-w-3xl mx-auto mb-8">
             <AnimatedWords text={t("heroDescription")} startDelay={1400} step={80} />
           </p>
 
-          <HeroSearch />
+          <div className="pointer-events-auto">
+            <HeroSearch />
+          </div>
 
-          <LiveStats />
+          <div className="pointer-events-auto">
+            <LiveStats />
+          </div>
         </div>
       </section>
 
