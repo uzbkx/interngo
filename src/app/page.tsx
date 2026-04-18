@@ -220,8 +220,8 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section className="py-16">
-        <div className="max-w-5xl py-16 md:w-full mx-2 md:mx-auto flex flex-col items-center justify-center text-center bg-gradient-to-b from-[#5524B7] to-[#380B60] rounded-2xl p-10 text-white">
-          <div className="flex flex-wrap items-center justify-center p-1 rounded-full bg-purple-600/10 backdrop-blur border border-purple-500/40 text-sm">
+        <div className="max-w-5xl py-16 md:w-full mx-2 md:mx-auto flex flex-col items-center justify-center text-center bg-gradient-to-br from-indigo-600 to-blue-700 rounded-2xl p-10 text-white">
+          <div className="flex flex-wrap items-center justify-center p-1 rounded-full bg-white/10 backdrop-blur border border-white/30 text-sm">
             <div className="flex items-center">
               <img
                 className="size-6 md:size-7 rounded-full border-[3px] border-white object-cover"
@@ -242,14 +242,14 @@ export default async function HomePage() {
             <p className="-translate-x-2 font-medium">Join 10k+ students chasing opportunities</p>
           </div>
 
-          <h2 className="text-4xl md:text-5xl md:leading-[60px] font-semibold max-w-xl mt-5 bg-gradient-to-r from-white to-[#CAABFF] text-transparent bg-clip-text">
+          <h2 className="text-4xl md:text-5xl md:leading-[60px] font-semibold max-w-xl mt-5 bg-gradient-to-r from-white to-blue-200 text-transparent bg-clip-text">
             {t("ctaTitle")}
           </h2>
-          <p className="text-purple-100/80 max-w-xl mx-auto mt-4 text-sm md:text-base">{t("ctaDesc")}</p>
+          <p className="text-indigo-100/80 max-w-xl mx-auto mt-4 text-sm md:text-base">{t("ctaDesc")}</p>
 
           <Link
             href="/auth/signup"
-            className="inline-flex items-center gap-2 px-8 py-3 text-white bg-violet-600 hover:bg-violet-700 transition-all rounded-full uppercase text-sm mt-8 font-medium"
+            className="inline-flex items-center gap-2 px-8 py-3 text-indigo-700 bg-white hover:bg-blue-50 transition-all rounded-full uppercase text-sm mt-8 font-medium shadow-md"
           >
             {t("ctaButton")} <ArrowRight className="h-4 w-4" />
           </Link>
