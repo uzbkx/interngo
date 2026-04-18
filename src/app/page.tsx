@@ -18,6 +18,23 @@ import {
   ArrowRight, Sparkles, Radar, Zap, Shield, ChevronRight,
 } from "lucide-react";
 
+function AnimatedWords({ text, startDelay = 0, step = 150 }: { text: string; startDelay?: number; step?: number }) {
+  const words = text.split(/\s+/).filter(Boolean);
+  return (
+    <>
+      {words.map((w, i) => (
+        <span
+          key={`${w}-${i}`}
+          className="word-animate"
+          style={{ animationDelay: `${startDelay + i * step}ms` }}
+        >
+          {w}
+        </span>
+      ))}
+    </>
+  );
+}
+
 const partners = [
   { id: "un", name: "United Nations", image: "/logos/un.png" },
   { id: "google", name: "Google", image: "/logos/google.png" },
@@ -71,18 +88,18 @@ export default async function HomePage() {
           ]}
         />
         <div className="container mx-auto px-4 py-20 md:py-32 text-center relative z-10">
-          <AnimatedGradientText className="mb-6">
-            <Sparkles className="h-4 w-4 mr-2" />
-            {t("aiBadge")}
-            <ChevronRight className="h-4 w-4 ml-1" />
-          </AnimatedGradientText>
-
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">
-            {t("heroTitle")}{" "}
-            <span className="text-gradient">{t("heroHighlight")}</span>
-            {t("heroSuffix") && t("heroSuffix") !== "heroSuffix" ? " " + t("heroSuffix") : ""}
+          <h1 className="text-4xl md:text-6xl font-extralight tracking-tight leading-tight mb-6">
+            <AnimatedWords text={t("heroTitle")} startDelay={0} step={150} />{" "}
+            <span className="text-gradient font-light">
+              <AnimatedWords text={t("heroHighlight")} startDelay={600} step={150} />
+            </span>
+            {t("heroSuffix") && t("heroSuffix") !== "heroSuffix" ? (
+              <> <AnimatedWords text={t("heroSuffix")} startDelay={1200} step={150} /></>
+            ) : null}
           </h1>
-          <p className="text-lg text-indigo-900/70 dark:text-indigo-200/70 max-w-2xl mx-auto mb-8">{t("heroDescription")}</p>
+          <p className="text-lg font-thin tracking-wide text-indigo-900/70 dark:text-indigo-200/70 max-w-2xl mx-auto mb-8 leading-relaxed">
+            <AnimatedWords text={t("heroDescription")} startDelay={1400} step={80} />
+          </p>
 
           <form action="/listings" method="GET" className="flex max-w-xl mx-auto gap-2 mb-10">
             <div className="relative flex-1">
