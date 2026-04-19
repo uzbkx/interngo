@@ -118,30 +118,22 @@ export default async function HomePage() {
       <LogosCarousel heading={t("sourcedFrom")} logos={partners} />
 
       {/* Global Reach — routes from Tashkent to 10 top destinations */}
-      <section className="relative overflow-hidden min-h-[70vh] flex items-center bg-gradient-to-br from-indigo-50 via-blue-50 to-sky-50 dark:from-indigo-950/30 dark:via-blue-950/30 dark:to-sky-950/30">
+      <section className="relative overflow-hidden min-h-[60vh] flex items-center bg-gradient-to-br from-indigo-50 via-blue-50 to-sky-50 dark:from-indigo-950/30 dark:via-blue-950/30 dark:to-sky-950/30">
         <WorldMap
           lineColor="#4f46e5"
           dots={[
-            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 52.52, lng: 13.40 } },   // Germany (Berlin)
-            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 38.89, lng: -77.04 } },  // USA (Washington DC)
-            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 51.50, lng: -0.13 } },   // UK (London)
-            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 52.37, lng: 4.90 } },    // Netherlands (Amsterdam)
-            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 45.42, lng: -75.70 } },  // Canada (Ottawa)
-            { start: { lat: 41.30, lng: 69.30 }, end: { lat: -35.28, lng: 149.13 } }, // Australia (Canberra)
-            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 48.86, lng: 2.35 } },    // France (Paris)
-            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 35.68, lng: 139.65 } },  // Japan (Tokyo)
-            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 37.57, lng: 126.98 } },  // South Korea (Seoul)
-            { start: { lat: 41.30, lng: 69.30 }, end: { lat: 46.95, lng: 7.45 } },    // Switzerland (Bern)
+            { start: { lat: 41.2995, lng: 69.2401 }, end: { lat: 52.5200, lng: 13.4050 } },   // Tashkent → Berlin (Germany)
+            { start: { lat: 41.2995, lng: 69.2401 }, end: { lat: 40.7128, lng: -74.0060 } },  // Tashkent → New York (USA)
+            { start: { lat: 41.2995, lng: 69.2401 }, end: { lat: 51.5074, lng: -0.1278 } },   // Tashkent → London (UK)
+            { start: { lat: 41.2995, lng: 69.2401 }, end: { lat: 52.3676, lng: 4.9041 } },    // Tashkent → Amsterdam (Netherlands)
+            { start: { lat: 41.2995, lng: 69.2401 }, end: { lat: 43.6532, lng: -79.3832 } },  // Tashkent → Toronto (Canada)
+            { start: { lat: 41.2995, lng: 69.2401 }, end: { lat: -33.8688, lng: 151.2093 } }, // Tashkent → Sydney (Australia)
+            { start: { lat: 41.2995, lng: 69.2401 }, end: { lat: 48.8566, lng: 2.3522 } },    // Tashkent → Paris (France)
+            { start: { lat: 41.2995, lng: 69.2401 }, end: { lat: 35.6762, lng: 139.6503 } },  // Tashkent → Tokyo (Japan)
+            { start: { lat: 41.2995, lng: 69.2401 }, end: { lat: 37.5665, lng: 126.9780 } },  // Tashkent → Seoul (South Korea)
+            { start: { lat: 41.2995, lng: 69.2401 }, end: { lat: 47.3769, lng: 8.5417 } },    // Tashkent → Zurich (Switzerland)
           ]}
         />
-        <div className="container mx-auto px-4 py-16 md:py-24 text-center relative z-10">
-          <h2 className="text-3xl md:text-5xl font-extralight tracking-tight leading-tight mb-4">
-            From Tashkent to <span className="text-gradient font-light">the world</span>
-          </h2>
-          <p className="text-base md:text-lg font-thin tracking-wide text-indigo-900/70 dark:text-indigo-200/70 max-w-2xl mx-auto">
-            Opportunities sourced from 10+ top destinations — Germany, USA, UK, Netherlands, Canada, Australia, France, Japan, South Korea, Switzerland.
-          </p>
-        </div>
       </section>
 
       {/* Categories */}
