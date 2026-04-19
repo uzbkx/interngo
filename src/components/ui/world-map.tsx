@@ -27,6 +27,9 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
 
   const map = useMemo(() => new DottedMap({ height: 100, grid: "diagonal" }), []);
 
+  const mapWidth = (map as unknown as { width: number }).width;
+  const mapHeight = (map as unknown as { height: number }).height;
+
   const svgMap = useMemo(
     () => map.getSVG({
       radius: 0.22,
@@ -38,14 +41,28 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
   );
 
   const projectPoint = (lat: number, lng: number) => {
-    const x = (lng + 180) * (800 / 360);
-    const y = (90 - lat) * (400 / 180);
+    const pin = (map as unknown as {
+      getPin: (args: { lat: number; lng: number }) => { x: number; y: number } | undefined;
+    }).getPin({ lat, lng });
+    if (pin) return { x: pin.x, y: pin.y };
+    // fallback to mercator if getPin fails (edge of map)
+    const x = ((lng + 180) / 360) * mapWidth;
+    const latRad = (lat * Math.PI) / 180;
+    const mercN = Math.log(Math.tan(Math.PI / 4 + latRad / 2));
+    const y = mapHeight / 2 - (mapWidth / (2 * Math.PI)) * mercN;
     return { x, y };
   };
 
+  const scale = mapHeight / 400;
+  const r1 = 2 * scale;
+  const r2 = 3 * scale;
+  const r3 = 8 * scale;
+  const strokeW = Math.max(0.3, 1 * scale);
+  const arcLift = 50 * scale;
+
   const createCurvedPath = (start: { x: number; y: number }, end: { x: number; y: number }) => {
     const midX = (start.x + end.x) / 2;
-    const midY = Math.min(start.y, end.y) - 50;
+    const midY = Math.min(start.y, end.y) - arcLift;
     return `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
   };
 
@@ -59,17 +76,17 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
       <div className="absolute inset-0 flex items-center justify-center opacity-80">
         <Image
           src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-          className="w-full h-full object-cover [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)]"
+          className="w-full h-full object-contain [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)]"
           alt=""
-          height={495}
-          width={1056}
+          height={mapHeight}
+          width={mapWidth}
           draggable={false}
           priority
         />
       </div>
       <svg
         ref={svgRef}
-        viewBox="0 0 800 400"
+        viewBox={`0 0 ${mapWidth} ${mapHeight}`}
         className="absolute inset-0 w-full h-full opacity-60"
         preserveAspectRatio="xMidYMid meet"
       >
@@ -95,7 +112,7 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
                 d={createCurvedPath(startPoint, endPoint)}
                 fill="none"
                 stroke="url(#hero-path-gradient)"
-                strokeWidth="1"
+                strokeWidth={strokeW}
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: [0, 0, 1, 1, 0] }}
                 transition={{
@@ -106,7 +123,7 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
                 }}
               />
               <motion.circle
-                r="3"
+                r={r2}
                 fill={lineColor}
                 initial={{ offsetDistance: "0%", opacity: 0 }}
                 animate={{
@@ -122,16 +139,16 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
                 style={{ offsetPath: `path('${createCurvedPath(startPoint, endPoint)}')` }}
               />
               {/* Dots at endpoints */}
-              <circle cx={startPoint.x} cy={startPoint.y} r="2" fill={lineColor} opacity="0.6">
-                <animate attributeName="r" from="2" to="8" dur="2s" repeatCount="indefinite" />
+              <circle cx={startPoint.x} cy={startPoint.y} r={r1} fill={lineColor} opacity="0.6">
+                <animate attributeName="r" from={r1} to={r3} dur="2s" repeatCount="indefinite" />
                 <animate attributeName="opacity" from="0.6" to="0" dur="2s" repeatCount="indefinite" />
               </circle>
-              <circle cx={startPoint.x} cy={startPoint.y} r="2" fill={lineColor} />
-              <circle cx={endPoint.x} cy={endPoint.y} r="2" fill={lineColor} opacity="0.6">
-                <animate attributeName="r" from="2" to="8" dur="2s" begin="0.5s" repeatCount="indefinite" />
+              <circle cx={startPoint.x} cy={startPoint.y} r={r1} fill={lineColor} />
+              <circle cx={endPoint.x} cy={endPoint.y} r={r1} fill={lineColor} opacity="0.6">
+                <animate attributeName="r" from={r1} to={r3} dur="2s" begin="0.5s" repeatCount="indefinite" />
                 <animate attributeName="opacity" from="0.6" to="0" dur="2s" begin="0.5s" repeatCount="indefinite" />
               </circle>
-              <circle cx={endPoint.x} cy={endPoint.y} r="2" fill={lineColor} />
+              <circle cx={endPoint.x} cy={endPoint.y} r={r1} fill={lineColor} />
             </g>
           );
         })}
