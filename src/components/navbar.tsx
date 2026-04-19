@@ -69,7 +69,7 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 ${
-                isActive(link.href) ? "text-primary" : "text-muted-foreground hover:text-primary"
+                isActive(link.href) ? "text-primary" : "text-foreground hover:text-primary"
               }`}
               onMouseEnter={() => setHoveredLink(link.href)}
               onMouseLeave={() => setHoveredLink(null)}
@@ -165,7 +165,7 @@ export function Navbar() {
                   href={link.href}
                   onClick={() => setOpen(false)}
                   className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                    isActive(link.href) ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    isActive(link.href) ? "bg-primary/10 text-primary" : "text-foreground hover:text-primary hover:bg-muted"
                   }`}
                 >
                   <link.icon className="h-4 w-4" />

@@ -22,7 +22,7 @@ const LogosCarousel = ({ heading, logos = [] }: LogosCarouselProps) => {
   return (
     <section className="py-8 border-b">
       {heading && (
-        <p className="text-center text-xs text-muted-foreground mb-4">{heading}</p>
+        <p className="text-center text-xs text-foreground mb-4">{heading}</p>
       )}
       <div className="relative mx-auto flex items-center justify-center lg:max-w-5xl">
         <Carousel
@@ -44,12 +44,12 @@ const LogosCarousel = ({ heading, logos = [] }: LogosCarouselProps) => {
                         className="h-7 w-7 object-contain"
                         loading="lazy"
                       />
-                      <span className="text-sm font-semibold text-foreground/80 whitespace-nowrap hidden sm:inline">
+                      <span className="text-sm font-semibold text-foreground whitespace-nowrap hidden sm:inline">
                         {logo.name}
                       </span>
                     </>
                   ) : (
-                    <span className="text-sm font-semibold text-foreground/70 whitespace-nowrap">
+                    <span className="text-sm font-semibold text-foreground whitespace-nowrap">
                       {logo.name}
                     </span>
                   )}
