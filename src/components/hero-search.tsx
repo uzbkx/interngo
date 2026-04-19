@@ -85,7 +85,7 @@ export function HeroSearch() {
   return (
     <div ref={wrapRef} className="relative max-w-xl mx-auto mb-10">
       <form onSubmit={submit} className="relative">
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-4 text-muted-foreground/80">
+        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-4 text-foreground">
           {loading ? (
             <LoaderCircle className="animate-spin" size={18} strokeWidth={2} aria-label="Loading" />
           ) : (
@@ -103,7 +103,7 @@ export function HeroSearch() {
           placeholder={t("searchPlaceholder")}
           className={cn(
             "h-12 w-full rounded-xl border border-indigo-400/50 bg-background pl-12 pr-28 text-base shadow-sm",
-            "transition-shadow placeholder:text-muted-foreground/70",
+            "transition-shadow placeholder:text-foreground/70 text-foreground",
             "focus-visible:border-indigo-500 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-indigo-500/20",
             "[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none",
           )}
@@ -119,9 +119,9 @@ export function HeroSearch() {
       {showDropdown && (
         <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-20 rounded-xl border border-border bg-background/95 backdrop-blur-xl shadow-lg overflow-hidden">
           {loading && results.length === 0 ? (
-            <div className="px-4 py-6 text-sm text-muted-foreground text-center">Searching…</div>
+            <div className="px-4 py-6 text-sm text-foreground text-center">Searching…</div>
           ) : results.length === 0 ? (
-            <div className="px-4 py-6 text-sm text-muted-foreground text-center">No matches</div>
+            <div className="px-4 py-6 text-sm text-foreground text-center">No matches</div>
           ) : (
             <>
               {results.map((r) => (
@@ -142,12 +142,12 @@ export function HeroSearch() {
                   <div className="flex-1 min-w-0 text-left">
                     <div className="text-sm font-medium truncate">{r.title}</div>
                     {(r.organizationId?.name || r.organizationName) && (
-                      <div className="text-xs text-muted-foreground truncate">
+                      <div className="text-xs text-foreground truncate">
                         {r.organizationId?.name || r.organizationName}
                       </div>
                     )}
                   </div>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                  <ArrowRight className="h-4 w-4 text-foreground shrink-0" />
                 </Link>
               ))}
               <Link
