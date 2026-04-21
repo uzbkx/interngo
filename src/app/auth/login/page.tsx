@@ -14,18 +14,26 @@ import { cn } from "@/lib/utils";
 const fieldClass =
   "w-full h-10 rounded-md bg-background border border-input px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20 transition-colors";
 
-function safeRedirect(raw: string | null): string {
+function safeRedirect(raw: string | null | undefined): string {
   if (!raw) return "/";
   // Only allow same-origin relative paths
   if (raw.startsWith("/") && !raw.startsWith("//")) return raw;
   return "/";
 }
 
+function readRedirect(queryRedirect: string | null): string {
+  let stored: string | null = null;
+  try {
+    stored = sessionStorage.getItem("postLoginRedirect");
+    if (stored) sessionStorage.removeItem("postLoginRedirect");
+  } catch {}
+  return safeRedirect(queryRedirect ?? stored);
+}
+
 export default function LoginPage() {
   const t = useTranslations("auth");
   const { login } = useAuth();
   const searchParams = useSearchParams();
-  const redirectTo = safeRedirect(searchParams.get("redirect"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
@@ -38,7 +46,7 @@ export default function LoginPage() {
     setLoading(true);
     const result = await login(email, password);
     if (result.error) { setError(result.error); setLoading(false); return; }
-    window.location.href = redirectTo;
+    window.location.href = readRedirect(searchParams.get("redirect"));
   }
 
   return (

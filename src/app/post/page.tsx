@@ -55,6 +55,9 @@ export default function PostListingPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
+      try {
+        sessionStorage.setItem("postLoginRedirect", "/post");
+      } catch {}
       router.replace("/auth/login?redirect=/post");
     }
   }, [authLoading, user, router]);
