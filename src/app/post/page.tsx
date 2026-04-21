@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { apiFetch } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
 import { Captcha, type CaptchaRef } from "@/components/captcha";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,6 +50,14 @@ interface Organization {
 export default function PostListingPage() {
   const t = useTranslations("post");
   const tt = useTranslations("types");
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace("/auth/login?redirect=/post");
+    }
+  }, [authLoading, user, router]);
 
   const [mode, setMode] = useState<PostMode>("choose");
   const [postAs, setPostAs] = useState<"organization" | "individual" | null>(null);
@@ -172,6 +182,14 @@ export default function PostListingPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  if (authLoading || !user) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
   }
 
   if (submitted) {
