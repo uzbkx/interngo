@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AuthShell } from "@/components/ui/auth-shell";
@@ -13,9 +14,18 @@ import { cn } from "@/lib/utils";
 const fieldClass =
   "w-full h-10 rounded-md bg-background border border-input px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20 transition-colors";
 
+function safeRedirect(raw: string | null): string {
+  if (!raw) return "/";
+  // Only allow same-origin relative paths
+  if (raw.startsWith("/") && !raw.startsWith("//")) return raw;
+  return "/";
+}
+
 export default function LoginPage() {
   const t = useTranslations("auth");
   const { login } = useAuth();
+  const searchParams = useSearchParams();
+  const redirectTo = safeRedirect(searchParams.get("redirect"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
@@ -28,7 +38,7 @@ export default function LoginPage() {
     setLoading(true);
     const result = await login(email, password);
     if (result.error) { setError(result.error); setLoading(false); return; }
-    window.location.href = "/";
+    window.location.href = redirectTo;
   }
 
   return (
