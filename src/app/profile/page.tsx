@@ -52,6 +52,7 @@ interface Profile {
   preferredCountries?: string[];
   preferRemote?: boolean;
   preferPaid?: boolean;
+  preferredKeywords?: string[];
   notificationsEnabled?: boolean;
 }
 
@@ -79,6 +80,7 @@ export default function ProfilePage() {
   const [telegramLoading, setTelegramLoading] = useState(false);
   const [prefTypes, setPrefTypes] = useState<string[]>([]);
   const [prefCountries, setPrefCountries] = useState("");
+  const [prefKeywords, setPrefKeywords] = useState("");
   const [prefRemote, setPrefRemote] = useState(false);
   const [prefPaid, setPrefPaid] = useState(false);
   const [notifEnabled, setNotifEnabled] = useState(false);
@@ -97,6 +99,7 @@ export default function ProfilePage() {
         setBio(profileData.bio || "");
         setPrefTypes(profileData.preferredTypes || []);
         setPrefCountries((profileData.preferredCountries || []).join(", "));
+        setPrefKeywords((profileData.preferredKeywords || []).join(", "));
         setPrefRemote(profileData.preferRemote || false);
         setPrefPaid(profileData.preferPaid || false);
         setNotifEnabled(profileData.notificationsEnabled || false);
@@ -401,8 +404,8 @@ export default function ProfilePage() {
                 <div>
                   <Label className="text-xs font-medium mb-2 block">{tp("opportunityTypes")}</Label>
                   <div className="flex flex-wrap gap-2">
-                    {["INTERNSHIP", "SCHOLARSHIP", "PROGRAM", "VOLUNTEER", "JOB"].map((type) => {
-                      const labels: Record<string, string> = { INTERNSHIP: "Internships", SCHOLARSHIP: "Scholarships", PROGRAM: "Programs", VOLUNTEER: "Volunteering", JOB: "Jobs" };
+                    {["INTERNSHIP", "SCHOLARSHIP", "PROGRAM", "VOLUNTEER", "JOB", "OTHER"].map((type) => {
+                      const labels: Record<string, string> = { INTERNSHIP: "Internships", SCHOLARSHIP: "Scholarships", PROGRAM: "Programs", VOLUNTEER: "Volunteering", JOB: "Jobs", OTHER: "Other" };
                       const isSelected = prefTypes.includes(type);
                       return (
                         <button
@@ -439,6 +442,25 @@ export default function ProfilePage() {
                     className="h-9"
                   />
                   <p className="text-[11px] text-muted-foreground mt-1">{tp("countriesHint")}</p>
+                </div>
+
+                <Separator />
+
+                {/* Keywords */}
+                <div>
+                  <Label className="text-xs font-medium flex items-center gap-1 mb-2">
+                    <Sparkles className="h-3 w-3" />
+                    Keywords
+                  </Label>
+                  <Input
+                    placeholder="e.g. AI, data science, renewable energy"
+                    value={prefKeywords}
+                    onChange={(e) => setPrefKeywords(e.target.value)}
+                    className="h-9"
+                  />
+                  <p className="text-[11px] text-muted-foreground mt-1">
+                    Comma-separated. Matches listing titles and descriptions.
+                  </p>
                 </div>
 
                 <Separator />
@@ -489,11 +511,13 @@ export default function ProfilePage() {
                     setPrefSaving(true);
                     try {
                       const countries = prefCountries.split(",").map((c) => c.trim()).filter(Boolean);
+                      const keywords = prefKeywords.split(",").map((k) => k.trim()).filter(Boolean);
                       await apiFetch("/users/preferences", {
                         method: "PATCH",
                         body: JSON.stringify({
                           preferredTypes: prefTypes,
                           preferredCountries: countries,
+                          preferredKeywords: keywords,
                           preferRemote: prefRemote,
                           preferPaid: prefPaid,
                           notificationsEnabled: notifEnabled,
