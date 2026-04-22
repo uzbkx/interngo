@@ -34,6 +34,9 @@ import {
   Globe,
   DollarSign,
   MapPin,
+  Pencil,
+  Trash2,
+  X,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
@@ -78,6 +81,12 @@ export default function ProfilePage() {
   const [bio, setBio] = useState("");
   const [telegramCode, setTelegramCode] = useState("");
   const [telegramLoading, setTelegramLoading] = useState(false);
+  const [orgEditing, setOrgEditing] = useState(false);
+  const [orgSaving, setOrgSaving] = useState(false);
+  const [orgDeleting, setOrgDeleting] = useState(false);
+  const [orgName, setOrgName] = useState("");
+  const [orgDescription, setOrgDescription] = useState("");
+  const [orgWebsite, setOrgWebsite] = useState("");
   const [prefTypes, setPrefTypes] = useState<string[]>([]);
   const [prefCountries, setPrefCountries] = useState("");
   const [prefKeywords, setPrefKeywords] = useState("");
@@ -107,7 +116,16 @@ export default function ProfilePage() {
         // These can fail without breaking the page
         try {
           const orgRes = await apiFetch("/organizations/mine");
-          if (orgRes.ok) { const orgData = await orgRes.json(); setOrg(orgData.organization || null); }
+          if (orgRes.ok) {
+            const orgData = await orgRes.json();
+            const o = orgData.organization || null;
+            setOrg(o);
+            if (o) {
+              setOrgName(o.name || "");
+              setOrgDescription(o.description || "");
+              setOrgWebsite(o.website || "");
+            }
+          }
         } catch {}
 
         try {
@@ -159,6 +177,57 @@ export default function ProfilePage() {
       body: JSON.stringify({ listingId }),
     });
     setSavedListings((prev) => prev.filter((s) => s.listingId !== listingId && s.listing?._id !== listingId));
+  }
+
+  async function handleSaveOrg() {
+    if (!orgName.trim()) {
+      toast.error("Organization name is required");
+      return;
+    }
+    setOrgSaving(true);
+    try {
+      const normalizedWebsite = orgWebsite.trim()
+        ? `https://${orgWebsite.trim().replace(/^https?:\/\//, "")}`
+        : "";
+      const res = await apiFetch("/organizations/mine", {
+        method: "PATCH",
+        body: JSON.stringify({
+          name: orgName.trim(),
+          description: orgDescription.trim() || undefined,
+          website: normalizedWebsite || undefined,
+        }),
+      });
+      if (!res.ok) throw new Error("Failed to save");
+      const data = await res.json();
+      setOrg(data.organization);
+      setOrgEditing(false);
+      toast.success("Organization updated");
+    } catch {
+      toast.error("Failed to save organization");
+    } finally {
+      setOrgSaving(false);
+    }
+  }
+
+  async function handleDeleteOrg() {
+    if (!confirm("Delete this organization? Listings posted under this org will stay but lose the link.")) {
+      return;
+    }
+    setOrgDeleting(true);
+    try {
+      const res = await apiFetch("/organizations/mine", { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete");
+      setOrg(null);
+      setOrgName("");
+      setOrgDescription("");
+      setOrgWebsite("");
+      setOrgEditing(false);
+      toast.success("Organization deleted");
+    } catch {
+      toast.error("Failed to delete organization");
+    } finally {
+      setOrgDeleting(false);
+    }
   }
 
   if (loading) {
@@ -279,18 +348,95 @@ export default function ProfilePage() {
                 Organization
               </h2>
 
-              {org ? (
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary text-sm font-bold">
-                    {org.name[0].toUpperCase()}
+              {org && !orgEditing ? (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary text-sm font-bold">
+                      {org.name[0].toUpperCase()}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium">{org.name}</p>
+                      {org.website && (
+                        <a href={org.website} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline break-all">
+                          {org.website}
+                        </a>
+                      )}
+                      {org.description && (
+                        <p className="text-xs text-muted-foreground mt-1">{org.description}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm" onClick={() => setOrgEditing(true)}>
+                      <Pencil className="h-3.5 w-3.5 mr-1.5" />
+                      Edit
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-destructive"
+                      disabled={orgDeleting}
+                      onClick={handleDeleteOrg}
+                    >
+                      {orgDeleting ? (
+                        <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                      ) : (
+                        <Trash2 className="h-3.5 w-3.5 mr-1.5" />
+                      )}
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ) : org && orgEditing ? (
+                <div className="space-y-3">
+                  <div>
+                    <Label htmlFor="editOrgName" className="text-xs">Name *</Label>
+                    <Input id="editOrgName" value={orgName} onChange={(e) => setOrgName(e.target.value)} className="h-9" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium">{org.name}</p>
-                    {org.website && (
-                      <a href={org.website} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">
-                        {org.website}
-                      </a>
-                    )}
+                    <Label htmlFor="editOrgDescription" className="text-xs">Description</Label>
+                    <Textarea
+                      id="editOrgDescription"
+                      value={orgDescription}
+                      onChange={(e) => setOrgDescription(e.target.value)}
+                      rows={2}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="editOrgWebsite" className="text-xs">Website</Label>
+                    <div className="flex h-9">
+                      <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-input bg-muted text-muted-foreground text-xs">https://</span>
+                      <input
+                        id="editOrgWebsite"
+                        placeholder="example.com"
+                        value={orgWebsite.replace(/^https?:\/\//, "")}
+                        onChange={(e) => setOrgWebsite(e.target.value.replace(/^https?:\/\//, ""))}
+                        className="flex h-9 w-full rounded-r-lg rounded-l-none border border-input bg-background px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button size="sm" disabled={orgSaving} onClick={handleSaveOrg}>
+                      {orgSaving ? (
+                        <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                      ) : (
+                        <Save className="h-3.5 w-3.5 mr-1.5" />
+                      )}
+                      Save
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setOrgEditing(false);
+                        setOrgName(org.name);
+                        setOrgDescription(org.description || "");
+                        setOrgWebsite(org.website || "");
+                      }}
+                    >
+                      <X className="h-3.5 w-3.5 mr-1.5" />
+                      Cancel
+                    </Button>
                   </div>
                 </div>
               ) : (
