@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import {
-  GraduationCap,
   Send,
   Loader2,
   Building2,

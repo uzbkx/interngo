@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
-  GraduationCap,
   Menu,
   Search,
   Briefcase,
@@ -28,6 +27,7 @@ import {
   LogOut,
   User,
 } from "lucide-react";
+import { Logo } from "@/components/logo";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -56,9 +56,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/70 backdrop-blur-xl">
       <div className="container mx-auto flex h-14 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-600 to-blue-600 shadow-md group-hover:shadow-lg transition-shadow">
-            <GraduationCap className="h-5 w-5 text-white" />
-          </div>
+          <Logo size={32} priority className="shadow-md group-hover:shadow-lg transition-shadow" />
           <span className="text-lg font-bold tracking-tight">InternGo</span>
         </Link>
 
