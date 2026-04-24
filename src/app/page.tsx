@@ -118,7 +118,7 @@ export default async function HomePage() {
       <LogosCarousel heading={t("sourcedFrom")} logos={partners} />
 
       {/* Global Reach — routes from Tashkent to 10 top destinations */}
-      <section className="relative overflow-hidden min-h-[60vh] flex items-center bg-gradient-to-br from-indigo-50 via-blue-50 to-sky-50 dark:from-indigo-950/30 dark:via-blue-950/30 dark:to-sky-950/30">
+      <section className="relative overflow-hidden min-h-[60vh] flex items-end bg-gradient-to-br from-indigo-50 via-blue-50 to-sky-50 dark:from-indigo-950/30 dark:via-blue-950/30 dark:to-sky-950/30">
         <WorldMap
           lineColor="#4f46e5"
           dots={[
@@ -134,8 +134,8 @@ export default async function HomePage() {
             { start: { lat: 41.2995, lng: 69.2401 }, end: { lat: 47.3769, lng: 8.5417 } },    // Tashkent → Zurich (Switzerland)
           ]}
         />
-        <div className="container mx-auto px-4 py-16 md:py-24 text-center relative z-10 pointer-events-none">
-          <p className="text-base md:text-lg font-thin tracking-wide text-indigo-900/70 dark:text-indigo-200/70 max-w-2xl mx-auto">
+        <div className="container mx-auto px-4 pb-8 md:pb-12 text-center relative z-10 pointer-events-none">
+          <p className="text-base md:text-lg font-thin tracking-wide text-black dark:text-white max-w-2xl mx-auto">
             Opportunities sourced from 10+ top destinations — Germany, USA, UK, Netherlands, Canada, Australia, France, Japan, South Korea, Switzerland.
           </p>
         </div>
