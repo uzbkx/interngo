@@ -33,7 +33,7 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
   const svgMap = useMemo(
     () => map.getSVG({
       radius: 0.22,
-      color: isDark ? "#FFFFFF90" : "#00000045",
+      color: isDark ? "#FFFFFF90" : "#000000",
       shape: "circle",
       backgroundColor: "transparent",
     }),
