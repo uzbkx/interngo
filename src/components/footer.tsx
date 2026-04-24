@@ -4,7 +4,8 @@ import type { ComponentProps, ReactNode } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "motion/react";
-import { GraduationCap, Send } from "lucide-react";
+import { Send } from "lucide-react";
+import { Logo } from "@/components/logo";
 
 export function Footer() {
   const t = useTranslations("footer");
@@ -48,9 +49,7 @@ export function Footer() {
       <div className="grid w-full gap-8 xl:grid-cols-3 xl:gap-8">
         <AnimatedContainer className="space-y-4">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="flex items-center justify-center h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-600 to-blue-600 shadow-md">
-              <GraduationCap className="h-5 w-5 text-white" />
-            </div>
+            <Logo size={32} className="shadow-md" />
             <span className="text-lg font-bold tracking-tight">InternGo</span>
           </Link>
           <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">{t("tagline")}</p>

@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { GraduationCap, Check } from "lucide-react";
+import { Check } from "lucide-react";
+import { Logo } from "@/components/logo";
 
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
@@ -92,7 +93,7 @@ export default function ResetPasswordPage() {
       <Card className="w-full max-w-md">
         <CardContent className="p-8">
           <div className="text-center mb-8">
-            <GraduationCap className="h-10 w-10 mx-auto text-primary mb-3" />
+            <Logo size={48} className="mx-auto mb-3" />
             <h1 className="text-2xl font-bold">Set new password</h1>
             <p className="text-sm text-muted-foreground mt-1">
               Enter your new password below

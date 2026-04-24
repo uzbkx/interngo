@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { GraduationCap, Radar, Globe, Users, ShieldCheck } from "lucide-react";
+import { Radar, Globe, Users, ShieldCheck } from "lucide-react";
+import { Logo } from "@/components/logo";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -11,7 +12,7 @@ export default function AboutPage() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-2xl">
       <div className="text-center mb-10">
-        <GraduationCap className="h-8 w-8 mx-auto text-primary mb-3" />
+        <Logo size={48} className="mx-auto mb-3" />
         <h1 className="text-2xl font-bold mb-2">About InternGo</h1>
         <p className="text-sm text-muted-foreground">
           Connecting students in Uzbekistan with global opportunities

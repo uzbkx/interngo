@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import {
-  GraduationCap,
   Send,
   Loader2,
   Building2,
@@ -55,6 +54,9 @@ export default function PostListingPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
+      try {
+        sessionStorage.setItem("postLoginRedirect", "/post");
+      } catch {}
       router.replace("/auth/login?redirect=/post");
     }
   }, [authLoading, user, router]);

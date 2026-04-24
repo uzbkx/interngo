@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { GraduationCap } from "lucide-react";
+import { Logo } from "@/components/logo";
 
 function DotMap() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -140,9 +140,7 @@ export function AuthShell({
                 transition={{ delay: 0.3, duration: 0.5 }}
                 className="mb-6"
               >
-                <div className="h-12 w-12 rounded-full bg-white/10 backdrop-blur flex items-center justify-center shadow-lg ring-1 ring-white/20">
-                  <GraduationCap className="text-white h-6 w-6" />
-                </div>
+                <Logo size={56} className="shadow-lg" />
               </motion.div>
               <motion.h2
                 initial={{ opacity: 0, y: -20 }}

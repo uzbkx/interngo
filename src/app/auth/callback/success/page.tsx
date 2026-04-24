@@ -11,7 +11,15 @@ export default function AuthCallbackSuccess() {
     const token = searchParams.get("token");
     if (token) {
       localStorage.setItem("accessToken", token);
-      window.location.href = "/";
+      let redirect = "/";
+      try {
+        const stored = sessionStorage.getItem("postLoginRedirect");
+        if (stored && stored.startsWith("/") && !stored.startsWith("//")) {
+          redirect = stored;
+        }
+        sessionStorage.removeItem("postLoginRedirect");
+      } catch {}
+      window.location.href = redirect;
     } else {
       window.location.href = "/auth/login?error=no_token";
     }
