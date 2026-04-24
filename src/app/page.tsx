@@ -84,8 +84,8 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden min-h-[80vh] flex items-center">
+      {/* Hero — fills the viewport minus navbar so Partners stays below the fold */}
+      <section className="relative overflow-hidden min-h-[calc(100vh-5rem)] flex items-center">
         <ParticlesBg />
         <div className="container mx-auto px-4 py-20 md:py-32 text-center relative z-10 pointer-events-none">
           <h1 className="text-4xl md:text-6xl font-extralight tracking-tight leading-tight mb-6 text-white">

@@ -54,10 +54,10 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/70 backdrop-blur-xl">
-      <div className="container mx-auto flex h-14 items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 group">
-          <Logo size={32} priority className="shadow-md group-hover:shadow-lg transition-shadow" />
-          <span className="text-lg font-bold tracking-tight">InternGo</span>
+      <div className="container mx-auto flex h-20 items-center justify-between px-4">
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <Logo size={40} priority className="shadow-md group-hover:shadow-lg transition-shadow" />
+          <span className="text-xl font-bold tracking-tight">InternGo</span>
         </Link>
 
         {/* Desktop nav with animated tabs */}
@@ -66,7 +66,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+              className={`relative px-5 py-2.5 text-base font-medium transition-colors duration-200 ${
                 isActive(link.href) ? "text-primary" : "text-foreground hover:text-primary"
               }`}
               onMouseEnter={() => setHoveredLink(link.href)}
@@ -104,19 +104,19 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-1.5">
+        <div className="hidden md:flex items-center gap-2">
           <ThemeToggle />
           <LanguageSwitcher currentLocale={locale} />
-          <Separator orientation="vertical" className="h-5 mx-1" />
+          <Separator orientation="vertical" className="h-6 mx-2" />
           {!loading && user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger render={<Button variant="ghost" size="sm" className="gap-2" />}>
-                <Avatar className="h-6 w-6">
-                  <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-blue-500 text-white text-xs">
+              <DropdownMenuTrigger render={<Button variant="ghost" className="gap-2 h-10 px-3 text-base" />}>
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-blue-500 text-white text-sm">
                     {getInitials(user.name || user.email)}
                   </AvatarFallback>
                 </Avatar>
-                <span className="max-w-[120px] truncate">{user.name || user.email}</span>
+                <span className="max-w-[140px] truncate">{user.name || user.email}</span>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuItem render={<Link href="/profile" />} className="flex items-center gap-2">
@@ -136,13 +136,12 @@ export function Navbar() {
             </DropdownMenu>
           ) : !loading ? (
             <>
-              <Button variant="ghost" size="sm" render={<Link href="/auth/login" />}>
+              <Button variant="ghost" render={<Link href="/auth/login" />} className="h-10 px-4 text-base">
                 {tc("login")}
               </Button>
               <Button
-                size="sm"
                 render={<Link href="/auth/signup" />}
-                className="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
+                className="h-10 px-4 text-base bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white shadow-md hover:shadow-lg transition-all"
               >
                 {tc("signup")}
               </Button>
