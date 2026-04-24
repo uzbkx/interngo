@@ -73,7 +73,7 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-      <div className="absolute inset-0 flex items-center justify-center opacity-80">
+      <div className="absolute inset-0 flex items-center justify-center">
         <Image
           src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
           className="w-full h-full object-contain [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)]"
@@ -87,7 +87,7 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
       <svg
         ref={svgRef}
         viewBox={`0 0 ${mapWidth} ${mapHeight}`}
-        className="absolute inset-0 w-full h-full opacity-60"
+        className="absolute inset-0 w-full h-full opacity-80"
         preserveAspectRatio="xMidYMid meet"
       >
         <defs>
@@ -97,6 +97,17 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
             <stop offset="95%" stopColor={lineColor} stopOpacity="1" />
             <stop offset="100%" stopColor="white" stopOpacity="0" />
           </linearGradient>
+          <marker
+            id="hero-path-arrow"
+            viewBox="0 -3 6 6"
+            refX="5"
+            refY="0"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto-start-reverse"
+          >
+            <path d="M0,-3 L5,0 L0,3 Z" fill={lineColor} />
+          </marker>
         </defs>
 
         {dots.map((dot, i) => {
@@ -113,6 +124,7 @@ export function WorldMap({ dots = [], lineColor = "#4f46e5" }: MapProps) {
                 fill="none"
                 stroke="url(#hero-path-gradient)"
                 strokeWidth={strokeW}
+                markerEnd="url(#hero-path-arrow)"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: [0, 0, 1, 1, 0] }}
                 transition={{
