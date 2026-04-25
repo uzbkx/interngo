@@ -87,8 +87,8 @@ export default async function HomePage() {
       {/* Hero — fills the viewport minus navbar so Partners stays below the fold */}
       <section className="relative overflow-hidden min-h-[calc(100vh-5rem)] flex items-center">
         <ParticlesBg />
-        {/* Soft top fade so the hero blends into the navbar instead of a hard line */}
-        <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-background to-transparent pointer-events-none z-[1]" />
+        {/* Soft top fade — dark mode only, where it blends into the dark navbar */}
+        <div className="hidden dark:block absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-background to-transparent pointer-events-none z-[1]" />
         <div className="container mx-auto px-4 py-20 md:py-32 text-center relative z-10 pointer-events-none">
           <h1 className="text-4xl md:text-6xl font-extralight tracking-tight leading-tight mb-6 text-white">
             <AnimatedWords text={t("heroTitle")} startDelay={0} step={150} />{" "}
