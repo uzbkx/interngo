@@ -186,6 +186,8 @@
     @apply font-sans;
     overflow-x: hidden !important;
     max-width: 100vw;
+    /* Fluid base font: 16px on mobile → 18px on desktop. Bumps every text-* class proportionally. */
+    font-size: clamp(16px, 0.95rem + 0.3vw, 18px);
   }
 }
 
