@@ -26,6 +26,8 @@ import {
   LayoutDashboard,
   LogOut,
   User,
+  Info,
+  Mail,
 } from "lucide-react";
 import { Logo } from "@/components/logo";
 
@@ -42,6 +44,8 @@ export function Navbar() {
     { href: "/listings", label: t("browse"), icon: Search },
     { href: "/post", label: t("post"), icon: Briefcase },
     { href: "/dashboard", label: t("dashboard"), icon: LayoutDashboard },
+    { href: "/about", label: t("about"), icon: Info },
+    { href: "/contact", label: t("contact"), icon: Mail },
   ];
 
   function isActive(path: string) {

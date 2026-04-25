@@ -55,7 +55,9 @@
     "internships": "Internships",
     "scholarships": "Scholarships",
     "programs": "Programs",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "about": "About",
+    "contact": "Contact"
   },
   "home": {
     "heroTitle": "Your Gateway to",
